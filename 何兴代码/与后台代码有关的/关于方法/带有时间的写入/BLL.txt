@@ -1,0 +1,9 @@
+ /// <summary>
+        /// 增加数据
+        /// </summary>
+        /// <param name="mJianyi"></param>
+        /// <returns>xt_result</returns>
+        public xt_result InsertData(xt_jianyi mJianyi)
+        {
+            return dJianyi.InsertData(mJianyi);
+        }

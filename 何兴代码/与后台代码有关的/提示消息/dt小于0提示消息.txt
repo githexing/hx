@@ -1,0 +1,5 @@
+if (dt.Rows.Count < 1)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert(' 该学生还未报考学校')</script>", false);
+                return;
+            }

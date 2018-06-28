@@ -1,0 +1,4 @@
+1.9以前的版本获取动态值 ajax 加载填充html页面 获ID取值的方法
+  //$(".del").live("click", function () {
+1.9以后用on
+  $('body').on('click', '.open', function(){   

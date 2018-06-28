@@ -1,0 +1,4 @@
+Math.round()--四舍五入
+Math.random()--随机数
+Math.max(XX,XX)
+Math.min(XX,XX)

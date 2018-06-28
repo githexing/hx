@@ -1,0 +1,24 @@
+ C#读取Excel2007的文件
+
+以读取access数据集的方式读取    
+
+For excel 2007:
+
+    private DataSet GetExcelData(string str)
+    {
+        string strCon = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + str + ";Extended Properties=\"Excel 12.0;HDR=YES\"";
+        OleDbConnection myConn = new OleDbConnection(strCon);
+        string strCom = " SELECT * FROM [Sheet1$]";
+        myConn.Open();
+        OleDbDataAdapter myCommand = new OleDbDataAdapter(strCom, myConn);
+        DataSet myDataSet = new DataSet();
+        myCommand.Fill(myDataSet, "[Sheet1$]");
+        myConn.Close();
+        return myDataSet;
+    }
+
+For excel2003:
+
+连接字符串改为：
+
+string strCon = " Provider = Microsoft.Jet.OLEDB.4.0 ; Data Source ="+str+";Extended Properties=Excel 8.0";

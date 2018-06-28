@@ -1,0 +1,226 @@
+using Library;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Serialization;
+
+namespace Web.MallInterface
+{
+    /// <summary>
+    /// Yiwu 易物交易接口
+    /// </summary>
+    public class Yiwu : IHttpHandler
+    {
+
+        public void ProcessRequest(HttpContext context)
+        {
+            context.Response.ContentType = "text/plain";
+
+            string json = String.Empty;
+            string message = string.Empty;
+            bool result = false;
+            string dates = "";
+            //using (var reader = new StreamReader(context.Request.InputStream))
+            //{
+            //    json = reader.ReadToEnd();
+            //}
+
+            string s = "";
+
+
+            //if (!string.IsNullOrEmpty(json) || json.Trim() != string.Empty)
+            //{
+            string key = context.Request["Key"].ToString();
+            string str1 = PageValidate.GetMd5("HongBao").ToLower();
+            string str2 = PageValidate.GetMd5(str1).ToLower();
+            if (key.Equals(str2))
+            {
+                AllCore ac = new AllCore();
+
+                string buyUserCode = context.Request["BuyUser"].ToString();//买家账号 
+                string sellUsercode = context.Request["SellUser"].ToString();//卖家账号
+                string Jine = context.Request["Jine"].ToString();//金额
+
+                string Type = context.Request["Type"].ToString();//流水类型 2 6
+
+                decimal feeRate = ac.getParamAmount("Yiwu");//手续费
+                decimal iAmount = decimal.Parse(Jine);
+                if (!string.IsNullOrEmpty(buyUserCode) && !string.IsNullOrEmpty(sellUsercode) && !string.IsNullOrEmpty(Jine))
+                {
+                    lgk.Model.tb_user BuyUserModel = ac.userBLL.GetModelByUserCode(buyUserCode);//买家账号
+                    lgk.Model.tb_user SellUserModel = ac.userBLL.GetModelByUserCode(sellUsercode);//卖家账号
+                    if (BuyUserModel != null && SellUserModel != null)
+                    {
+                        //Emoney = 0;// 购物券         写流水类型：1
+                        //BonusAccount = 0;// 生活积分 		2
+                        //AllBonusAccount = 0;// 待用积分		3
+                        //StockAccount = 0;// 可用积分		4
+                        //StockMoney = 0;// 分享积分		5
+                        //GLmoney = 0;// 现金积分			6
+                        //ShopAccount = 0;// 服务积分		7
+                        //B   8 （购物券类型流水）
+                        //C   9
+                        //D  10
+                        decimal iFee = iAmount * feeRate / 100;
+                        decimal iTotal = iAmount + iFee;
+
+                        //long iAgentUserID = ac.agentBLL.GetUserIDByAgentID(BuyUserModel.AgentsID);
+                     
+                        lgk.Model.tb_user AgentuserModel = ac.userBLL.GetModel(ac.userBLL.GetModelByUserCode(BuyUserModel.User006).UserID);//买家账号的担保人
+
+                        if (AgentuserModel.IsAgent!=1)
+                        {
+                            result = false;
+                            message = "报单中心被冻结";
+                            SendResponse(context, result, message, dates);
+                        }
+                        #region 买家变动
+                        if (Type=="2")
+                        { 
+                            if (BuyUserModel.BonusAccount<= iTotal )
+                            {
+                                result = false;
+                                message = "消费币不足";
+                                SendResponse(context, result, message, dates);
+                            }
+                            BuyUserModel.BonusAccount -= iTotal;//扣买家的钱
+                            BuyUserModel.RegMoney += iAmount;
+                            ac.userBLL.Update(BuyUserModel);
+
+                            //加入明细表
+                            lgk.Model.tb_journal jModel = new lgk.Model.tb_journal();
+                            jModel.UserID = BuyUserModel.UserID;//购买人
+                            jModel.JournalDate = DateTime.Now;
+                            jModel.JournalType = 2;
+                            jModel.Remark = "买家" + buyUserCode + "购买卖家" + sellUsercode + "的产品进行易物，担保的报单中心为" + AgentuserModel.UserCode;
+                            jModel.RemarkEn = "";
+                            jModel.OutAmount = iTotal;
+                            jModel.Journal01 = Convert.ToInt32(BuyUserModel.UserID);
+                            jModel.Journal02 = 2;
+                            jModel.BalanceAmount = BuyUserModel.BonusAccount;
+                            ac.journalBLL.Add(jModel);
+                            #endregion
+
+                            #region 金额冻结到报单中心
+
+                            if (AgentuserModel != null)
+                            {
+                                AgentuserModel.User014 += iAmount;//金额冻结到报单中心
+                                ac.userBLL.Update(AgentuserModel);
+
+                                lgk.Model.tb_journal jModel2 = new lgk.Model.tb_journal();
+                                jModel2.UserID = AgentuserModel.UserID;//出售人
+                                jModel2.JournalDate = DateTime.Now;
+                                jModel2.JournalType = 11;
+                                jModel2.Remark = "买家" + buyUserCode + "购买卖家" + sellUsercode + "的产品进行易物，担保的报单中心为" + AgentuserModel.UserCode;
+                                jModel2.RemarkEn = "";
+                                jModel2.InAmount = iAmount;
+                                jModel2.Journal01 = Convert.ToInt32(BuyUserModel.UserID);
+                                jModel2.Journal02 = 1;
+                                jModel2.BalanceAmount = AgentuserModel.User014;//易物金额
+                                ac.journalBLL.Add(jModel2);
+                                result = true;
+                                dates = "\"User006\":\"" + AgentuserModel.UserCode + "\"";
+                            }
+                            #endregion
+
+                            s += "BuyUser=" + buyUserCode + ",SellUser=" + sellUsercode + ",Jine=" + Jine + "result=true";
+                            message = "操作成功";
+                        }
+                        if (Type == "6")
+                        {
+                            if (BuyUserModel.GLmoney <= iTotal)
+                            {
+                                result = false;
+                                message = "现金积分不足";
+                                SendResponse(context, result, message, dates);
+                            }
+                            BuyUserModel.GLmoney -= iTotal;//扣买家的钱
+                            BuyUserModel.RegMoney += iAmount;
+                            ac.userBLL.Update(BuyUserModel);
+
+                            //加入明细表
+                            lgk.Model.tb_journal jModel = new lgk.Model.tb_journal();
+                            jModel.UserID = BuyUserModel.UserID;//购买人
+                            jModel.JournalDate = DateTime.Now;
+                            jModel.JournalType = 6;
+                            jModel.Remark = "买家" + buyUserCode + "购买卖家" + sellUsercode + "的产品进行易物，担保的报单中心为" + AgentuserModel.UserCode;
+                            jModel.RemarkEn = "";
+                            jModel.OutAmount = iTotal;
+                            jModel.Journal01 = Convert.ToInt32(BuyUserModel.UserID);
+                            jModel.Journal02 = 6;
+                            jModel.BalanceAmount = BuyUserModel.GLmoney;
+                            ac.journalBLL.Add(jModel);
+
+
+                            #region 金额冻结到报单中心
+
+                            if (AgentuserModel != null)
+                            {
+                                AgentuserModel.User014 += iAmount;//金额冻结到报单中心
+                                ac.userBLL.Update(AgentuserModel);
+
+                                lgk.Model.tb_journal jModel2 = new lgk.Model.tb_journal();
+                                jModel2.UserID = AgentuserModel.UserID;//出售人
+                                jModel2.JournalDate = DateTime.Now;
+                                jModel2.JournalType = 11;
+                                jModel2.Remark = "买家" + buyUserCode + "购买卖家" + sellUsercode + "的产品进行易物，担保的报单中心为" + AgentuserModel.UserCode;
+                                jModel2.RemarkEn = "";
+                                jModel2.InAmount = iAmount;
+                                jModel2.Journal01 = Convert.ToInt32(BuyUserModel.UserID);
+                                jModel2.Journal02 = 1;
+                                jModel2.BalanceAmount = AgentuserModel.User014;//易物金额
+                                ac.journalBLL.Add(jModel2);
+                                result = true;
+                                dates = "\"User006\":\"" + AgentuserModel.UserCode + "\"";
+                            }
+                            #endregion
+
+                            s += "BuyUser=" + buyUserCode + ",SellUser=" + sellUsercode + ",Jine=" + Jine + "result=true";
+                            message = "操作成功";
+                        }
+
+                    }
+                    else
+                        {
+                            message = "有用户不存在";
+                        }
+                    }
+                  
+                else
+                {
+                    message = "传递的用户账号数据为空";
+                }
+            }
+            else
+            {
+                message = "验证出错";
+            }
+
+
+            //}
+            //System.IO.File.AppendAllText(context.Server.MapPath("~/log-Yiwu.txt"), s);
+            SendResponse(context, result, message, dates);
+        }
+
+        private void SendResponse(HttpContext context, bool result, string returnString, string dates)
+        {
+            context.Response.Clear();
+            string json = "{\"status\":\"" + result.ToString().ToLower() + "\",\"message\":\"" + returnString + "\",\"dates\":{" + dates + "}}";
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            jss.Serialize(json);
+            context.Response.Write(json);
+            context.Response.End();
+        }
+
+        public bool IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
+    }
+}

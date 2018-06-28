@@ -1,0 +1,5 @@
+ DataTable dt = (DataTable)Session["dtMenu"];
+            //”√ªß≤Àµ•
+            DataView dv1 = new DataView(dt);
+
+            dv1.RowFilter = "zu2='0000'";

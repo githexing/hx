@@ -1,0 +1,90 @@
+body{
+    padding:0;
+    margin:0;
+}
+/*头部*/
+.toubu{width:100%; height:110px; margin:0px auto;background-color:#239EE1;}
+
+/*底部*/
+.weibu{ clear:both; margin:0 auto; background:url(../images/Zhuti_1/caidan_1.jpg) repeat-x;height:30px;}
+.weibu p {width:100%; padding-top:2px; text-align:center;}
+
+/*菜单*/
+.menu_yonghu{ float:left; color:Blue;  margin-left:50px;}
+.menu{
+      font: 13px/27px Arial,sans-serif;
+     background:url(../images/Zhuti_1/caidan_1.jpg) repeat-x;
+      height:30px;
+}
+.menu_ul{ width:1024px; margin:0 auto;}
+.menu a:hover{
+    background-color:#e4ebf8;/*鼠标经过滑动颜色*/
+    color:black;
+
+}
+.menu a {
+    text-decoration: none;
+    padding: 6px 8px 7px;/*菜单有效面积*/
+    color:white;/*菜单字体颜色*/
+    outline:none;
+}
+.menu ul{
+    list-style: none;
+}
+.menu ul a{text-decoration: none;}
+.menu ul li{
+    padding:0;
+    float:left;/*菜单竖着放*/
+    
+}
+.menu ul li ul li{
+    padding:0;
+    float:none;
+    margin: 0 0 0 0px;
+    width:100%;
+}
+.menu ul li ul{
+    position: absolute;
+    border: 1px solid #C3D1EC;
+    box-shadow: 0 1px 5px #CCCCCC;
+    margin-top: -1px;
+    display:none;
+    padding: 1px 16px 0px 0;/*二级菜单的框*/
+}
+.active ul{
+    display:block !important; 
+}
+.active a{
+    background-color: white;
+    border: 1px solid #C3D1EC;
+    border-bottom: 0;
+    box-shadow: 0 -1px 5px #CCCCCC;
+    display: block;
+    height: 29px;
+    padding: 0 8px 0 8px;
+    position:relative;
+    z-index: 1;
+    color:#3366CC;
+
+}
+.active a:hover{
+    background-color:white;/*1级菜单的颜色*/
+}
+.active ul a:hover{
+    background-color:#e4ebf8;/*二级菜单的框颜色*/
+}
+
+.active ul a{
+    border: 0 !important;
+    box-shadow: 0 0 0 #CCCCCC;
+    border:0;
+    width: 100%;
+}
+.arrow {
+    border-color: white transparent transparent;
+    border-style: solid dashed dashed;
+    margin-left: 5px;
+    position: relative;
+    top: 10px;
+}
+

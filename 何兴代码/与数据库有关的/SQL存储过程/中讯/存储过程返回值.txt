@@ -1,0 +1,17 @@
+DECLARE @strReturn varchar(100) 
+DECLARE @a int 
+select @a=UserID from tb_user where UserID=999999
+if	@a=0
+begin
+set @strReturn=0
+goto isOver;
+end
+else
+set @strReturn='Éµ±Æ'
+goto isOver;
+
+
+SET NOCOUNT OFF
+
+isOver:
+	print @strReturn;

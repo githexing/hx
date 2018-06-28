@@ -1,0 +1,12 @@
+string s = System.Web.HttpUtility.UrlEncode("大西瓜", System.Text.Encoding.UTF8);
+Console.WriteLine(s);
+
+
+------------------------------------
+string s = "大西瓜";
+string code = "";
+foreach (byte b in Encoding.UTF8.GetBytes(s))
+{
+    code += '%' + b.ToString("X");
+}
+Console.WriteLine(code);

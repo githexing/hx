@@ -1,0 +1,49 @@
+ /// <summary>
+        /// 选择行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string pXuhao=GridView1.SelectedRow.Cells[0].Text.ToString();
+
+            DataTable dt = bCjzm.getData_Where("xuhao",pXuhao);
+            
+             lb_xingming.Text = dt.Rows[0]["xingming"].ToString();
+            lb_xuahao.Text = dt.Rows[0]["xuhao"].ToString();
+            tb_kelei.Text = dt.Rows[0]["kelei"].ToString();
+
+            if (tb_kelei.Text == "理工类")
+            {
+                tb_yuwen.Text = dt.Rows[0]["kemu1"].ToString();
+                tb_shuxue.Text = dt.Rows[0]["kemu2"].ToString();
+                tb_yingyu.Text = dt.Rows[0]["kemu3"].ToString();
+                tb_shengwu.Text = dt.Rows[0]["kemu4"].ToString();
+                tb_wuli.Text = dt.Rows[0]["kemu5"].ToString();
+                tb_huaxue.Text = dt.Rows[0]["kemu6"].ToString();
+                tb_wenlizong.Text = dt.Rows[0]["kemu0"].ToString();
+                tb_zongfen.Text = dt.Rows[0]["zongfen"].ToString();
+                tb_lishi.Text = "";
+                tb_dili.Text ="";
+                tb_zhengzhi.Text = ""; 
+
+
+            }
+            else
+            {
+                tb_yuwen.Text = dt.Rows[0]["kemu1"].ToString();
+                tb_shuxue.Text = dt.Rows[0]["kemu2"].ToString();
+                tb_yingyu.Text = dt.Rows[0]["kemu3"].ToString();
+                tb_lishi.Text = dt.Rows[0]["kemu7"].ToString();
+                tb_dili.Text = dt.Rows[0]["kemu8"].ToString();
+                tb_zhengzhi.Text = dt.Rows[0]["kemu9"].ToString();
+                tb_wenlizong.Text = dt.Rows[0]["kemu0"].ToString();
+                tb_zongfen.Text = dt.Rows[0]["zongfen"].ToString();
+
+                tb_shengwu.Text ="";
+                tb_wuli.Text ="";
+                tb_huaxue.Text = "";
+            }
+
+            TabContainer1.ActiveTabIndex = 1;
+        }

@@ -1,0 +1,2 @@
+select mingcheng, count(mingcheng) AS Èö
+from dm_sheng group by mingcheng                                                  

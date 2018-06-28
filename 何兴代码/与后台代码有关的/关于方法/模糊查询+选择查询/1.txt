@@ -1,0 +1,30 @@
+/// <summary>
+        /// ≤È—Ø∑Ω Ω
+        /// </summary>
+        /// <param name="pWhere"></param>
+        /// <param name="pData"></param>
+        /// <returns></returns>
+        public DataTable getData_Where(string pWhere, string pData)
+        {
+            string sql = "select * from zm_cjzm ";
+            switch (pWhere)
+            {
+                case "xuhao":
+                    sql = sql + " where xuhao=@data ";
+                    break;
+                case "xingming":
+                    pData = pData + "%";
+                    sql = sql + " where xingming like @data ";
+                    break;
+                default:
+                    sql = sql + " where xuhao=@data ";
+                    break;
+
+            }
+            sql=sql+" order by xuhao;";
+            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@data", SqlDbType.VarChar )};
+            param[0].Value = pData;
+
+            DataTable dt = SQLHelper.ExecuteDt(base.User_Login, sql, param);
+            return dt;
+        }

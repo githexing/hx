@@ -1,0 +1,27 @@
+  if (!IsPostBack)
+            {
+                GridView1.PageSize = int.Parse(Session["pagesize"].ToString());
+			}
+
+
+   
+
+
+
+面板有LinkButton_page_Click
+
+ <td>
+                                每页行数：
+                            </td>
+                            <td>
+                                <asp:TextBox ID="TextBox_page" runat="server" MaxLength="2" Width="20px">15</asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:LinkButton ID="LinkButton_page" runat="server" OnClick="LinkButton_page_Click">设置每页行数</asp:LinkButton>
+                            </td>
+
+
+
+
+
+

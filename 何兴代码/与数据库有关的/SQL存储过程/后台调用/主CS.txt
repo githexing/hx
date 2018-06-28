@@ -1,0 +1,128 @@
+using System;
+using System.Collections;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Xml.Linq;
+using Model;
+using BLL;
+using AppCommon;
+using System.IO;
+namespace WebZhaosheng.MainSystem.Daoru
+{
+    public partial class DR_Chengji : App_Code.App_UserPage
+    {
+        protected BLL_Procedure bProcedure = new BLL_Procedure();
+        protected BLL_YS_Chengji bChengji = new BLL_YS_Chengji();
+        /// <summary>
+        /// 加载
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                TabContainer1.ActiveTabIndex = 0;
+            }
+        }
+        /// <summary>
+        /// 上传成绩信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Button_upload_Click(object sender, EventArgs e)
+        {
+            string pSavePath = Server.MapPath("~/XLS/");
+            if (!FileUpload1.HasFile)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('请选择要上传的文件！ ')</script>", false);
+                return;
+            }
+            string pFileName = FileUpload1.FileName;
+            pSavePath += pFileName;
+            FileUpload1.SaveAs(pSavePath);
+            FileUpload1.Dispose();
+            int i = pFileName.Length - 4;
+            if (pFileName.Substring(i) == ".zip")
+            {
+                CompresssFiles.UnZip(pSavePath, Server.MapPath("~/XLS/"));
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('上传成功！ 文件名为：" + FileUpload1.FileName + "  文件类型为：" + FileUpload1.PostedFile.ContentType + "  文件大小为：" + FileUpload1.PostedFile.ContentLength + "')</script>", false);
+        }
+
+        /// <summary>
+        /// 导入临时数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Button_temp_Click(object sender, EventArgs e)
+        {
+            xt_result result = bProcedure.ImportMingce(Session["daihao"].ToString(), "1", "pro_daoru_chengji_01");
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('系统信息：" + result.Message + "')</script>", false);
+            if (result.ReturnValue == 1)
+            {
+                getDataTemp("shenfenzheng", "ASC");
+            }
+        }
+        /// <summary>
+        /// 临时表数据
+        /// </summary>
+        protected void getDataTemp(string pSortExpression, string pSortDirection)
+        {
+            DataTable dt = bChengji.getDataTemp();
+            HiddenField_temp.Value = "合计：" + dt.Rows.Count.ToString() + " 人"; ;
+            DataView dv = dt.DefaultView;
+            Session["Chaxun"] = dv;
+            getGridViewData(GridView1, "Chaxun", pSortExpression, pSortDirection);
+        }
+
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            getGridViewData(GridView1, "Chaxun", e.SortExpression, "");
+        }
+        /// <summary>
+        /// 行数据绑定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            setGridViewRowDataBound(e, HiddenField_temp.Value.ToString());
+        }
+        /// <summary>
+        /// 分页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            setGridViewPageIndexChanging(GridView1, e.NewPageIndex, "txtNewPageIndex1");
+            getGridViewData(GridView1, "Chaxun", "", "");
+        }
+        /// <summary>
+        /// 生成系统数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Button_kaosheng_Click(object sender, EventArgs e)
+        {
+             xt_result result = bProcedure.ImportMingce(Session["daihao"].ToString(), "1", "pro_daoru_chengji_02");
+             ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('系统信息：" + result.Message + "')</script>", false);
+        
+             //getDataKaosheng("shenfenzheng", "ASC");
+        }
+    }
+}

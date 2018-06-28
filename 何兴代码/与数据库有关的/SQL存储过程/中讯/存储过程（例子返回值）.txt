@@ -1,0 +1,250 @@
+USE [NN17042615]
+GO
+/****** Object:  StoredProcedure [dbo].[proc_open]    Script Date: 05/15/2017 11:01:55 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/* --------------------------------------------- */
+-- Create date: <2014-09-25>
+-- Description:	开通会员存储过程
+/* --------------------------------------------- */
+ALTER procedure [dbo].[proc_open]
+	@UserID BIGINT,--开通用户
+	@IsOpend INT,--开通新会员
+	@IsAdmin INT,--0：后台，1：前台
+	@strReturn varchar(100) output,
+	@GoldType varchar(50)
+--上锁
+--with encryption 
+AS
+
+DECLARE @RegMoney MONEY,--注册金额
+		@RecommendID BIGINT
+declare @UserCode varchar(50)
+declare @LevelID int
+declare @AgentsID int
+declare @AgentUserID bigint
+declare @OpenNow int
+declare @UserID1 int
+DECLARE @Remark VARCHAR(100)--备注
+DECLARE @Remark1 VARCHAR(100)--备注
+declare @RemarkEn VARCHAR(100)
+declare @jstime datetime =  GETDATE()
+
+--declare @GoldType varchar(50)
+declare @OpenMoney numeric(18,4)
+declare @i int = 0
+
+DECLARE @TranName VARCHAR(50)
+
+
+--查询开通用户的注册金额
+SELECT @UserCode=UserCode,@AgentsID=AgentsID,@LevelID=LevelID,@OpenMoney=User018,@OpenNow=IsOpend FROM tb_user WHERE UserID=@UserID
+if @OpenNow=2
+begin
+	set @strReturn='已开通！';
+	goto isOver;
+end
+
+if @GoldType='A'
+begin
+	set @i=0
+end
+else if @GoldType='B'
+begin
+	set @i=1
+end
+else if @GoldType='C'
+begin
+	set @i=2
+end
+else if @GoldType='D'
+begin
+	set @i=3
+end
+
+declare @Emoney numeric(18,4)
+declare @BonusAccount numeric(18,4)
+declare @GLmoney numeric(18,4)
+
+select @AgentUserID=UserID from tb_agent where ID=@AgentsID
+if @AgentUserID=null or @AgentUserID=0
+begin
+	set @strReturn='报单中心不存在！';
+	goto isOver;
+end
+
+select @Emoney=Emoney,@BonusAccount=BonusAccount,@GLmoney=GLmoney from tb_user where UserID=@AgentUserID
+
+declare @NeedGLRate numeric(18,4)
+declare @NeedBonusRate numeric(18,4)
+declare @NeedGL numeric(18,4)
+declare @NeedBonus numeric(18,4)
+declare @GLbalance numeric(18,4)
+declare @Bonusbalance numeric(18,4)
+if @IsAdmin=1--前台
+begin
+	if @i=0
+	begin
+		if @GLmoney<@OpenMoney
+		begin
+			set @strReturn='您的现金积分余额不足！';
+			goto isOver;
+		end
+	end
+	else
+	begin
+		select @NeedBonusRate=ParamVarchar from tb_globeParam where ParamName='Bo'+CAST(@i as varchar(50))
+		select @NeedGLRate=ParamVarchar from tb_globeParam where ParamName='GL'+CAST(@i as varchar(50))
+	
+		set @NeedBonus = @OpenMoney * @NeedBonusRate / 100
+		if @BonusAccount<@NeedBonus
+		begin
+			set @strReturn='您的消费积分余额不足！';
+			goto isOver;
+		end
+	
+		set @NeedGL = @OpenMoney - @NeedBonus
+		if @GLmoney<@NeedGL
+		begin
+			set @strReturn='您的现金积分余额不足！';
+			goto isOver;
+		end
+	end
+end
+
+declare @GiveBonus numeric(18,4) --赠送消费金额
+declare @GiveAllBonus numeric(18,4) --赠送待用积分
+declare @GiveStockM numeric(18,4) --赠送分享积分
+declare @a1 numeric(18,4)
+declare @a2 numeric(18,4)
+declare @a3 numeric(18,4)
+
+select @a1=ParamVarchar from tb_globeParam where ParamName='xiaofei'
+select @a2=ParamVarchar from tb_globeParam where ParamName='daiyong'
+select @a3=ParamVarchar from tb_globeParam where ParamName='fenxiang'
+
+set @GiveBonus= @OpenMoney*@a1
+set @GiveAllBonus= @OpenMoney*@a2
+set @GiveStockM= @OpenMoney*@a3
+
+--当SET NOCOUNT 为ON 时，不返回计数（计数表示受Transact-SQL 语句影响的行数，例如在Sql server查询分析器中执行一个delete操作后，下方窗口会提示（）Rows Affected）。
+--当  SET NOCOUNT 为OFF 时，返回计数,我们应该在存储过程的头部加上SET NOCOUNT ON 这样的话，在退出存储过程的时候加上SET NOCOUNT OFF这样的话，以达到优化存储过程的目的。
+set Nocount on
+--使用存储过程执行事物，需要开启XACT_ABORT参数(默认值为Off)，将该参数设置为On，表示当执行事务时，如果出错,会将transcation设置为uncommittable状态，
+--那么在语句块批处理结束后将回滚所有操作；如果该参数设置为Off，表示当执行事务时，如果出错，出错的语句将不会执行，其他正确的操作继续执行
+set XACT_ABORT ON
+begin try
+	set @TranName='sp_openuser'
+	begin tran @TranName;
+		
+		if @i=0
+		begin
+			if @IsAdmin=1 --前台
+			begin
+				if @OpenMoney>0
+				begin
+					set @Remark = '开通会员'+@UserCode+'扣除现金积分'+CAST(@OpenMoney as varchar(50))
+					set @RemarkEn = ''
+					update tb_user set GLmoney-=@OpenMoney where UserID=@AgentUserID
+					select @GLbalance=GLmoney from tb_user where UserID=@AgentUserID
+					exec proc_AddJournal @AgentUserID,0,@OpenMoney,@GLbalance,6,@Remark,@RemarkEn,@UserID
+				end
+			end
+			UPDATE tb_user SET IsOpend=@IsOpend, OpenTime=@jstime, Emoney=@OpenMoney WHERE UserID = @UserID--开通
+		end
+		else
+		begin
+			if @IsAdmin=1 --前台
+			begin
+				set @Remark = '开通会员'+@UserCode+'扣除现金积分'+CAST(@NeedGL as varchar(50))
+				set @Remark1 = '开通会员'+@UserCode+'，扣除消费积分'+CAST(@NeedBonus as varchar(50))
+				set @RemarkEn = ''
+				update tb_user set BonusAccount-=@NeedBonus,GLmoney-=@NeedGL where UserID=@AgentUserID
+				select @GLbalance=GLmoney,@Bonusbalance=BonusAccount from tb_user where UserID=@AgentUserID
+				if @NeedGL>0
+				begin
+					--现金积分
+					exec proc_AddJournal @AgentUserID,0,@NeedGL,@GLbalance,6,@Remark,@RemarkEn,@UserID
+				end
+				if @NeedBonus>0
+				begin
+					--消费积分
+					exec proc_AddJournal @AgentUserID,0,@NeedBonus,@Bonusbalance,2,@Remark1,@RemarkEn,@UserID
+				end
+			end
+			--被开通人获得购物券
+			if @i=1
+			begin
+				UPDATE tb_user SET IsOpend=@IsOpend, OpenTime=@jstime, Emoney=@OpenMoney WHERE UserID = @UserID--开通
+			end
+			else if @i=2
+			begin
+				UPDATE tb_user SET IsOpend=@IsOpend, OpenTime=@jstime, C=@OpenMoney WHERE UserID = @UserID--开通
+			end
+			else if @i=3
+			begin
+				UPDATE tb_user SET IsOpend=@IsOpend, OpenTime=@jstime, D=@OpenMoney WHERE UserID = @UserID--开通
+			end
+		end
+
+		if @GiveBonus>0
+		begin
+			set @Remark = '开通成功，赠送消费积分'+CAST(@GiveBonus as varchar(50))
+			set @RemarkEn = ''
+			update tb_user set BonusAccount+=@GiveBonus where UserID=@UserID
+			select @Bonusbalance=BonusAccount from tb_user where UserID=@UserID
+			exec proc_AddJournal @UserID,@GiveBonus,0,@Bonusbalance,2,@Remark,@RemarkEn,@UserID
+		end
+		if @GiveAllBonus>0
+		begin
+			set @Remark = '开通成功，赠送待用积分'+CAST(@GiveAllBonus as varchar(50))
+			set @RemarkEn = ''
+			update tb_user set AllBonusAccount+=@GiveAllBonus where UserID=@UserID
+			select @Bonusbalance=AllBonusAccount from tb_user where UserID=@UserID
+			exec proc_AddJournal @UserID,@GiveAllBonus,0,@Bonusbalance,3,@Remark,@RemarkEn,@UserID
+		end
+		if @GiveStockM>0
+		begin
+			set @Remark = '开通成功，赠送分享积分'+CAST(@GiveStockM as varchar(50))
+			set @RemarkEn = ''
+			update tb_user set StockMoney+=@GiveStockM where UserID=@UserID
+			select @Bonusbalance=StockMoney from tb_user where UserID=@UserID
+			exec proc_AddJournal @UserID,@GiveStockM,0,@Bonusbalance,5,@Remark,@RemarkEn,@UserID
+		end
+
+		insert into tb_userRecord(recordName,recordTime,reMoney,reType)
+			values(@UserCode,@jstime,0,2)
+
+		--EXEC proc_yeji @UserID,@OpenMoney,@Remark--计算业绩
+
+		--if @LevelID>1
+		--begin
+		--	insert into tb_agent(UserID,AgentCode,AgentType,JoinMoney,Flag,AppliTime,OpenTime)
+		--		values(@UserID,@UserCode,@LevelID,@RegMoney,1,@jstime,@jstime)
+		--end
+
+set @UserID1=@UserID
+		EXEC [dbo].[proc_Award_Agent] @UserID1--补贴奖-1
+
+		EXEC proc_Award_SameLevel @UserID,@OpenMoney --同级奖-4
+
+
+commit tran @TranName;
+    end try
+    begin catch
+		rollback tran @TranName;
+		------将错误信息保存到日志表里
+		insert into SysLog(Log1,Log2,Log3,LogType,LogMsg)
+			values(cast(@UserId as varchar(100)),cast(@IsOpend as varchar(100)),@GoldType,
+			1000,ERROR_PROCEDURE()+','+cast(ERROR_LINE() as varchar(50))+','+ERROR_MESSAGE());
+		
+		set @strReturn='开通失败！'; 
+		goto isOver;
+    end catch
+
+SET NOCOUNT OFF
+
+isOver:
+	print @strReturn;                                                                                                                                                                                                                                                                                                                                                                                         

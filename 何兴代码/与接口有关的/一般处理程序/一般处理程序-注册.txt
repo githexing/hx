@@ -1,0 +1,267 @@
+using Library;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Serialization;
+
+namespace Web.MallInterface
+{
+    /// <summary>
+    /// Register 的摘要说明
+    /// </summary>
+    public class Register : IHttpHandler
+    {
+        static string sconn = System.Configuration.ConfigurationManager.AppSettings["SocutDataLink"];
+        public void ProcessRequest(HttpContext context)
+        {
+            context.Response.ContentType = "text/plain";
+
+            string json = String.Empty;
+            string message = string.Empty;
+            bool result = false;
+
+            string s = "我还没到 key";
+            // 错误的信息
+
+
+
+            //using (var reader = new StreamReader(context.Request.InputStream))
+            //{
+            //    json = reader.ReadToEnd();
+            //}
+
+            //if (!string.IsNullOrEmpty(json) || json.Trim() != string.Empty)
+            //{
+            string key = "";
+            try
+            {
+                key = context.Request["Key"].ToString();
+                s += "   我获得了Key ，key：" + key + "";
+            }
+            catch (Exception)
+            {
+                message = "Key 错误!!";
+                result = false;
+                SendResponse(context, result, message);
+                return;
+
+            }
+            string str1 = PageValidate.GetMd5("HongBao").ToLower();
+            string str2 = PageValidate.GetMd5(str1).ToLower();
+            //3b64e22cbc99a96cbacec98db71563e6
+            if (key.Equals(str2))
+            {
+                s += "   我通过了密码匹配";
+                string UserCode = context.Request["UserCode"].ToString();
+                string LevelID = context.Request["LevelID"].ToString();
+                string Password = context.Request["Password"].ToString().ToUpper();
+                string SecondPassword = context.Request["SecondPassword"].ToString().ToUpper();
+                string ThreePassword = context.Request["ThreePassword"].ToString().ToUpper();
+                string RecommendCode = context.Request["RecommendCode"].ToString();
+                string User006 = context.Request["User006"].ToString();
+                string Goodtype = context.Request["Goodtype"].ToString();//购物券类型
+                string OrderTotal = context.Request["OrderTotal"].ToString();//购物券金额
+                string wenti = context.Request["wenti"].ToString();//购物券金额
+                string daan = context.Request["daan"].ToString();//购物券金额
+
+                string t = string.Format("usercode:{0}, password:{1}, confirmPassword{2} ，User006：{3}", UserCode, Password, OrderTotal, User006);
+                System.IO.File.AppendAllText(context.Server.MapPath("~/log_reg.txt"), t);
+
+                s += "   我获得了 UserCode ： " + UserCode + "";
+                AllCore ac = new AllCore();
+                lgk.Model.tb_user m_user = new lgk.Model.tb_user();
+                lgk.Model.tb_user RecommendModel = null;
+                lgk.Model.tb_user RecommendModel1 = null;
+                RecommendModel = ac.userBLL.GetModel(" UserCode='" + RecommendCode + "'");
+
+                //报单中心
+                if (RecommendModel == null)
+                {
+                    message = "推荐用户不存在";
+                    result = false;
+                    SendResponse(context, result, message);
+                    return;
+                }
+
+                long agentUserID = 0;//  userid 
+                RecommendModel1 = ac.userBLL.GetModel(" UserCode='" + User006 + "'");
+                if (RecommendModel1 == null)
+                {
+                    message = "报单中心不存在";
+                    result = false;
+                    SendResponse(context, result, message);
+                    return;
+                }
+
+                if (RecommendModel1.IsAgent == 1)
+                {
+                    agentUserID = ac.agentBLL.GetAgentsIDByUserCode(RecommendModel1.UserCode);
+                }
+
+                lgk.Model.tb_user ModelAgent = ac.userBLL.GetModel(RecommendModel1.UserID);//报单中心
+
+                if (agentUserID<1)
+                {
+                    message = "报单中心不存在";
+                    result = false;
+                    SendResponse(context, result, message);
+                    return;
+                }
+                
+                if (ac.agentBLL.GetModel(ac.agentBLL.GetAgentsIDByUserCode(RecommendModel1.UserCode)).Flag==2)
+                {
+                    message = "报单中心被冻结";
+                    result = false;
+                    SendResponse(context, result, message);
+                    return;
+                }
+                //select* from tb_user where userid = "+ ModelRecommend .UserID+ " and RecommendPath like '%"+dt15.Rows[0]["UserID"].ToString()+"-%';
+                if (RecommendModel.UserCode!="system")
+                { 
+                    string sql1 = "select * from tb_user where userid=" + RecommendModel.UserID + " and RecommendPath like '%-" + ModelAgent.UserID + " -%'";
+                    DataSet ds = ac.userBLL.getData_Chaxun(sql1, "");
+                    DataTable dt = ds.Tables[0];
+                    if (dt.Rows.Count < 0)
+                    {
+                        message = "报单中心和推荐人不在一条线上，无法注册";
+                        result = false;
+                        SendResponse(context, result, message);
+                        return;
+                    }
+                }
+                //验证
+                if (ac.userBLL.GetCount("UserCode='" + UserCode + "'") > 0)
+                {
+                    message = "此用户账号已存在";
+                }
+                else
+                {
+                    s += "   我进入了 Add添加数据 ";
+                    m_user.UserCode = UserCode;
+                    m_user.LevelID = int.Parse(LevelID);
+
+                    m_user.RegMoney = decimal.Parse(OrderTotal);
+
+                    m_user.Password = Password;
+                    m_user.SecondPassword = SecondPassword;
+                    m_user.ThreePassword = ThreePassword;
+
+                    m_user.RecommendID = RecommendModel.UserID;
+                    m_user.RecommendCode = RecommendModel.UserCode;
+                    m_user.RecommendPath = RecommendModel.RecommendPath;
+                    m_user.RecommendGenera = RecommendModel.RecommendGenera + 1;
+
+                    m_user.ParentID = RecommendModel.UserID;
+                    m_user.ParentCode = RecommendModel.UserCode;
+                    m_user.UserPath = RecommendModel.RecommendPath;
+                    m_user.Layer = RecommendModel.RecommendGenera + 1;
+                   
+                        m_user.IsAgent = 0;
+                    
+                    m_user.User006 = ModelAgent.UserCode;
+                    m_user.AgentsID = ac.agentBLL.GetAgentsID(ModelAgent.UserCode);//
+
+                    m_user.LeftScore = 0;
+                    m_user.LeftBalance = 0;
+                    m_user.LeftNewScore = 0;
+                    m_user.RightScore = 0;
+                    m_user.RightBalance = 0;
+                    m_user.RightNewScore = 0;
+
+                    m_user.Location = 0;
+                    m_user.User007 = "";
+                    m_user.IsOpend = 0;
+                    m_user.IsLock = 0;//是否被冻結(0-否,1-冻結)
+
+                    m_user.Emoney = 0;
+                    m_user.BonusAccount = 0;
+                    m_user.AllBonusAccount = 0;
+                    m_user.StockAccount = 0;
+                    m_user.StockMoney = 0;
+                    m_user.GLmoney = 0;
+                    m_user.ShopAccount = 0;
+                    m_user.AddGLTime = DateTime.Now;
+                    m_user.BankAccount = "";// "銀行賬號";
+                    m_user.BankAccountUser = "";// "開户姓名";
+                    m_user.BankName = "";// "開户銀行";
+                    m_user.BankBranch = "";// "支行名稱";
+                    m_user.BankInProvince = "";// "銀行所在省份";
+                    m_user.BankInCity = "";
+                    m_user.RegTime = DateTime.Now;
+                    m_user.User002 = ModelAgent.UserID;
+                    m_user.Emoney = 0;
+                    m_user.B = 0;
+                    m_user.C = 0;
+                    m_user.D = 0;
+                    m_user.User009 = wenti;
+                    m_user.User010 = daan;
+                    m_user.User005 = Goodtype;//购物券类型
+                    m_user.User018 = decimal.Parse(OrderTotal);//购物券金额
+                    
+                    if (ac.userBLL.Add(m_user) > 0)
+                    {
+                        long iUserID = ac.GetUserID(UserCode);
+                        //ac.flag_open(Convert.ToInt32(iUserID), 2);
+                        lgk.Model.tb_user model = ac.userBLL.GetModel(ac.GetUserID(m_user.UserCode));
+                        //model.UserPath = model.UserPath + "-" + model.UserID.ToString();
+                        //model.RecommendPath = model.RecommendPath + "-" + model.UserID.ToString();
+                        //ac.userBLL.Update(model);这句有毒
+                        SqlConnection conn = new SqlConnection(sconn);
+                        conn.Open();
+                        string sql = " update tb_user set UserPath='" + model.UserPath + "-" + model.UserID.ToString() + "',RecommendPath='" + model.RecommendPath + "-" + model.UserID.ToString() + "'   where userid=" + model.UserID + " ";
+                        SqlCommand cmd = new SqlCommand(sql, conn);
+                        int reInt = cmd.ExecuteNonQuery();
+                        conn.Close();
+
+                        result = true;
+                        message = UserCode + "注册成功！";
+                    }
+                    else
+                    {
+                        message = "注册失败！";
+                    }
+                }
+            }
+            else
+            {
+                message = "验证出错";
+            }
+
+            //}
+            System.IO.File.AppendAllText(context.Server.MapPath("~/log.log"), s);
+            SendResponse(context, result, message);
+        }
+
+        public bool IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        private void SendResponse(HttpContext context, bool result, string returnString)
+        {
+            context.Response.Clear();
+            string json = "{\"status\":\"" + result.ToString().ToLower() + "\",\"message\":\"" + returnString + "\"}";
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            jss.Serialize(json);
+            context.Response.Write(json);
+            context.Response.End();
+        }
+
+        public class UserInfo
+        {
+            public string UserCode { get; set; }//购买人
+            public string Password { get; set; }//登录密码
+            public string SecondPassword { get; set; }//二级密码
+            public string ThirdPassword { get; set; }//三级密码
+            public string AgentCode { get; set; }//报单中心编号
+            public string RecommendCode { get; set; }//推荐人编号
+        }
+    }
+}

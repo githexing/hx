@@ -1,0 +1,4 @@
+条件？表达式1：表达式2
+
+条件成立执行表达式1，否则执行表达式2
+ Visible='<%#Eval("IsLock").ToString()=="0"?true:false %>'>冻结</asp:LinkButton>

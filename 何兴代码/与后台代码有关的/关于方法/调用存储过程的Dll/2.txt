@@ -1,0 +1,55 @@
+ /// <summary>
+        /// 导入学生名册
+        /// </summary>
+        /// <param name="pYonghu"></param>
+        /// <param name="pBiaozhi"></param>
+        /// <returns></returns>
+        public xt_result ImportMingce(string pYonghu, string pBiaozhi, string pProcedure)
+        {
+            SqlParameter[] param = new SqlParameter[] {  new SqlParameter("@yonghu", SqlDbType.VarChar,20),
+                                                         new SqlParameter("@biaozhi", SqlDbType.VarChar,1),
+                                                         new SqlParameter("@ReturnValue", SqlDbType.Int) };
+            param[0].Value = pYonghu;
+            param[1].Value = pBiaozhi;
+            param[2].Direction = ParameterDirection.ReturnValue;
+
+            xt_result result = new xt_result();
+            switch (pProcedure)
+            {
+                case "pro_daoru_chengji_01":
+                    result.Message = "导入学生成绩临时表成功";
+                    break;
+                case "pro_daoru_chengji_02":
+                    result.Message = "生成学生成绩库成功";
+                    break;
+                case "pro_daoru_mingce_01":
+                    result.Message = "导入学生数据录取临时表成功";
+                    break;
+                case "pro_daoru_mingce_02":
+                    result.Message = "生成学生数据库成功";
+                    break;
+                case "pro_daoru_mingce_03":
+                    result.Message = "生成学生数据库成功";
+                    break;
+                case "pro_daoru_bidui":
+                    result.Message = "生成学生数据库成功";
+                    break;
+
+            }
+
+            try
+            {
+                result.ReturnInt = SQLHelper.ExecuteNonQuery(base.User_Login, CommandType.StoredProcedure, pProcedure, param);
+            }
+            catch (Exception e)
+            {
+                result.Message = e.Message;
+                result.Message = result.Message.Replace("\r\n", "\\n");
+                result.Message = result.Message.Replace("'", "");
+            }
+            if (param[2].Value == null)
+                result.ReturnValue = -99;
+            else
+                result.ReturnValue = (int)param[2].Value;
+            return result;
+        }

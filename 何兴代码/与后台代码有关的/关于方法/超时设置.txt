@@ -1,0 +1,2 @@
+ <!-- Session ³¬Ê±ÉèÖÃ-->
+    <sessionState mode="InProc" timeout="30" cookieless="false" />

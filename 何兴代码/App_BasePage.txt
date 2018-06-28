@@ -1,0 +1,143 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Caching;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Xml.Linq;
+using AppCommon;
+using Model;
+
+namespace WebZhaosheng.App_Code
+{
+    public class App_UserPage :App_BasePage
+    {
+        /// <summary>
+        /// 页面加载
+        /// </summary>
+        /// <param name="O"></param>
+        protected override void OnLoad(EventArgs O)
+        {
+            if (Request.QueryString["bianhao"] == null)
+            {
+                throw new Exception("菜单编号空，禁止调用本页面！");
+            }
+            string pBianhao = Request.QueryString["bianhao"].ToString();
+            pBianhao = MySecurity.DESDecrypt(pBianhao, MySecurity.GetDESKey.DESKeyMenu);
+            Hashtable htGongneng = (Hashtable)Session["gongneng"];
+
+            if (!htGongneng.Contains(pBianhao))
+            {
+                throw new Exception("当前户无此设置功能分配，禁止调用本页面！");
+            }
+            string pGongneng = (string)htGongneng[pBianhao];
+            if (pGongneng.Substring(1, 1).Equals("0")) //查询功能
+            {
+                Button bButton = (Button)Page.FindControl("Button_chaxun");
+                if (bButton != null)
+                {
+                    bButton.Enabled = false;
+                }
+            }
+            if (pGongneng.Substring(2, 1).Equals("0")) //修改功能
+            {
+                Button bButton = (Button)Page.FindControl("Button_xiugai");
+                if (bButton != null)
+                {
+                    bButton.Enabled = false;
+                }
+            }
+            if (pGongneng.Substring(3, 1).Equals("0")) //增加功能
+            {
+                Button bButton = (Button)Page.FindControl("Button_zengjia");
+                if (bButton != null)
+                {
+                    bButton.Enabled = false;
+                }
+            }
+            if (pGongneng.Substring(4, 1).Equals("0")) //删除功能
+            {
+                Button bButton = (Button)Page.FindControl("Button_shanchu");
+                if (bButton != null)
+                {
+                    bButton.Enabled = false;
+                }
+            }
+            if (pGongneng.Substring(5, 1).Equals("0")) //打印功能
+            {
+                Button bButton = (Button)Page.FindControl("Button_dayin");
+                if (bButton != null)
+                {
+                    bButton.Enabled = false;
+                }
+            }
+            if (pGongneng.Substring(6, 1).Equals("0")) //导出功能
+            {
+                Button bButton = (Button)Page.FindControl("Button_daochu");
+                if (bButton != null)
+                {
+                    bButton.Enabled = false;
+                }
+            }
+            if (pGongneng.Substring(7, 1).Equals("0")) //统计功能
+            {
+                Button bButton = (Button)Page.FindControl("Button_tongji");
+                if (bButton != null)
+                {
+                    bButton.Enabled = false;
+                }
+            }
+            if (pGongneng.Substring(8, 1).Equals("0")) //审核
+            {
+                Button bButton = (Button)Page.FindControl("Button_shenhe");
+                if (bButton != null)
+                {
+                    bButton.Enabled = false;
+                }
+            }
+            if (pGongneng.Substring(9, 1).Equals("0")) //系统保留
+            {
+                Button bButton = (Button)Page.FindControl("Button_0");
+                if (bButton != null)
+                {
+                    bButton.Enabled = false;
+                }
+            }
+            if (!IsPostBack)
+            {
+                //更新在线时间
+                DataTable dtUser = (DataTable)Application["User_Online"];
+                DataRow dr = dtUser.Rows.Find(Session["daihao"].ToString());
+                if (dr != null)
+                {
+                    dr.SetField("id", Session.SessionID);
+                    dr.SetField("zaixian", DateTime.Now);
+                    dr.SetField("biaozhi", "1");
+                }
+            }
+
+            base.OnLoad(O);
+        }
+        /// <summary>
+        /// 检查用户组别
+        /// </summary>
+        /// <param name="pZubie"></param>
+        public void CheckYonghuZubie(string pZubie1, string pZubie2)
+        {
+            string pZubie = Session["zubie"].ToString();
+            if (pZubie.CompareTo(pZubie1) < 0 || pZubie.CompareTo(pZubie2) > 0)
+            {
+                string pBianhao = Request.QueryString["bianhao"].ToString();
+                Response.Redirect("~/MainSystem/Stop.aspx?bianhao=" + Server.UrlEncode(pBianhao), true);
+            }
+        }
+        
+    }
+}

@@ -1,0 +1,7 @@
+<td class="style11" colspan="2">&nbsp;校 验 码：&nbsp;
+                                <img id="img_yanzhengma" runat="server" alt="看不清，请点击我" onclick="this.src=this.src+'?'"
+                                    src="YanZhengma.aspx" title="看不清，请点击我" />&nbsp;<a href="javascript:getimgcode()"
+                                        style="color: #0000FF" tabindex="4"></a><asp:TextBox 
+            ID="TextBox_yanzhengma" runat="server" MaxLength="4"
+                                    Width="59px" TabIndex="3"></asp:TextBox>
+                                </td>

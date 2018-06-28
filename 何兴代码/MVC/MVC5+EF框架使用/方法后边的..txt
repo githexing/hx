@@ -1,0 +1,63 @@
+Any--》指的是数组中的条件都满足这个条件？
+
+    public bool CheckUserName(string userName)
+        {
+            using (MyDbContext dbc = new MyDbContext())
+            {
+                CommonService<AdminEntity> acs = new CommonService<AdminEntity>(dbc);
+                return acs.GetAll().Any(a => a.UserName == userName);
+            }
+        }
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+OrderByDescending -->倒序 
+Skip --》跳过制定数量 然后返回剩下的数量
+Take--》从开头取数据第几个截止
+.select（a => new AdminListDTO { ID = a.ID, CreateTime = a.CreateTime, UserName =>a.UserName }）--赋值给AdminListDTO 的字段
+
+ public AdminSearchResult GetPageList(int pageIndex,int pageSize)
+        {
+            using (MyDbContext dbc = new MyDbContext())
+            {
+                AdminSearchResult result = new AdminSearchResult();
+                CommonService<AdminEntity> cs = new CommonService<AdminEntity>(dbc);
+                var admins=cs.GetAll();
+                result.TotalCount = admins.LongCount();
+                result.AdminList = admins.OrderByDescending(a => a.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList().Select(a => new AdminListDTO { ID = a.ID, CreateTime = a.CreateTime, UserName = 		a.UserName }).ToArray();
+                return result;
+            }
+        }
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+SingleOrDefault --->返回满足条件的唯一元素，多个值返回异常，没有值返回false
+  public bool Delete(long id)
+        {
+            using (MyDbContext dbc = new MyDbContext())
+            {
+                CommonService<AdminEntity> cs = new CommonService<AdminEntity>(dbc);
+                var user = cs.GetAll().SingleOrDefault(u => u.ID == id);
+                if(user==null)
+                {
+                    return false;
+                }
+                user.IsDeleted = true;
+                dbc.SaveChanges();
+                return true;
+            }
+        }
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+添加数据 .Select(p => ToDTO(p)).ToArray();
+
+ public AgentListDTO ToDTO(AgentEntity User)
+        {
+            AgentListDTO AgentList = new AgentListDTO();
+            AgentList.AgentCode = User.AgentCode;
+            AgentList.Flag = User.Flag;
+            AgentList.AgentType = User.AgentType;
+            AgentList.OpenTime = User.OpenTime;
+            AgentList.UserID = User.UserID;
+            AgentList.ID = User.ID;
+            AgentList.CreateTime = User.CreateTime; 
+            return AgentList;
+        }

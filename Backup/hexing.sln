@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{8A35576C-2347-484A-AF27-1F04DF792308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{91E39C95-72CD-438E-B819-86BB7C5420B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{4A25E329-8580-49E8-895F-4EF415E605BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{68017F64-C636-42B0-BB6A-A0557A4C1B29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8C8D2020-AF33-43C0-912C-6A165798D2F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBUserConfig", "DBUserConfig\DBUserConfig.csproj", "{BF52E8E0-262C-4E47-8A6B-F522F1A5F330}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCommon", "Appcommon\AppCommon.csproj", "{DFC5C545-7B64-47A7-BB37-A89AD86E8365}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{512B3204-02D8-48CE-AB03-32E65DB102CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSSQLUtility", "DBUtility\MSSQLUtility.csproj", "{7A85EAD2-E5F8-4213-A04C-2CE6EC570625}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A35576C-2347-484A-AF27-1F04DF792308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A35576C-2347-484A-AF27-1F04DF792308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A35576C-2347-484A-AF27-1F04DF792308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A35576C-2347-484A-AF27-1F04DF792308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91E39C95-72CD-438E-B819-86BB7C5420B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91E39C95-72CD-438E-B819-86BB7C5420B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91E39C95-72CD-438E-B819-86BB7C5420B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91E39C95-72CD-438E-B819-86BB7C5420B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A25E329-8580-49E8-895F-4EF415E605BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A25E329-8580-49E8-895F-4EF415E605BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A25E329-8580-49E8-895F-4EF415E605BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A25E329-8580-49E8-895F-4EF415E605BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68017F64-C636-42B0-BB6A-A0557A4C1B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68017F64-C636-42B0-BB6A-A0557A4C1B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68017F64-C636-42B0-BB6A-A0557A4C1B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68017F64-C636-42B0-BB6A-A0557A4C1B29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF52E8E0-262C-4E47-8A6B-F522F1A5F330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF52E8E0-262C-4E47-8A6B-F522F1A5F330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF52E8E0-262C-4E47-8A6B-F522F1A5F330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF52E8E0-262C-4E47-8A6B-F522F1A5F330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFC5C545-7B64-47A7-BB37-A89AD86E8365}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFC5C545-7B64-47A7-BB37-A89AD86E8365}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFC5C545-7B64-47A7-BB37-A89AD86E8365}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFC5C545-7B64-47A7-BB37-A89AD86E8365}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A85EAD2-E5F8-4213-A04C-2CE6EC570625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A85EAD2-E5F8-4213-A04C-2CE6EC570625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A85EAD2-E5F8-4213-A04C-2CE6EC570625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A85EAD2-E5F8-4213-A04C-2CE6EC570625}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DFC5C545-7B64-47A7-BB37-A89AD86E8365} = {8C8D2020-AF33-43C0-912C-6A165798D2F8}
+		{BF52E8E0-262C-4E47-8A6B-F522F1A5F330} = {512B3204-02D8-48CE-AB03-32E65DB102CB}
+		{7A85EAD2-E5F8-4213-A04C-2CE6EC570625} = {512B3204-02D8-48CE-AB03-32E65DB102CB}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,63 @@
+ <div>
+                    <asp:HiddenField ID="HiddenField_heji1" runat="server" />
+                    <asp:HiddenField ID="HiddenField_filter" runat="server" />
+                </div>
+
+
+后台：：
+
+
+/// <summary>
+        /// 合计1
+        /// </summary>
+        /// <param name="pData"></param>
+        protected void getHejishu1(DataTable pData)
+        {
+            //合计
+            string pToudang = pData.Rows.Count.ToString();
+            string pWeiFendang = pData.Compute("count(xuhao)", "zhuangtai='2'").ToString();
+            string pTuidang = pData.Compute("count(xuhao)", "zhuangtai='3'").ToString();
+            string pFendang = pData.Compute("count(xuhao)", "zhuangtai='4'").ToString();
+            HiddenField_heji1.Value = "投档：" + pToudang + " 等待分档：" + pWeiFendang + " 院校拟录：" + pFendang + " 拟定退档：" + pTuidang;
+        }
+
+
+/// <summary>
+        /// 行数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            setGridViewRowDataBound(e, HiddenField_heji1.Value.ToString());
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //当鼠标停留时更改背景色
+                e.Row.Attributes.Add("onmouseover", "c=this.style.backgroundColor;this.style.backgroundColor='#CCDDFF'");
+                //当鼠标移开时还原背景色
+                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=c");
+                if (e.Row.Cells[6].Text.ToString() == "否")
+                {
+                    e.Row.Cells[6].ForeColor = Color.FromName("#9999FF");
+                    LinkButton pLinkButton = (LinkButton)e.Row.Cells[8].FindControl("LinkButton_tiaoji");
+                    if (pLinkButton != null)
+                    {
+                        pLinkButton.Visible = false;
+                    }
+                }
+            }
+            if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                //以跨栏的方式合并单元格
+                e.Row.Cells[0].ColumnSpan = e.Row.Cells.Count;
+                //隐藏除第一个单元格之后的所有单元格
+                for (int index = 1; index <= e.Row.Cells.Count - 1; index++)
+                {
+                    e.Row.Cells[index].Visible = false;
+                }
+
+                e.Row.Cells[0].Text = HiddenField_heji1.Value;
+                e.Row.Cells[0].CssClass = "cssGridviewFooter";
+            }
+
+        }

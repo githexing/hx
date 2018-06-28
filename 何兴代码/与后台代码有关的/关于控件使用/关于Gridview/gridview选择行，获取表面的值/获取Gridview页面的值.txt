@@ -1,0 +1,17 @@
+ string pXuhao = GridView1.Rows[GridView1.SelectedIndex].Cells[0].Text;
+            DataTable dt = bXuesheng.getData_Xuexiao(pXuhao);
+            if (dt.Rows.Count < 1)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert(' 该学生还未报考学校')</script>", false);
+                return;
+            }
+            Label_pici.Text = dt.Rows[0]["pici"].ToString();
+            Label_xingbie.Text = dt.Rows[0]["xingbie1"].ToString();
+            Label_xingming.Text = dt.Rows[0]["xingming"].ToString();
+            Label_kaohao.Text = dt.Rows[0]["kaohao"].ToString();
+            Label_xuhao.Text = dt.Rows[0]["xuhao1"].ToString();
+            Label_zongfen.Text = dt.Rows[0]["zongfen"].ToString();
+            Label_shenfenzheng.Text = dt.Rows[0]["shenfenzheng"].ToString();
+            Label_jiafen.Text = dt.Rows[0]["jiafen"].ToString();
+            Label_mingcheng.Text = dt.Rows[0]["mingcheng"].ToString();
+            TabContainer1.ActiveTabIndex = 1;

@@ -1,0 +1,10 @@
+二进制序列化：对象序列化之后是二进制形式的，通过BinaryFormatter类来实现的，这个类位于System.Runtime.Serialization.Formatters.Binary命名空间下。
+
+SOAP序列化：对象序列化之后的结果符合SOAP协议，也就是可以通过SOAP 协议传输，通过System.Runtime.Serialization.Formatters.Soap命名空间下的SoapFormatter类来实现的。
+
+XML序列化：对象序列化之后的结果是XML形式的，通过XmlSerializer 类来实现的，这个类位于System.Xml.Serialization命名空间下。XML序列化不能序列化私有数据。
+
+
+
+
+http://www.cnblogs.com/yzenet/p/3622833.html#3414982			///网址

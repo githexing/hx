@@ -1,0 +1,28 @@
+ if (!YanZhengMa())
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('登录失败：验证码错误！')</script>", false);
+                this.TextBox_yanzhengma.Text = "";
+                return;
+             }
+
+-------------------------------------账号密码登录类代码！！
+
+  /// <summary>
+        /// 验证码输入校验
+        /// </summary>
+        /// <returns></returns>
+        protected bool YanZhengMa()
+        {
+            bool re = false;
+            string pYanzhengma = this.TextBox_yanzhengma.Text.ToString();//获得用户输入的验证码
+            string chkcode = Session["yanzhengma"].ToString();//获得系统生成的验证码
+            if (!string.IsNullOrEmpty(pYanzhengma) && !string.IsNullOrEmpty(chkcode))
+            {
+                if (!chkcode.Equals(chkcode.ToUpper()))//如果系统生成的不为大写则转换成大写形式
+                    chkcode.ToUpper();
+                if (pYanzhengma.ToUpper().Trim().Equals(chkcode.Trim())) //将输入的验证码转换成大写并与系统生成的比较
+                    re = true;
+            }
+            return re;
+
+        }

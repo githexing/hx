@@ -1,0 +1,20 @@
+ /// <summary>
+        /// ´úÂë±í`
+        /// </summary>
+        protected void getDaima()
+        {
+            DataTable dt = bDiama.getDaima("dm_xingbie");
+            setDropDownList(DropDownList_xingbie, dt, "mingcheng1", "daihao", "", "");
+            dt = (DataTable)Application["dtZhuanye"];
+            
+            setDropDownList(DropDownList_zhuanye1, dt, "mingcheng1", "daihao", "", "");
+            setDropDownList(DropDownList_zhuanye2, dt, "mingcheng1", "daihao", "", "");
+            setDropDownList(DropDownList_zhuanye3, dt, "mingcheng1", "daihao", "", "");
+            setDropDownList(DropDownList_zhuanye4, dt, "mingcheng1", "daihao", "", "");
+            setDropDownList(DropDownList_zhuanye5, dt, "mingcheng1", "daihao", "", "");
+            setDropDownList(DropDownList_zhuanye6, dt, "mingcheng1", "daihao", "", "");
+            setDropDownList(DropDownList_zhuanye7, dt, "mingcheng1", "daihao", "", "");
+            setDropDownList(DropDownList_zhuanye8, dt, "mingcheng1", "daihao", "", "");
+            setDropDownList(DropDownList_zhuanye9, dt, "mingcheng1", "daihao", "", "");
+
+        }

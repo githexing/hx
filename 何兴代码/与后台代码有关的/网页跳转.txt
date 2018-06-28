@@ -1,0 +1,9 @@
+ Response.Redirect("~/Index.aspx", true);
+ Response.Write("<script>alert('会员互转成功');location.href='PICbind.aspx';</script>");
+
+<td align="center">
+                                <a href="UserDetail.aspx?UserID=<%# Eval("UserID")%>">
+                                    <%# Eval("UserID")%></a>
+                            </td>
+
+ Target="_blank"//新建页面

@@ -1,0 +1,27 @@
+  /// <summary>
+        /// 提交问题反馈
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Button_tijiao_Click(object sender, EventArgs e)
+        {
+            string pYanzhengma = TextBox_yanzhengma.Text.Trim();
+            TextBox_yanzhengma.Text = "";
+                 if (!getYanZhengma(pYanzhengma))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('登录失败：验证码错误！')</script>", false);
+                return;
+            }
+                 Mjianyi.Yingyong = Application["yingyong"].ToString();
+                 Mjianyi.Yonghu = Session["daihao"].ToString();
+                 Mjianyi.Mingcheng = Session["mingcheng"].ToString();
+                 Mjianyi.Neirong = TextBox_neirong.Text.Trim();
+                 Mjianyi.Riqi = DateTime.Now;
+                 Mjianyi.Huifu = "";
+                 Mjianyi.Yonghu1 = "";
+                 Mjianyi.Riqi1 = DateTime.Now;
+             xt_result result =Bjianyi.InsertData(Mjianyi);
+             ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('"+result.Message+"！')</script>", false);
+             TextBox_neirong.Text = "";
+          
+        }

@@ -1,0 +1,10 @@
+  /// <summary>
+        /// 代码表
+        /// </summary>
+        protected void getDaima()
+        {
+            DataTable dt = bDaima.getDaima("dm_xiaoxue");
+            setDropDownList(DropDownList_zhiyuan, dt, "mingcheng1", "daihao", "--请选择--", "0000");
+            dt = bDaima.getDaima("dm_zhuangtai");
+            setDropDownList(DropDownList_zhuangtai, dt, "mingcheng1", "daihao", "--请选择--", "00");
+        }

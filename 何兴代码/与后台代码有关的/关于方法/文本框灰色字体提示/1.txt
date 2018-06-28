@@ -1,0 +1,2 @@
+ <asp:TextBox ID="TextBox1" runat="server" type="text"  name="key1" value=" ÇëÊäÈë¹Ø¼ü´Ê" onFocus="if(value==defaultValue){value='';this.style.color='#000'}" 
+   onBlur="if(!value){value=defaultValue;this.style.color='#999'}" style="color:#999999"  ></asp:TextBox>

@@ -1,0 +1,53 @@
+ /// <summary>
+        /// 增加数据
+        /// </summary>
+        /// <param name="mJianyi"></param>
+        /// <returns>xt_result</returns>
+        public xt_result InsertData(xt_jianyi mJianyi)
+        {
+            string sql = "insert into xt_jianyi select " +
+                            "@yingyong,@yonghu,@mingcheng,@biaoti,@neirong,@zhuangtai,getdate(),@huifu,@yonghu1,getdate()";
+            SqlParameter[] param = new SqlParameter[] { 
+                                                        new SqlParameter("@xuhao", SqlDbType.Int),
+                                                        new SqlParameter("@yingyong", SqlDbType.VarChar),
+                                                        new SqlParameter("@yonghu", SqlDbType.VarChar),
+                                                        new SqlParameter("@mingcheng", SqlDbType.VarChar),
+                                                        new SqlParameter("@biaoti", SqlDbType.VarChar),
+                                                        new SqlParameter("@neirong", SqlDbType.NText),
+                                                        new SqlParameter("@zhuangtai", SqlDbType.VarChar),
+                                                        new SqlParameter("@riqi", SqlDbType.DateTime),
+                                                        new SqlParameter("@huifu", SqlDbType.NText),
+                                                        new SqlParameter("@yonghu1", SqlDbType.VarChar),
+                                                        new SqlParameter("@riqi1", SqlDbType.DateTime)};
+            param[0].Value = mJianyi.Xuhao;
+            param[1].Value = mJianyi.Yingyong;
+            param[2].Value = mJianyi.Yonghu;
+            param[3].Value = mJianyi.Mingcheng;
+            param[4].Value = mJianyi.Biaoti;
+            param[5].Value = mJianyi.Neirong;
+            param[6].Value = mJianyi.Zhuangtai;
+            param[7].Value = mJianyi.Riqi;
+            param[8].Value = mJianyi.Huifu;
+            param[9].Value = mJianyi.Yonghu1;
+            param[10].Value = mJianyi.Riqi1;
+
+            xt_result result = new xt_result();
+            result.Message = "用户建议 提交成功！";
+            try
+            {
+                result.ReturnInt = SQLHelper.ExecuteNonQuery(base.User_Login, sql, param);
+                if (result.ReturnInt < 1)
+                {
+                    result.Message = "提交 用户建议 失败！";
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = e.Message;
+                result.Message = result.Message.Replace("\r\n", "\\n");
+                result.Message = result.Message.Replace("'", "");
+
+            }
+
+            return result;
+        }

@@ -1,0 +1,24 @@
+if (Directory.Exists(Server.MapPath("~/upimg/hufu")) == false)//如果不存在就创建file文件夹
+         {
+             Directory.CreateDirectory(Server.MapPath("~/upimg/hufu"));
+         }
+
+         //Directory.Delete(Server.MapPath("~/upimg/hufu"), true);//删除文件夹以及文件夹中的子目录，文件    
+
+         //判断文件的存在
+
+         if (File.Exists(Server.MapPath("~/upimg/Data.html")))
+         {
+             Response.Write("Yes");
+
+             //存在文件
+
+         }
+
+         else
+         {
+             Response.Write("No");
+             //不存在文件
+             File.Create(MapPath("~/upimg/Data.html"));//创建该文件
+
+         }

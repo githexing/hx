@@ -1,0 +1,13 @@
+     /// <summary>
+        /// list集合去重复方法
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Button3_Click(object sender, EventArgs e)
+        {
+            List<int> list = new List<int>() { 22, 23, 22, 22, 24 };
+
+            list = list.Distinct().ToList();
+
+           
+        }

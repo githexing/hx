@@ -1,0 +1,117 @@
+USE [luqu10]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_daoru_chengji_01]    Script Date: 02/17/2016 14:41:17 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ 
+ALTER PROCEDURE [dbo].[pro_daoru_chengji_01]
+	@yonghu varchar(20),
+	@biaozhi varchar(2) 
+AS
+BEGIN
+	/*变量*/
+	declare @path varchar(100);
+    declare @sql varchar(500);	SET NOCOUNT ON;
+	select @path = rtrim(canshu) from xt_canshu where daihao='Update_Admin';
+	set @path=@path+'XLS\';
+	/*设置权限*/
+    EXEC sp_configure 'show advanced options', 1;
+    RECONFIGURE;
+    EXEC sp_configure 'Ad Hoc Distributed Queries', 1;
+    RECONFIGURE;
+    execute pro_reconfigure 1;
+	/*生成临时表*/
+	IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'temp_chengji') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
+	begin
+		drop table temp_chengji;
+	end
+	set @sql='select * into temp_chengji from  openrowset(''Microsoft.ACE.OLEDB.12.0'',''Excel 8.0;HDR=yes;IMEX=2;DATABASE='+@path+'chengji.xls'',''select * from [chengji$]'')';
+	execute(@sql);
+
+	/*数据校验*/
+	update temp_chengji set xuhao=ISNULL(xuhao,'');
+	update temp_chengji set xuefen=ISNULL(xuefen,'');
+	update temp_chengji set xuefen1=ISNULL(xuefen1,'');
+	update temp_chengji set xuefen2=ISNULL(xuefen2,'');
+	update temp_chengji set xuefen3=isnull(xuefen3,''); 
+	update temp_chengji set pinzhi=ISNULL(pinzhi,'');
+	update temp_chengji set shuyang=ISNULL(shuyang,'');
+	update temp_chengji set nengli=isnull(nengli,'');
+	update temp_chengji set jiaoliu=isnull(jiaoliu,'');
+	update temp_chengji set jiankang=isnull(jiankang,'');
+	update temp_chengji set biaoxian=isnull(biaoxian,'');
+	update temp_chengji set pingjia=isnull(pingjia,'');
+	update temp_chengji set pingjiaren=isnull(pingjiaren,'');
+	update temp_chengji set yuwen=isnull(yuwen,'');
+	update temp_chengji set shuxue=isnull(shuxue,''); 
+	update temp_chengji set yingyu=isnull(yingyu,'');
+	update temp_chengji set zhengzhi=isnull(zhengzhi,'');
+	update temp_chengji set lishi=isnull(lishi,'');
+	update temp_chengji set dili=isnull(dili,'');
+	update temp_chengji set wuli=isnull(wuli,'');
+	update temp_chengji set huaxue=isnull(huaxue,''); 
+	update temp_chengji set shengwu=isnull(shengwu,'');
+	update temp_chengji set xinxi=isnull(xinxi,'');
+	update temp_chengji set tongyong=isnull(tongyong,'');
+	update temp_chengji set kemu1=isnull(kemu1,'');
+	update temp_chengji set kemu2=isnull(kemu2,'');
+	update temp_chengji set kemu3=isnull(kemu3,''); 
+	update temp_chengji set kemu4=isnull(kemu4,'');
+	update temp_chengji set kemu5=isnull(kemu5,'');
+	update temp_chengji set kemu6=isnull(kemu6,'');
+	update temp_chengji set kemu7=isnull(kemu7,'');
+	update temp_chengji set kemu8=isnull(kemu8,'');
+	update temp_chengji set kemu9=isnull(kemu9,''); 
+	update temp_chengji set kemu10=isnull(kemu10,'');
+	update temp_chengji set zongfen=isnull(zongfen,''); 
+	update temp_chengji set jiafen=isnull(jiafen,'');
+	update temp_chengji set beizhu=isnull(beizhu,''); 
+	 
+	/*修改列*/
+	alter table temp_chengji alter column xuhao varchar(12);
+	alter table temp_chengji alter column xuefen numeric(7,2);
+	alter table temp_chengji alter column xuefen1 numeric(7,2);
+	alter table temp_chengji alter column xuefen2 numeric(7,2);
+	alter table temp_chengji alter column xuefen3 numeric(7,2);
+	alter table temp_chengji alter column pinzhi varchar(1);
+	alter table temp_chengji alter column shuyang varchar(1);
+	alter table temp_chengji alter column nengli varchar(1);
+	alter table temp_chengji alter column jiaoliu varchar(1);
+	alter table temp_chengji alter column jiankang varchar(1);
+	alter table temp_chengji alter column biaoxian varchar(1);
+	alter table temp_chengji alter column pingjia varchar(1);
+	alter table temp_chengji alter column pingjiaren varchar(10);
+	alter table temp_chengji alter column yuwen varchar(1);
+	alter table temp_chengji alter column shuxue varchar(1);  
+	alter table temp_chengji alter column yingyu varchar(1);
+	alter table temp_chengji alter column zhengzhi varchar(1);
+	alter table temp_chengji alter column lishi varchar(1);
+	alter table temp_chengji alter column dili varchar(1) ;
+	alter table temp_chengji alter column wuli varchar(1);
+	alter table temp_chengji alter column huaxue varchar(1);
+	alter table temp_chengji alter column shengwu varchar(1);
+	alter table temp_chengji alter column xinxi varchar(1);
+	alter table temp_chengji alter column tongyong varchar(1);
+	alter table temp_chengji alter column kemu1 numeric(7,2);
+	alter table temp_chengji alter column kemu2 numeric(7,2);
+	alter table temp_chengji alter column kemu3 numeric(7,2);
+	alter table temp_chengji alter column kemu4 numeric(7,2);
+	alter table temp_chengji alter column kemu5 numeric(7,2);
+	alter table temp_chengji alter column kemu6 numeric(7,2);  
+	alter table temp_chengji alter column kemu7 numeric(7,2);
+	alter table temp_chengji alter column kemu8 numeric(7,2);
+	alter table temp_chengji alter column kemu9 numeric(7,2);
+	alter table temp_chengji alter column kemu10 numeric(7,2);
+	alter table temp_chengji alter column zongfen numeric(7,2);
+	alter table temp_chengji alter column jiafen numeric(7,2);
+	alter table temp_chengji alter column beizhu varchar(250); 
+    return 1;
+end

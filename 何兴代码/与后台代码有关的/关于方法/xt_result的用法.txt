@@ -1,0 +1,100 @@
+
+-----------------------------------------Model
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+
+namespace Model
+{
+    [Serializable]
+    public class xt_result
+    {
+        private string returnString="";
+        private int returnValue = 0;
+        private int returnInt=0;
+        private bool returnBool = false;
+        private string message="";
+
+        public xt_result() { }
+
+        public string ReturnString
+        {
+            get { return returnString; }
+            set { returnString = value; }
+        }
+        public int ReturnValue
+        {
+            get { return returnValue; }
+            set { returnValue = value; }
+        }
+        public int ReturnInt
+        {
+            get { return returnInt; }
+            set { returnInt = value; }
+        }
+        public bool ReturnBool
+        {
+            get { return returnBool; }
+            set { returnBool = value; }
+        }
+        public string Message
+        {
+            get { return message; }
+            set { message = value; }
+        }
+    }
+}
+
+
+------------------------------DAL
+  /// <summary>
+        /// 修改学生信息
+        /// </summary>
+        /// <returns></returns>
+        public xt_result getData_Updata(zz_xuesheng mKaosheng)
+        {
+            string sql = "update zz_xuesheng set " +
+                            "xingming=@xingming,zhuanye=@zhuanye,banji1=@banji1,yonghu=@yonghu,riqi=getdate() " +
+                            " where bianhao=@bianhao;";
+            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@xingming", SqlDbType.VarChar) ,
+                new SqlParameter("@zhuanye", SqlDbType.VarChar) ,
+                new SqlParameter("@banji1", SqlDbType.VarChar) ,
+                 new SqlParameter("@yonghu", SqlDbType.VarChar) ,
+                  new SqlParameter("@bianhao", SqlDbType.VarChar) 
+            };
+            param[0].Value =mKaosheng.Xingming;
+            param[1].Value = mKaosheng.Zhuanye;
+            param[2].Value = mKaosheng.Banji1;
+            param[3].Value = mKaosheng.Yonghu;
+            param[4].Value = mKaosheng.Bianhao;
+            xt_result result = new xt_result();
+            result.Message = "更新  成功";
+            try
+            {
+                
+                result.ReturnInt = SQLHelper.ExecuteNonQuery(base.User_Admin, CommandType.Text, sql, param);
+                result.ReturnValue = SQLHelper.ExecuteNonQuery(base.User_Admin, CommandType.Text, sql, param);
+                if (result.ReturnInt < 1)
+                {
+                    result.Message = "更新   失败";
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = e.Message;
+                result.Message = result.Message.Replace("\r\n", "\\n");
+                result.Message = result.Message.Replace("'", "");
+            }
+            return result;
+        }
+
+
+-------------------------------------------------------------CS代码
+     protected xt_result result = new xt_result();
+
+   xt_result result = bRenzheng.getData_Updata(mKaosheng);
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('" + result.Message + "\\n本次更新：" + result.ReturnInt.ToString() + "人\\n')</script>", false);
+

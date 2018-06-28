@@ -1,0 +1,16 @@
+DECLARE @str VARCHAR(1000)='Chris,Nancy,Alvin,Sherman,Erick,Josie,Sonia,Joanna'; 
+
+WITH TEMP AS   
+(   
+    SELECT 1 AS NUM   
+    UNION ALL   
+    SELECT NUM+1   
+    FROM TEMP   
+    WHERE NUM<len(@str)  
+) 
+
+SELECT RN=ROW_NUMBER() OVER(ORDER BY NUM)  
+,SplitSTR=SUBSTRING(@str,NUM,CHARINDEX(',',@str+',',NUM)-NUM)   
+from TEMP
+WHERE SUBSTRING(','+@str,NUM,1)=','   
+OPTION(MAXRECURSION 0);  

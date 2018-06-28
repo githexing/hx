@@ -1,0 +1,30 @@
+<div>
+                                                        <div class="zhiyuan">
+                                                            <asp:LinkButton ID="LinkButton_tuidang" runat="server" Text='ÍËµµ' CommandArgument='<%# Bind("xuhao") %>'
+                                                                OnClick="LinkButton_tuidang_Click" Font-Bold="True" ForeColor="Red"></asp:LinkButton></div>
+                                                        <div class="zhiyuan">
+                                                            <asp:LinkButton ID="LinkButton_tiaoji" runat="server" Font-Bold="True" ForeColor="Blue"
+                                                                CommandArgument='<%# Bind("xuhao") %>' OnClick="LinkButton_tiaoji_Click">µ÷¼Á</asp:LinkButton></div>
+                                                        <div class="zhiyuan">
+                                                            <asp:LinkButton ID="LinkButton_zhuanye1" runat="server" Text='<%# Bind("zhuanye11") %>'
+                                                                CommandArgument='<%# Bind("xuhao") %>' OnClick="LinkButton_zhuanye1_Click"></asp:LinkButton>
+                                                        </div>
+                                                        <div class="zhiyuan">
+                                                            <asp:LinkButton ID="LinkButton_zhuanye2" runat="server" Text='<%# Bind("zhuanye21") %>'
+                                                                CommandArgument='<%# Bind("xuhao") %>' OnClick="LinkButton_zhuanye2_Click"></asp:LinkButton>
+                                                        </div>
+                                                        <div class="zhiyuan">
+                                                            <asp:LinkButton ID="LinkButton_zhuanye3" runat="server" Text='<%# Bind("zhuanye31") %>'
+                                                                CommandArgument='<%# Bind("xuhao") %>' OnClick="LinkButton_zhuanye3_Click"></asp:LinkButton>
+                                                        </div>
+                                                        <div class="zhiyuan">
+                                                            <asp:LinkButton ID="LinkButton_zhuanye4" runat="server" Text='<%# Bind("zhuanye41") %>'
+                                                                CommandArgument='<%# Bind("xuhao") %>' OnClick="LinkButton_zhuanye4_Click"></asp:LinkButton>
+                                                        </div>
+                                                        <div class="zhiyuan">
+                                                            <asp:LinkButton ID="LinkButton_zhuanye5" runat="server" Text='<%# Bind("zhuanye51") %>'
+                                                                CommandArgument='<%# Bind("xuhao") %>' OnClick="LinkButton_zhuanye5_Click"></asp:LinkButton></div>
+                                                        <div class="zhiyuan">
+                                                            <asp:LinkButton ID="LinkButton_zhuanye6" runat="server" Text='<%# Bind("zhuanye61") %>'
+                                                                CommandArgument='<%# Bind("xuhao") %>' OnClick="LinkButton_zhuanye6_Click"></asp:LinkButton></div>
+                                                    </div>

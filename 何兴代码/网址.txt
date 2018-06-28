@@ -1,0 +1,61 @@
+http://www.cnblogs.com/yinluhui0229/archive/2012/08/20/2648313.html
+
+
+http://jquery.cuishifeng.cn/
+
+
+http://www.jb51.net/shouce/jquery1.82/
+
+
+http://tonzi.blog.163.com/blog/static/4199583620144585819532/ 导入excel
+
+
+http://www.server110.com/ajax/201403/6942.html
+
+
+http://wenku.baidu.com/link?url=4r-RytYh1LlpeSWDrMyNjS5mbZIbkF1ygkByspblptTZVGk01r6cMPXhwt8AAVDYxJXu5bw-dWlxjvT6YM9p6f2TWs6CECpQJbB7ftlJsyS&qq-pf-to=pcqq.group   ///jq select常识
+
+
+
+
+http://www.runoob.com/bootstrap/bootstrap-collapse-plugin.html //导航 JS
+http://www.runoob.com/jsref/dom-obj-event.html//HTML事件
+
+http://guangquanzhu.blog.163.com/blog/static/112084455201331034415744/   前台绑定后台数据
+
+
+
+http://www.cnblogs.com/hoojo/archive/2011/07/20/2111316.html     ///触发器介绍
+
+
+http://www.alixixi.com/ePrint.asp?from=dev&id=5420 ///config
+
+http://www.cnblogs.com/yzenet/p/3622833.html#3414982  ///返序列化
+
+http://layer.layui.com/弹出层
+
+http://www.cnblogs.com/ajun/archive/2011/11/10/2244558.html //linq
+
+http://www.cnblogs.com/wangkongming/p/3992644.html cookie写入读取
+
+http://www.qydev.com/发布测试
+ngrok -config=ngrok.cfg -subdomain xxx 80 //(xxx 是你自定义的域名前缀)
+
+
+http://jquery.cuishifeng.cn/id.html  ///JQuery
+
+http://blog.csdn.net/u012775558/article/details/50628245 //这个是自动填充textbox
+
+
+
+http://api.9es.cn/weather//获取IP地址
+
+http://blog.csdn.net/Fanbin168/article/details/42102873//线程
+
+http://www.cnblogs.com/zhaopei/p/5746414.html  Linq表达式、Lambda表达式你更喜欢哪个？
+
+http://www.cnblogs.com/xun126/archive/2011/01/13/1933838.html  ---泛型C#
+https://www.cnblogs.com/babycool/p/3861277.html WebAPI 应用程序接口：和MVC一样，少了个前台分布，只是单纯的用josn传输数据
+
+http://blog.csdn.net/wooshn/article/details/8069087/ WebService到底是什么？
+http://echarts.baidu.com/download.html --图形JS

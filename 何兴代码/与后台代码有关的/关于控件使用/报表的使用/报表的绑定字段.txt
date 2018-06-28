@@ -1,0 +1,5 @@
+字段表达式
+单位：=Parameters!pDanwei.Value
+日期： ="打印日期："+Now().ToString("yyyy-MM-dd HH:mm:ss")
+编号的总数： =Count(Fields!bianhao.Value)
+页码： ="页码："+Globals!PageNumber.ToString()+" / "+Globals!TotalPages.ToString()  ///只能在页眉，页脚使用

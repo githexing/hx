@@ -1,0 +1,42 @@
+/// <summary>
+        /// ÏêÏ¸Êý¾Ý
+        /// </summary>
+        /// <param name="pWhere"></param>
+        /// <param name="pData"></param>
+        /// <returns></returns>
+        public DataTable getDataDetail(string pWhere,string pData)
+        {
+            string sql = "select a.*,a.xingbie+'.'+b.mingcheng xingbie1,a.zhuangtai+'.'+c.mingcheng zhuangtai1, " +
+                            "a.sheng+'.'+d.mingcheng sheng1,a.shenhe+'.'+e.mingcheng shenghe1 " +
+                            "from ys_bmxx a left join  " +
+                            "dm_xingbie b on a.xingbie=b.daihao left join  " +
+                            "dm_zhuangtai_dangan c on a.zhuangtai=c.daihao  left join " +
+                            "dm_sheng d on a.sheng=d.daihao left join " +
+                            "dm_shenhe e on a.shenhe=e.daihao ";
+            switch (pWhere)
+            {
+                case "all":
+                    break;
+                case "sheng":
+                    sql = sql + " where a.sheng = @data ";
+                    break;
+                case "shenfenzheng":
+                    sql = sql + " where a.shenfenzheng = @data ";
+                    break;
+                case "xingming":
+                    pData = pData + "%";
+                    sql = sql + " where a.xingming like @data ";
+                    break;
+                case "zhuanye":
+                    sql = sql + "where zhuanye1 like @data or zhuanye2 like @data or zhuanye3 like @data ";
+                    break;
+                default:
+                    sql = sql + " where a.sheng = @data ";
+                    break;
+            }
+            sql = sql + " order by a.shenfenzheng;";
+            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@data", SqlDbType.VarChar) };
+            param[0].Value = pData;
+            DataTable dt = SQLHelper.ExecuteDt(base.User_Login, sql, param);
+            return dt;
+        }

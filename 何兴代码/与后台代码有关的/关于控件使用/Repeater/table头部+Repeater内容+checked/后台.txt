@@ -1,0 +1,58 @@
+ string baodanID = Request["baodanID"];//获取商品ID
+                    if (string.IsNullOrEmpty(baodanID) || baodanID.Trim() == string.Empty)
+                    {
+                        ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('请选择报单产品');", true);//请选择报单产品
+                        return;
+                    }
+                    string[] baodanIDs = baodanID.Split(',');//ID集合
+                    foreach (string id in baodanIDs)
+                    {
+                        string num = Request["num_" + id];//数量
+                        if (string.IsNullOrEmpty(num) || num.Trim() == string.Empty)
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('请输入产品数量');", true);//请选择报单产品
+                            return;
+                        }
+                        int n;
+                        if (int.TryParse(num, out n) == false)
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('请输入正确的产品数量格式');", true);//请选择报单产品
+                            return;
+                        }
+
+
+                    }
+
+
+
+
+
+  foreach (string id in baodanIDs)
+                    {
+                        int num = int.Parse(Request["num_" + id]);
+
+                        lgk.Model.tb_goods tb_goodsModel = tb_goodsBLL.GetModelAndName(int.Parse(id));//根据发布商品编号找到
+                        if (tb_goodsModel.StateType == 0) //判断是否 审核通过 0未审核
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('商品" + tb_goodsModel.GoodsCode + "审核未通过,请删除该商品!');", true);
+                            return;
+                        }
+                        if (tb_goodsModel.Goods003 == "1") //判断是否 删除 1已经删除
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('商品" + tb_goodsModel.GoodsCode + "已被删除,请移除该商品!');", true);
+                            return;
+                        }
+                        if (tb_goodsModel.Goods001 == 0) //判断是否 0下架
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('商品" + tb_goodsModel.GoodsCode + "已经下架,请删除该商品!');", true);
+                            return;
+                        }
+                        if (Convert.ToInt32(tb_goodsModel.Pic5) < num) //判断库存量
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('商品" + tb_goodsModel.GoodsCode + "库存不足,请重新修改数量!');", true);
+                            return;
+                        }
+
+                        mySumCarMoney += tb_goodsModel.Price * num;//总金额
+}
+有ID号可以查询商品信息，然后赋值给model

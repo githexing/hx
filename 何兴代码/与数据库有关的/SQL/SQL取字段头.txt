@@ -1,0 +1,4 @@
+Select name FROM SysColumns Where id=Object_Id('yonghu')
+ 
+
+只需要输入 表名 yonghu

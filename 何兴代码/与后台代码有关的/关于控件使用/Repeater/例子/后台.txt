@@ -1,0 +1,122 @@
+ protected void address_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            int ID = Convert.ToInt32(e.CommandArgument);
+            if (ID == getLoginID())
+            {
+                MessageBox.Show(this, "无法操作");
+                return;
+            }
+            if (e.CommandName.Equals("del"))//删除
+            {
+                if (AddressBLL.Delete(ID))
+                {
+                    MessageBox.ShowAndRedirect(this, "删除成功", "Address.aspx");
+                }
+                else
+                {
+                    MessageBox.Show(this, "删除失败");
+                }
+            }
+            else if (e.CommandName.Equals("setdefault"))
+            {
+                if(AddressBLL.setDefaultAddr(getLoginID(),ID))
+                {
+                   
+                    MessageBox.ShowAndRedirect(this, "设为默认地址成功", "Address.aspx");
+                }
+                else
+                {
+                    MessageBox.Show(this, "设为默认地址失败");
+                }
+            }
+            else if (e.CommandName.Equals("modify"))
+            {
+                Response.Redirect("DeliveryAddress2.aspx?id=" + ID);
+            }
+        }
+
+
+//绑定
+ /// <summary>
+        /// 绑定数据
+        /// </summary>
+        /// <param name="dateSet">数据源</param>
+        /// <param name="AspNetPager1">分页控件名</param>
+        /// <param name="Repeater1">绑定的Repeater控件名</param>
+        /// <param name="sort">排序</param>
+        /// <param name="span1">无数据时提示的控件名</param>
+        public void bind_repeater(DataSet dateSet, Repeater Repeater1, string sort, HtmlControl span1, AspNetPager AspNetPager1)
+        {
+            DataSet ds = null;
+            if (dateSet != null)
+            {
+                try
+                {
+                    ds = dateSet;
+                }
+                catch (Exception)
+                {
+                    ds = null;
+                }
+            }
+
+            DataView dv = ds.Tables[0].DefaultView;
+            dv.Sort = sort;
+            AspNetPager1.RecordCount = dv.Count;
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            PagedDataSource pds = new PagedDataSource();
+            pds.DataSource = dv;
+            pds.AllowPaging = true;
+            pds.CurrentPageIndex = AspNetPager1.CurrentPageIndex - 1;
+            pds.PageSize = AspNetPager1.PageSize;
+            Repeater1.DataSource = pds;
+            Repeater1.DataBind();
+            if (span1 != null)
+            {
+                span1.Style.Add("display", "none");
+                if (dv.Count <= 0)
+                {
+                    span1.Style.Add("display", "");//block
+                }
+            }
+        }
+        /// <summary>
+        /// 无分页绑定
+        /// </summary>
+        /// <param name="dateSet">数据源</param>
+        /// <param name="Repeater1">绑定的Repeater控件名</param>
+        /// <param name="sort">排序</param>
+        /// <param name="span1">无数据时提示的控件名</param>
+        public void bind_repeater(DataSet dateSet, Repeater Repeater1, string sort, HtmlControl span1)
+        {
+            DataSet ds = null;
+            if (dateSet != null)
+            {
+                try
+                {
+                    ds = dateSet;
+                }
+                catch (Exception)
+                {
+                    ds = null;
+                }
+            }
+            DataView dv = ds.Tables[0].DefaultView;
+            dv.Sort = sort;
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            PagedDataSource pds = new PagedDataSource();
+            pds.DataSource = dv;
+            pds.AllowPaging = true;
+            pds.CurrentPageIndex = 0;
+            pds.PageSize = 0;
+            Repeater1.DataSource = pds;
+            Repeater1.DataBind();
+            if (span1 != null)
+            {
+                span1.Style.Add("display", "none");
+                if (dv.Count <= 0)
+                {
+                    span1.Style.Add("display", "block");
+                }
+            }
+        }

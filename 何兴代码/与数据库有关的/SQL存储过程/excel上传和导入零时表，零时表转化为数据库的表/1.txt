@@ -1,0 +1,41 @@
+USE [yishu10]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_daoru_kaikaozhuanye_01]    Script Date: 11/25/2015 15:58:12 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		何兴
+-- Create date: 2015.10.21
+-- Description:	导入考试专业
+-- =============================================
+ALTER PROCEDURE [dbo].[pro_daoru_kaikaozhuanye_01]
+	@yonghu varchar(20),@biaozhi varchar(1) 
+AS
+BEGIN
+	/*变量*/
+	declare @path varchar(100);
+    declare @sql varchar(500);	SET NOCOUNT ON;
+	select @path = rtrim(canshu) from xt_canshu where daihao='Update_Zhaosheng';
+	set @path=@path+'xls\';
+	/*设置权限*/
+    EXEC sp_configure 'show advanced options', 1;
+    RECONFIGURE;
+    EXEC sp_configure 'Ad Hoc Distributed Queries', 1;
+    RECONFIGURE;
+    execute pro_reconfigure 1;
+	/*生成临时表*/
+	IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'temp6') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
+	begin
+		drop table temp6;
+	end
+	set @sql='select * into temp6 from  openrowset(''Microsoft.ACE.OLEDB.12.0'',''Excel 8.0;HDR=yes;IMEX=2;DATABASE='+@path+'kaikao.xls'',''select * from [kaikao$]'')';
+	execute(@sql);
+	 
+	update temp6 set sheng=ISNULL(sheng,'');
+	update temp6 set daihao=ISNULL(daihao,'');
+	
+    return 1;
+END
+

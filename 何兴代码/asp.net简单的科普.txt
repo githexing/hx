@@ -1,0 +1,18 @@
+document.write("该消息在页面加载时输出。")
+
+<script type="text/javascript">
+function message()
+{
+alert("该提示框是通过 onload 事件调用的。")
+}
+</script>
+</head>
+
+<body onload="message()">
+
+document.write("Hello World!")
+
+
+  Response.Redirect("~/Index.aspx?bianhao=" + Server.UrlEncode(pBianhao) + "&BakupUrl=" + Server.UrlEncode(Request.FilePath), true);
+    Response.Redirect（"跳转地址"）;
+

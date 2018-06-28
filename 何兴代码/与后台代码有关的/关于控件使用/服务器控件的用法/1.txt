@@ -1,0 +1,5 @@
+控件+按钮+组都不能缺少组
+--30.00时是这个类型
+decimal.Parse(TextBox_baoming.Text.Trim());
+--30时 是这个类型
+int.Parse(Label_kemu.Text);

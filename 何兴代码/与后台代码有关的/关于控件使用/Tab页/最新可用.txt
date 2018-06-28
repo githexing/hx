@@ -1,0 +1,24 @@
+<asp:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="1" CssClass="AjaxTab"
+                        Height="470px" Width="100%" ScrollBars="Auto">
+                        <asp:TabPanel runat="server" HeaderText="生成学生数据" ID="TabPanel1">
+                            <ContentTemplate>
+                                <div>
+                                    
+                                </div>
+                                
+                            </ContentTemplate>
+                        </asp:TabPanel>
+                        <asp:TabPanel ID="TabPanel5" runat="server" HeaderText="数据结构说明" ScrollBars="Auto">
+                            <HeaderTemplate>
+                                数据结构说明
+                            </HeaderTemplate>
+                            <ContentTemplate>
+                                <div>
+                                    
+                                </div>
+                                <div>
+                                    
+                                </div>
+                            </ContentTemplate>
+                        </asp:TabPanel>
+                    </asp:TabContainer>

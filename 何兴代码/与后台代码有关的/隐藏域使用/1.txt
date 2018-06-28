@@ -1,0 +1,13 @@
+ function asd(){                       
+var ele=window.document .getElementByI("spanSumMoney").innerText;
+      document.getElementById("<%=hid.ClientID %>").value=ele;//隐藏域   
+         }
+OnClientClick="asd()"//在按钮下放这个
+
+
+ <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
+        <asp:HiddenField ID="hid" runat="server" />
+
+
+   string c = hid.Value;

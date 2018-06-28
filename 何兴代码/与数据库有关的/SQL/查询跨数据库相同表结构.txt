@@ -1,0 +1,7 @@
+select * from ys10_qg20160307..ys_bmxx 
+union all 
+select * from ys10_gx20160307..ys_bmxx
+union all 
+select * from ys10_gdm20160307..ys_bmxx
+union all 
+select * from ys10_gdfm20160307..ys_bmxx

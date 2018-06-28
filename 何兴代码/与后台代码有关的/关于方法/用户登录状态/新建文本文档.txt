@@ -1,0 +1,9 @@
+ /// <param name="e"></param>
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            createMenu();
+            if (Session["daihao"] != null)
+            {
+                Label_yonghu_login.Text = Session["daihao"].ToString() + " " + Session["mingcheng"].ToString() + "，您已登录本系统！";
+            }
+        }

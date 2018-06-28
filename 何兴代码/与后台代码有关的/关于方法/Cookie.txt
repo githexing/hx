@@ -1,0 +1,12 @@
+   …Ë÷√
+ HttpCookie UserCookie = new HttpCookie("A128076_user");
+                UserCookie["Id"] = user.UserID.ToString();
+                UserCookie["name"] = UserName;
+                Response.AppendCookie(UserCookie);
+
+∏ƒ±‰£∫
+    if (Request.Cookies["Culture"] == null)
+                {
+                    CultureCookie.Value = "zh-cn";
+                    Response.AppendCookie(CultureCookie);
+                }

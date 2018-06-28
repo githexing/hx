@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+	<meta name="Generator" content="EditPlus®">  
+	<meta http-equiv="Keywords" content="关键字,关键字">
+	<meta http-equiv="Description" content="描述信息">
+	<title>Ajax多文件上传</title>
+	<style type="text/css">
+		*{margin:0px;padding:0px;font-family:"微软雅黑";}
+		body{background:#bcbcbc;}
+		.bg{width:1020px;height:550px;margin:30px auto;border:1px solid red;}
+		.bg 
+		h2{width:100%;height:50px;line-height:50px;text-align:center;background:#000;color:#fff;border-radius:20px 20px 0 0;}
+		.bg .box{width:100%;height:460px;background:#fff;padding:20px 0;}
+		.bg .box .btn{padding:5px;background:#272727;color:#fff;text-decoration:none;box-shadow:2px 2px 5px #000;margin-left:10px;}
+		.bg .box ul,li{list-style:none}
+		.bg .box ul > li{margin-left:5px;width:80px;height:200px;float:left;}
+		.bg .box ul > li:hover{border:2px solid gray;transform:scale(3);transition:all 0.6s ease;}
+		img{width:80px;height:200px;}
+	</style>
+		<script type="text/javascript">
+		function dom(id){
+			return document.getElementById(id);
+		}
+		
+		function openBrows(){
+			//拿到文件上传组件的对象
+			var fileObj = dom("fileup");
+			//模拟用户点击的操作click是触发点击 onclick点击以后做什么事情
+			fileObj.click();
+		}
+		//上传文件
+		function fileUpload(){
+			var fileObj = dom("fileup");
+			/*在以前可以用form表单提交数据ajax做异步数据提交*/
+			//fileObj.files这个是获取文件选择框的所有文件对象集合
+			var files = fileObj.files;
+			//创建formdata对象将文件增加到formdata中
+			var form = new FormData();
+			//form循环球遍历我们的数组获取每个文件
+			//可以实现代码的重复执行for知道次数的情况下使用
+			for(var i = 0; i<files.length;i++){
+				//添加参数到form表单中文件添加到form，第一个参数提交的参数名第二个实际的要提交的值
+				form.append("file"+i,files[i]);
+			}
+			//Ajax做文件上传
+			//创建Ajax对象，XMLHttpReuqest
+			var xhr = new XMLHttpRequest;//创建xmlhttp对象，ajax请求的核心
+			//打开一个URL地址，form提交方式，action提交的目的地是否异步
+			xhr.open("post","fileUp.do",true);
+			//200代表请求成功
+			//监听请求状态
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState ==4 && xhr.status == 200)	{
+					var result = xhr.responseText.trim();
+					eval(result);
+					var imgUl = dom("imgBox");
+					for(var i = 0;i<filePaths.length;i++){
+						imgUl.innerHTML +="<li><img src='"+filePaths[i]+"'/><li>"
+					}
+				}	
+			}
+			//发送请求带上表单数据提交
+			xhr.send(form);
+		}
+	</script>
+ </head>
+ <body>
+	<div class="bg">
+		<h2>Ajax多文件上传</h2>
+		<div class="box">
+		<!--支持多个文件上传 multiple="multiple" 接受类型 accept="image/*" -->
+			<input type="file" style="display:none;" id="fileup" onchange="fileUpload()" multiple="multiple" accept="image/*" />
+			<a href="javascript:void(0)" class="btn" onclick="openBrows()">上传文件</a>
+			<ul id="imgBox"></ul>
+		</div>
+	</div>
+ </body>
+</html>

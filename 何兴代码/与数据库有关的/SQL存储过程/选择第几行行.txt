@@ -1,0 +1,33 @@
+USE [NN15060346]
+GO
+/****** Object:  StoredProcedure [dbo].[proc_ceshi]    Script Date: 08/16/2016 12:58:56 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/* --------------------------------------------- */
+-- Create date: <2014-11-07>
+-- Description:	结算对碰奖
+/* --------------------------------------------- */
+ALTER PROCEDURE [dbo].[proc_ceshi]
+	 
+AS
+
+declare @ID int ----推荐人数 
+declare @UserCode varchar(20) ----推荐人数
+declare @rowcount int ----推荐人数
+declare @n int ----推荐人数
+declare @a int ----推荐人数
+declare @sql varchar(500) ----推荐人数
+ begin
+ set @n=0;
+ select @a=COUNT(*) from tb_user; 
+ set @rowcount=0; 
+ while @n<=@a
+begin 
+ select top (@rowcount) @ID=UserID,@UserCode=UserCode from tb_user order by UserID asc  
+ set @rowcount=@rowcount+1;
+ set @n=@n+1
+  print @ID;
+   print @UserCode;
+End

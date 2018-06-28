@@ -1,0 +1,113 @@
+USE [zizhu10]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_Model]    Script Date: 02/03/2016 10:24:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+-- =============================================
+-- Author:		林树柏
+-- Create date: 2011.08.21
+-- Description:	自动生成 Model 类
+-- =============================================
+Create PROCEDURE [dbo].[pro_Model] 
+	@table varchar(50)
+AS
+BEGIN
+	--定义变量
+	declare @column varchar(50);
+	declare @type varchar(50);
+	declare @string varchar(500);
+
+	select space(500) model into #temp1;
+	insert into #temp1 select 'using System;';
+	insert into #temp1 select 'using System.Collections.Generic;';
+	insert into #temp1 select 'using System.Linq;';
+	insert into #temp1 select 'using System.Text;';
+	insert into #temp1 select 'using System.Data;';
+
+
+	insert into #temp1 select ' ';
+	insert into #temp1 select 'namespace Model';
+	insert into #temp1 select '{';
+	insert into #temp1 select '    public class '+@table;
+	insert into #temp1 select '    {';
+	insert into #temp1 select '         public '+@table+'() {}';
+
+	-- 定义游标 
+	declare _columns cursor for   
+	  select column_name,data_type
+	  from information_schema.columns
+	  where table_name =@table
+	  order by ordinal_position ;
+
+	open _columns;  
+	-- 生成列定义
+	fetch next from _columns into @column,@type;
+	while @@fetch_status = 0  
+	begin
+		set @string = @type;
+		if (@type='char')
+			set @string = 'string';
+		if (@type='varchar')
+			set @string = 'string';
+		if (@type='nvarchar')
+			set @string = 'string';
+		if (@type='nchar')
+			set @string = 'string';
+		if (@type='smallint')
+			set @string = 'int';
+		if (@type='ntext')
+			set @string = 'string';
+		if (@type='text')
+			set @string = 'string';
+		if (@type='datetime')
+			set @string = 'DateTime';
+		insert into #temp1 select '			      private '+@string+' _'+@column+';'
+		fetch next from _columns into @column,@type;
+	end 
+	close _columns;
+	insert into #temp1 select '  ';  
+	open _columns;  
+	-- 生成列定义
+	fetch next from _columns into @column,@type;
+	while @@fetch_status = 0  
+	begin
+		set @string = @type;
+		if (@type='char')
+			set @string = 'string';
+		if (@type='varchar')
+			set @string = 'string';
+		if (@type='nvarchar')
+			set @string = 'string';
+		if (@type='nchar')
+			set @string = 'string';
+		if (@type='smallint')
+			set @string = 'int';
+		if (@type='ntext')
+			set @string = 'string';
+		if (@type='text')
+			set @string = 'string';
+		if (@type='datetime')
+			set @string = 'DateTime';
+		insert into #temp1 select '			      public '+@string+' '+stuff(@column,1,1,upper(left(@column,1)));
+		insert into #temp1 select '        {';
+		insert into #temp1 select '         get { return _'+@column+'; }';
+		insert into #temp1 select '         set { _'+@column+' = value; }';
+		insert into #temp1 select '        }';
+
+		fetch next from _columns into @column,@type;
+	end 
+	-- 关闭、释放游标 
+	close _columns;  
+	deallocate _columns;
+
+	insert into #temp1 select '    }';
+	insert into #temp1 select '}';
+
+
+	select * from #temp1;
+END
+

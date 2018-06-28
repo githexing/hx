@@ -1,0 +1,5 @@
+C:\Users\hexing\Desktop\11111\hexing\upacp_sdk_net\bin\upacp_sdk_net.dll
+C:\Users\hexing\Desktop\11111\hexing\upacp_sdk_net\bin\upacp_sdk_net.pdb
+C:\Users\hexing\Desktop\11111\hexing\upacp_sdk_net\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\hexing\Desktop\11111\hexing\upacp_sdk_net\obj\Debug\upacp_sdk_net.dll
+C:\Users\hexing\Desktop\11111\hexing\upacp_sdk_net\obj\Debug\upacp_sdk_net.pdb

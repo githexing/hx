@@ -1,0 +1,103 @@
+由于是Action提交，所以var userInfoForm = document.forms["JoinForm"]; 接收表单（  <form name="userInfoForm" action="">)
+然后在post 传值到 ucenter 控制器中的 editJoinuser 方法（ /ucenter/editJoinuser） 
+
+----------------
+//编辑用户
+function editJoinUser() {
+    var userInfoForm = document.forms["JoinForm"];
+
+    var userName = userInfoForm.elements["userName"] ? userInfoForm.elements["userName"].value : "";
+    var Shop_Name = userInfoForm.elements["Shop_Name"].value;
+    var LX_Name = userInfoForm.elements["LX_Name"].value;
+    var LX_Phone = userInfoForm.elements["LX_Phone"].value;
+    var Email = userInfoForm.elements["Email"].value;  
+    var PayName = userInfoForm.elements["PayName"].value;
+    var PayNumber = userInfoForm.elements["PayNumber"].value;
+    var StoreRid = userInfoForm.elements["StoreRid"].value;
+    var IdCard = userInfoForm.elements["IdCard"].value; 
+    var ShowImg = userInfoForm.elements["ShowImg"].value;
+    var onn = userInfoForm.elements["onn"].value;
+   
+    
+    var provinceId = $(userInfoForm.elements["provinceId"]).find("option:selected").val();
+    var cityId = $(userInfoForm.elements["cityId"]).find("option:selected").val();
+    var regionId = $(userInfoForm.elements["regionId"]).find("option:selected").val();
+    var address = userInfoForm.elements["address"].value;
+
+ $.post("/ucenter/editJoinuser",
+            { 'userName': userName, 'Shop_Name': Shop_Name, 'LX_Name': LX_Name, 'LX_Phone': LX_Phone, 'Email': Email, 'PayName': PayName, 'PayNumber': PayNumber, 'StoreRid': StoreRid, 'IdCard': IdCard, 'ShowImg': ShowImg, 'provinceId': provinceId, 'cityId': cityId, 'regionId': regionId, 'address': address, 'onn': onn    },
+            editJoinUserResponse)
+}
+--------------------------------------------------------PS：方法
+   public ActionResult editJoinuser()
+        { 
+            int Uid = WorkContext.Uid;
+            string userName = WebHelper.GetFormString("userName");
+            string Shop_Name = WebHelper.GetFormString("Shop_Name");
+            string LX_Name = WebHelper.GetFormString("LX_Name");
+            string LX_Phone = WebHelper.GetFormString("LX_Phone"); 
+            string Email = WebHelper.GetFormString("Email");
+            string PayName = WebHelper.GetFormString("PayName"); 
+            string PayNumber = WebHelper.GetFormString("PayNumber");
+            string StoreRid = WebHelper.GetFormString("StoreRid");
+            string onn = WebHelper.GetFormString("onn");
+            string IdCard = WebHelper.GetFormString("IdCard");
+            string ShowImg = WebHelper.GetFormString("ShowImg"); 
+            string provinceId = WebHelper.GetFormString("provinceId");
+            string cityId = WebHelper.GetFormString("cityId");
+            string regionId = WebHelper.GetFormString("regionId");
+            string address = WebHelper.GetFormString("address");
+            string ShopNumber = WorkContext.UserName; 
+
+            StringBuilder errorList = new StringBuilder("[");
+
+            DateTime d = DateTime.Now.Date;
+            DateTime dd = DateTime.Parse(onn.Substring(0, 10));
+
+            if (d>=dd)
+            {
+                errorList.AppendFormat("{0}\"key\":\"{1}\",\"msg\":\"{2}\"{3},", "{", "DateTime", "截止时间不能为今天", "}");
+            }
+            if (errorList.Length == 1)
+            { 
+
+               JoinModel model1 = new JoinModel();
+                model1.Join_0 = new Core.Join_0();
+                model1.Join_0.Uid = Uid;
+                model1.Join_0.UserName = userName;
+                model1.Join_0.Shop_Name = Shop_Name;
+                model1.Join_0.LX_Name = LX_Name;
+                model1.Join_0.LX_Phone = LX_Phone;
+                model1.Join_0.Email = Email;
+                model1.Join_0.PayName = PayName;
+                model1.Join_0.PayNumber = PayNumber;
+                model1.Join_0.Level = int.Parse(StoreRid);
+                model1.Join_0.ActiveTime = DateTime.Parse(onn);
+                model1.Join_0.IdCard = IdCard;
+                model1.Join_0.Url = ShowImg;
+                model1.Join_0.provinceId = provinceId;
+                model1.Join_0.cityId = cityId;
+                model1.Join_0.regionId = regionId;
+                model1.Join_0.Address = address;
+                model1.Join_0.Pass = 0;
+                model1.Join_0.AddTime = DateTime.Now;
+                model1.Join_0.Out = 0;
+                model1.Join_0.ShopNumber = ShopNumber;//商家登陆账号
+                //model1.Join_0.PassTime = 0;//通过时间
+
+        int a=  Users.InsertJoinUser(model1.Join_0);
+                if (a==0)
+                {
+                    return AjaxResult("error", "插入失败");
+                } 
+                return AjaxResult("success", "信息更新成功");
+            }
+            else
+            {
+                return AjaxResult("error", errorList.Remove(errorList.Length - 1, 1).Append("]").ToString(), true);
+            }
+
+
+          
+        }
+

@@ -1,0 +1,20 @@
+ALTER proc [dbo].[存储过程名]
+ as
+ begin
+   declare 游标名字 cursor for select 列名 from 表名 where 条件--先申明游标指向查询出的结果，一列，或者多列都可以，条件自定
+   declare 变量名  varchar(400)--存储取到的值
+   open 游标名 --开启游标
+   while @@FETCH_STATUS=0--取值
+     begin
+     fetch next FROM 游标名 into 变量名--这样就将游标指向下一行，得到的第一行值就传给变量了
+     -------------------------------------------
+     --需要执行的操作，例如修改某表中的字段
+     update 表名
+     set 列名=值
+     where （修改表中的列）=变量名
+     -------------------------------------------
+ end
+  close 游标名--关闭游标
+
+  deallocate  游标名--释放游标
+end

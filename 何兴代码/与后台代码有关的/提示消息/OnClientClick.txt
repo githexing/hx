@@ -1,0 +1,36 @@
+ <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Select"
+                                Text="删除类别" OnClientClick="return confirm('确定要取消选定的考试类别吗？');" 
+                                CommandArgument='<%# Eval("daihao") %>' onclick="LinkButton1_Click">
+ </asp:LinkButton>
+
+---
+
+
+   /// <summary>
+        /// 删除类别
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+          **  LinkButton lbButton = (LinkButton)sender;
+            ys_kaikao mKaikao = new ys_kaikao();
+            mKaikao.Sheng = DropDownList_sheng.SelectedValue;
+          **  mKaikao.Daihao = lbButton.CommandArgument.ToString();
+            xt_result result = bKaikao.DeleteData(mKaikao);
+            getData("daihao", "ASC");
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('" + result.Message + "！')</script>", false);
+        }
+
+
+-----------	
+ 
+放在按钮下 提示
+ Button_save.Attributes["onclick"] = "javascript: if (typeof(Page_ClientValidate) == 'function') {if(Page_ClientValidate()) return window.confirm('确定要提交当前设置吗 ？');}";
+
+
+
+
+
+
+ Button_zhuangtai.Attributes.Add("onclick", "return confirm('确定要修改当前院校全部学生状态吗？');");                                                                                                                                                    

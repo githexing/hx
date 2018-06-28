@@ -1,0 +1,15 @@
+        /// <summary>
+        /// 导入比对名册
+        /// </summary>
+        /// <param name="pYonghu"></param>
+        /// <param name="pBiaozhi"></param>
+        /// <returns></returns>
+        public DataSet ImportBidui(string pXuexiao, string pYonghu)
+        {
+            SqlParameter[] param = new SqlParameter[] {  new SqlParameter("@Xuexiao", SqlDbType.VarChar),
+                                                         new SqlParameter("@Yonghu", SqlDbType.VarChar) };
+            param[0].Value = pXuexiao;
+            param[1].Value = pYonghu;
+
+            return SQLHelper.ExecuteDs(base.User_Admin, CommandType.StoredProcedure, "pro_daoru_bidui", 10000, param);
+        }

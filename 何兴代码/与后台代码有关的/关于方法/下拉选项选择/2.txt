@@ -1,0 +1,20 @@
+  /// <summary>
+        /// 设置DropDownList
+        /// </summary>
+        /// <param name="pDropDownList">DropDownList</param>
+        /// <param name="dt">数据源</param>
+        /// <param name="pText">文本</param>
+        /// <param name="pValue">值</param>
+        /// <param name="pNewItemText">新增项文本</param>
+        /// <param name="pNewItemValue">新增项值</param>
+        public void setDropDownList(DropDownList pDropDownList, DataTable dt, string pText, string pValue, string pNewItemText, string pNewItemValue)
+        {
+            pDropDownList.DataSource = dt;
+            pDropDownList.DataTextField = pText;
+            pDropDownList.DataValueField = pValue;
+            pDropDownList.DataBind();
+            if (pNewItemText != "")
+            {
+                pDropDownList.Items.Insert(0, new ListItem(pNewItemText, pNewItemValue));
+            }
+        }

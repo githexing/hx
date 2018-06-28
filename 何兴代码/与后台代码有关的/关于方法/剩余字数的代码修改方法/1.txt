@@ -1,0 +1,19 @@
+  在加载页
+label8="100"
+
+----------------------
+
+文本框的事件：
+//protected void TextBox_neirong_TextChanged(object sender, EventArgs e)
+        //{
+        //    int t = Convert.ToInt32(Label8.Text);
+        //    Label8.Text = (t - TextBox_neirong.Text.Length).ToString();
+        //    if (Convert.ToInt32(Label8.Text) < 0)
+        //    {
+        //        Button_tijiao.Enabled = false;
+        //    }
+        //    else
+        //    {
+        //        Button_tijiao.Enabled = true;
+        //    }
+        //}

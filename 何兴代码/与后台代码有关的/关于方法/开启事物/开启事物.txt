@@ -1,0 +1,14 @@
+begin try
+	set @TranName='sp_Award_SameLevel'
+	begin tran @TranName; -- 开启事物
+***************************************
+***************************************
+***************************************
+
+commit tran @TranName; -- 提交事物
+end try
+begin catch
+	rollback tran @TranName; -- 回滚事物
+	insert into SysLog(Log3,LogType,LogMsg)
+           values('匹配出错了',1010,ERROR_MESSAGE());
+end catch 

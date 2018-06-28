@@ -1,0 +1,33 @@
+USE [luqu10]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_daoru_chengji_02]    Script Date: 02/17/2016 15:16:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		 
+-- Create date: 2015.1.29
+-- Description:	生成报数据
+-- =============================================
+ALTER PROCEDURE [dbo].[pro_daoru_chengji_02]
+  @yonghu varchar(20),
+  @biaozhi varchar(1)
+AS
+BEGIN
+	/*开始事务*/
+    BEGIN TRANSACTION;
+
+	/*生成系统数据*/
+	 insert into cj_chengji 
+		select xuhao,xuefen,xuefen1,xuefen2,xuefen3,
+		pinzhi,shuyang,nengli,jiaoliu,jiankang,
+		biaoxian,pingjia,pingjiaren,yuwen,shuxue,
+		yingyu,zhengzhi,lishi,dili,wuli,huaxue,shengwu,
+		xinxi,tongyong,kemu1,kemu2,kemu3,kemu4 ,kemu5,kemu6, 
+		kemu7,kemu8,kemu9,kemu10,zongfen,jiafen,beizhu  from temp_chengji; 
+	/*提交事务*/
+    COMMIT TRANSACTION;
+    return 1;
+END

@@ -1,0 +1,25 @@
+   /// <summary>
+        /// 批量拟录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void LinkButton_piliang_Click(object sender, EventArgs e)
+        {
+            if (DropDownList_nilu.SelectedIndex == 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert(' 请选择拟录的专业 ！')</script>", false);
+                return;
+            }
+            string pZhuanye = DropDownList_nilu.SelectedValue;
+            foreach (GridViewRow row in this.GridView1.Rows)
+            {
+                LinkButton pLinkButton = (LinkButton)row.FindControl("LinkButton_xuhao");
+                setZhuanye(pLinkButton.Text, pZhuanye, false);
+            }
+            getData(HiddenField_filter.Value, "mingci", "ASC");
+
+            int i = GridView1.Rows.Count;
+            pZhuanye = DropDownList_nilu.SelectedItem.Text;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert(' 本页显示的 " + i.ToString() + " 个考生已拟录至 " + pZhuanye + " 专业 ！')</script>", false)
+;
+        }

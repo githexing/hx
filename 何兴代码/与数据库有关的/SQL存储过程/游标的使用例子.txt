@@ -1,0 +1,76 @@
+USE [NN17042615]
+GO
+/****** Object:  StoredProcedure [dbo].[proc_Award_SameLevel]    Script Date: 05/15/2017 11:21:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/* --------------------------------------------- */
+-- Create date: <2017-04-29>
+-- Description:	平级奖
+/* --------------------------------------------- */
+ALTER PROCEDURE [dbo].[proc_Award_SameLevel]
+	@UserID BIGINT, -- 会员ID
+	@Money numeric(18,2) -- 本次消费金额
+AS
+declare @TranName varchar(50)
+begin try
+	set @TranName='sp_Award_SameLevel'
+	begin tran @TranName; -- 开启事物
+			
+	BEGIN--begin
+		declare @OpenAward int
+		declare @RecommendPath varchar(max) --推荐路径
+		declare @UserCode varchar(50)
+		declare @GetUserID bigint --获奖人的UserID
+		declare @Rate numeric(18,4)
+		declare @Bonus numeric(18,4)
+
+		DECLARE @Remark VARCHAR(200),
+				@RemarkEn VARCHAR(200),
+				@TypeID INT, -- 奖金类型(1.二级分销奖, 2.补贴奖，3.倍增)
+				@State int, -- 奖金发放状态 （0为未发,1为已发）
+				@SettleDate DATETIME --结算时间
+		
+		SET @TypeID = 4 -- 奖金类型(1.二级分销奖, 2.补贴奖，3.倍增，4.平级奖)
+		set @State=1;
+		SET @SettleDate = GETDATE();
+		
+		SELECT @OpenAward=ParamVarchar FROM dbo.[tb_globeParam] WHERE [ParamName]='SameLevelOpen' -- 平级奖是否开启
+		IF @OpenAward = 1 -- 平级奖开启
+		BEGIN
+			
+			select @UserCode=UserCode,@RecommendPath=RecommendPath from tb_user where UserID=@UserID
+
+			select @Rate=ParamVarchar from tb_globeParam where ParamName='SameLevelRate'
+			set @Bonus = @Money * @Rate / 100
+
+			if @Bonus>0
+			begin
+				set @Remark = '新开通会员'+@UserCode+'，获得平级奖奖金'+CAST(@Bonus as varchar(50))
+				set @RemarkEn = ''
+
+				DECLARE samelevel_cur CURSOR
+				FOR SELECT top 1 UserID FROM dbo.tb_user where CHARINDEX(RecommendPath, @RecommendPath+'-')>0 and IsOut=1 and IsLock=0 and IsOpend>0 order by RecommendGenera desc
+				OPEN samelevel_cur
+				FETCH NEXT FROM samelevel_cur INTO @GetUserID	
+				WHILE @@FETCH_STATUS=0
+				BEGIN
+
+					EXEC proc_bonus @GetUserID,@Bonus,@Bonus,@TypeID,@State,@UserID,1,@Remark,@RemarkEn,@SettleDate
+
+					FETCH NEXT FROM samelevel_cur INTO @GetUserID
+				END
+				CLOSE samelevel_cur
+				DEALLOCATE samelevel_cur
+			end
+		END
+	END--END
+	
+	commit tran @TranName; -- 提交事物
+end try
+begin catch
+	rollback tran @TranName; -- 回滚事物
+	insert into SysLog(Log1,Log2,Log3,Log4,LogType,LogMsg) --- 将错误信息保存到日志表里
+		values(cast(@UserId as varchar(100)),cast(@TypeID as varchar(100)),'平级奖失败',cast(@Money as varchar(100)),4,ERROR_PROCEDURE()+','+cast(ERROR_LINE() as varchar(50))+','+ERROR_MESSAGE());
+end catch                                                                                                                                                                                                                                                                                                                                                                                                                                                            

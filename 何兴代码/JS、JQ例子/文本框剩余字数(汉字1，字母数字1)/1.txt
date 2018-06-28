@@ -1,0 +1,19 @@
+   <SCRIPT LANGUAGE="JavaScript">
+<!--       Begin
+       maxLen = 130;
+
+       function checkMaxInput(form) {
+           if (form.message.value.length > maxLen)
+               form.message.value = form.message.value.substring(0, maxLen);
+           // otherwise, update 'characters left' counter
+           else form.remLen.value = maxLen - form.message.value.length;
+       }
+// End -->
+</script>
+ 
+<form name=myform action="YOUR-SCRIPT.CGI">
+<font size="1" face="arial, helvetica, sans-serif"> 你只可以输入130个字<br>
+<textarea name=message wrap=physical cols=28 rows=4 onKeyDown="checkMaxInput(this.form)" onKeyUp="checkMaxInput(this.form)"></textarea>
+<br>
+<input readonly type=text name=remLen size=3 maxlength=3 value="130">还可以输入</input>
+</form>

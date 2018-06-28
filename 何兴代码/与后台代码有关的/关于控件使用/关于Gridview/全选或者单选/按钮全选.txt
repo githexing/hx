@@ -1,0 +1,13 @@
+在Headertemplate 中插入一个 CheckBox1 改名为ALL 添加事件 CheckALL_CheckedChanged
+/// <summary>
+        /// 全选
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void CheckALL_CheckedChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < this.GridView1.Rows.Count; i++)
+            {
+                ((CheckBox)GridView1.Rows[i].FindControl("CheckBox1")).Checked = ((CheckBox)this.GridView1.HeaderRow.FindControl("checkAll")).Checked;
+            }
+        }

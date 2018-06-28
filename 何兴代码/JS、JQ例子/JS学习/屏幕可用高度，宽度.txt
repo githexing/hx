@@ -1,0 +1,3 @@
+
+    screen.availWidth - 可用的屏幕宽度
+    screen.availHeight - 可用的屏幕高度

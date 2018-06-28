@@ -1,0 +1,47 @@
+  private const string CONFIG_FILE = @"~/IPS/Config.xml";
+
+ //加载配置项目
+                xDoc = XDocument.Load(Server.MapPath(CONFIG_FILE));
+ //订单日期
+                Date.Value = DateTime.Now.ToString("yyyyMMdd");
+                //订单号
+                Random rand = new Random();
+                string strNewUrl = Request.Url.ToString().ToLower().Replace("/ips/", "/");//取得当前的外网
+                strNewUrl = strNewUrl.Substring(0, strNewUrl.LastIndexOf("/") + 1);//当前页面的根路径
+
+                Billno.Value = DateTime.Now.ToString("yyyyMMddhhmmss") + rand.Next(10000, 99999);
+                txtusercode.Value = usercode;
+                //成功返回页面
+                Merchanturl.Value = strNewUrl+ "IPS/OrderReturn.aspx";
+                //失败返回页面
+                FailUrl.Value = strNewUrl + "IPS/OrderError.aspx"; ;
+                //错误返回页面
+                ErrorUrl.Value = strNewUrl + "IPS/OrderError.aspx";
+                //环迅环境
+                string environment = xDoc.Element("Root").Element("Environment").Value;
+                test.Value = environment.Equals(TESTING_ENVIRONMENT) ? "1" : "0";
+                //商户帐号
+                XElement xEle = xDoc.Descendants("IPS").SingleOrDefault(t => t.Attribute("name").Value.Equals(environment));
+                Mer_code.Value = xEle.Element("Account").Value;
+                //商户证书
+                Mer_key.Value = xEle.Element("Certificate").Value;
+                //交易金额
+                Amount.Value = ActualAmount.ToString();
+                //显示金额 
+                DispAmount.Value = Amount.Value;
+                //支付币种
+                Currency_Type.Value = xDoc.Element("Root").Element("CurrencyType").Value;
+                //支付方式
+                Gateway_Type.Value = xDoc.Element("Root").Element("GatewayType").Value;
+                //界面语言
+                Lang.Value = xDoc.Element("Root").Element("Lang").Value;
+                //附加信息
+                Attach.Value = sAttach;
+                //支付加密方式
+                OrderEncodeType.Value = xDoc.Element("Root").Element("OrderEncodeType").Value;
+                //返回加密方式
+                RetEncodeType.Value = xDoc.Element("Root").Element("RetEncodeType").Value;
+                //Server返回方式
+                Rettype.Value = xDoc.Element("Root").Element("Rettype").Value;
+                //Server返回页面
+                ServerUrl.Value = xDoc.Element("Root").Element("ServerUrl").Value;                              

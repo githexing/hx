@@ -1,0 +1,42 @@
+select xuhao  ,COUNT(*) rs into #temp1 from aaa group by xuhao,xuhao having COUNT(*)>1    ====  select distinct sheng  from ys_bmxx
+  建立一个临时表，把重复的字段下的数据复制进来
+delete from aaa where xuhao in (select xuhao from #temp1)
+  删除aaa表的数据
+ insert into aaa select xuhao from #temp1
+   增加aaa表的临时表重点序号和aaa一样
+select * from #temp1 where xuhao  not in (select xuhao from aaa)
+ 对比两个表序号缺少那个
+delete from temp11 where daihao is null
+删除数据库中空值
+insert into dm_kemu(daihao,mingcheng ,leibie ,waisheng)select daihao,mingcheng ,leibie ,waisheng from temp4
+对应值插入
+select daihao,mingcheng ,leibie ,waisheng into temp4 from temp44
+插入临时表
+delete from temp4 where daihao is NULL
+去除NULL值
+select a.sheng+'.'+b.mingcheng  shengmingcheng from ys_bmxx a  join dm_sheng b on a.sheng=b.daihao(两个表相同的地方)
+查询 45.广西+shengmingcheng（列名）from ys_bmxx （大表） join dm_sheng（小表）
+删除列：
+      alter table temp1111 drop  column  学费,计划数 ;
+
+select a.sheng+'.'+b.mingcheng mingcheng1 , a.xianqu+'.'+c.xianqumingcheng mingcheng2
+from ys_bmxx a left join 
+dm_sheng b on a.sheng=b.daihao left join
+dm_quhua c on a.xianqu=c.xianqu
+
+3表查询
+substring(bbc,1,4) 取 bcc列 第1个之后的值 要4位
+
+将A表数据更新到B表相关列的SQL语句
+update ktz_xy set ktz_xy.dmlvl = (select tdfldm1.dmlvl from tdfldm1 where ktz_xy.dldm=tdfldm1.dldm )
+
+选择ktz_xy表中凡是dldm 与tdfldm1表的dldm 相同的记录,将其值ktz_xy.dmlvl 修改为tdfldm1.dmlvl 的值
+
+自然取行数
+ROW_NUMBER() OVER(ORDER BY id)a        
+
+查询重复记录
+ select * from tb_user
+where ParentID in (select   ParentID from   tb_user group by   ParentID having count
+
+(ParentID) > 1)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    

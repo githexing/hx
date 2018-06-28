@@ -1,0 +1,84 @@
+<asp:GridView ID="GridView1" runat="server" AllowPaging="True" AllowSorting="True"
+                                AutoGenerateColumns="False" OnPageIndexChanging="GridView1_PageIndexChanging"
+                                OnRowDataBound="GridView1_RowDataBound" OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
+                                OnSorting="GridView1_Sorting" PageSize="3" ShowFooter="True" 
+                                SkinID="GridViewSkin" Height="376px">
+                                <Columns>
+                                    <asp:TemplateField HeaderText="问题回复" SortExpression="neirong">
+                                        <EditItemTemplate>
+                                            <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("neirong") %>'></asp:TextBox>
+                                        </EditItemTemplate>
+                                        <ItemTemplate>
+                                        <div>
+                                            <table class="table1">
+                                                <tr>
+                                                    <td>
+                                                        &nbsp; 序号：
+                                                    </td>
+                                                    <td>
+                                                        
+                                                        <asp:Label ID="Label1" runat="server" Text='<%# Bind("xuhao") %>'></asp:Label>
+                                                    </td>
+                                                    <td>
+                                                        &nbsp;标题：</td>
+                                                    <td class="style4">
+                                                        <asp:Label ID="Label2" runat="server" Text='<%# Bind("biaoti") %>'></asp:Label>
+                                                    </td>
+                                                    <td class="style3">
+                                                        时间：</td>
+                                                    <td class="style2">
+                                                        <asp:Label ID="Label7" runat="server" Text='<%# Bind("riqi") %>'></asp:Label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        &nbsp; 内容：</td>
+                                                    <td colspan="5">
+                                                        <asp:Label ID="Label3" runat="server" Text='<%# Bind("neirong") %>'></asp:Label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        &nbsp; 用户：</td>
+                                                    <td colspan="3">
+                                                        
+                                                        <asp:Label ID="Label5" runat="server" Text='<%# Bind("yonghu1") %>'></asp:Label>
+                                                    </td>
+                                                    <td class="style3">
+                                                        时间：</td>
+                                                    <td class="style2">
+                                                        <asp:Label ID="Label6" runat="server" Text='<%# Bind("riqi1") %>'></asp:Label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        &nbsp; 回复：</td>
+                                                    <td colspan="5">
+                                                        <asp:Label ID="Label4" runat="server" Text='<%# Bind("huifu") %>'></asp:Label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <PagerTemplate>
+                                    <div>
+                                        第<asp:Label ID="lblPageIndex" runat="server" Text="<%#((GridView)Container.Parent.Parent).PageIndex + 1 %>"></asp:Label>
+                                        页 共<asp:Label ID="lblPageCount" runat="server" Text="<%# ((GridView)Container.Parent.Parent).PageCount %>"></asp:Label>
+                                        页
+                                        <asp:LinkButton ID="btnFirst" runat="server" CausesValidation="False" CommandArgument="First"
+                                            CommandName="Page" Text="首页"></asp:LinkButton>
+                                        <asp:LinkButton ID="btnPrev" runat="server" CausesValidation="False" CommandArgument="Prev"
+                                            CommandName="Page" Text="上一页"></asp:LinkButton>
+                                        <asp:LinkButton ID="btnNext" runat="server" CausesValidation="False" CommandArgument="Next"
+                                            CommandName="Page" Text="下一页"></asp:LinkButton>
+                                        <asp:LinkButton ID="btnLast" runat="server" CausesValidation="False" CommandArgument="Last"
+                                            CommandName="Page" Text="尾页"></asp:LinkButton>
+                                        <asp:TextBox ID="txtNewPageIndex1" runat="server" Text="<%# ((GridView)Container.Parent.Parent).PageIndex + 1%>"
+                                            Width="20px"></asp:TextBox>
+                                        <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-1"
+                                            CommandName="Page" Text="GO"></asp:LinkButton>
+                                    </div>
+                                </PagerTemplate>
+                            </asp:GridView>

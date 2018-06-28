@@ -1,0 +1,15 @@
+除此之外，泛型还有几种约束类型。如下：
+
+　　1）where T:struct　　使用结构约束。类型T必须是值类型
+
+　　2）where T:class　　类约束指定，类型T必须是引用类型
+
+　　3）where T:IFoo　　指定类型T必须执行接口IFoo
+
+　　4）where T:Foo　　指定类型T必须派生于基类Foo
+
+　　5）where T:new()　　构造函数约束，指定类型T必须有一个默认构造函数
+
+　　6）where T:U　　类型T1派生于泛型类型T2。该约束也成为裸类型约束。
+
+　　注意：使用泛型类型还可以合并多个约束。where T:IFoo,new()约束和MyClass<T>声明指定，类型T必须执行IFoo接口，且必须有一个默认构造函数。

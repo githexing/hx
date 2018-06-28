@@ -1,0 +1,9 @@
+Json字符串：'{ "name":"runoob", "alexa":10000, "site":"www.runoob.com" }'
+Josn格式：{ "name":"runoob", "alexa":10000, "site":"www.runoob.com" }
+.net用项目时候需要转义：
+"{\"status\":\"" + result.ToString().ToLower() + "\",\"message\":\"" + returnString + "\",\"dates\":{"+ dates + "}}" 
+
+ dates = "\"A\":\"" + A + "\",\"Emoney\":\"" + A + "\",\"BonusAccount\":\"" + BonusAccount + "\",\"AllBonusAccount\":\"" + AllBonusAccount + "\",\"StockAccount\":\"" + StockAccount + "\",\"StockMoney\":\"" + StockMoney +"\",\"GLmoney\":\"" + GLmoney + "\",\"ShopAccount\":\"" + ShopAccount + "\",\"B\":\"" + B + "\",\"C\":\"" + C + "\",\"D\":\"" + D + "\"";
+
+
+Json数组：'{"Ae":[{"Name":"Dome","Age":15}]}';

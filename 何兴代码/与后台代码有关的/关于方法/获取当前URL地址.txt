@@ -1,0 +1,9 @@
+  public string ip()
+        {
+            string url = "";
+            string url1 = Request.Url.ToString();
+            string[] a = url1.Split('/');
+            url = a[0] + "/" + a[1] + "/" + a[2];
+
+            return url;
+        }

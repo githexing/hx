@@ -1,0 +1,1 @@
+insert into tb_jiru select UserID,UserCode,jine ,zhuangtai from  #temp1 a where not exists (select UserID,UserCode,jine ,zhuangtai from tb_jiru  b where a.jine=b.jine and a.UserCode=b.UserCode );

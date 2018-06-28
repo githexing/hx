@@ -1,0 +1,17 @@
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\bin\Debug\Wpf.exe.config
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\bin\Debug\Wpf.exe
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\bin\Debug\Wpf.pdb
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\Wpf.csprojResolveAssemblyReference.cache
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\MainWindow.g.cs
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\App.g.cs
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\Wpf_MarkupCompile.cache
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\Wpf_MarkupCompile.lref
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\MainWindow.baml
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\Wpf.g.resources
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\Wpf.Properties.Resources.resources
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\Wpf.csproj.GenerateResource.Cache
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\Wpf.exe
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\Wpf\obj\Debug\Wpf.pdb
+C:\Users\Administrator\Source\Repos\hx\Wpf\bin\Debug\Wpf.exe.config
+C:\Users\Administrator\Source\Repos\hx\Wpf\obj\Debug\Wpf.exe
+C:\Users\Administrator\Source\Repos\hx\Wpf\obj\Debug\Wpf.pdb

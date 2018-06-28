@@ -1,0 +1,42 @@
+----------------------------------------------------------
+-----------前台
+
+ <h2>查看凭证截图</h2> 
+                 <h4 class="header-title m-t-0 m-b-30">凭证截图</h4>
+                        <div class="row form-horizontal">
+                            <div class="form-group col-sm-6"> 
+                                <div class="col-sm-9 form-control-static">
+                                    <asp:HyperLink ID="HyperLink1" Target="_blank" runat="server">
+                                        <asp:Image ID="Image1" runat="server" />
+                                    </asp:HyperLink>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------
+--后台
+
+  public void getdate()
+        {
+            string fileName = "../../Upload/images/" + iCashsellID + ".jpg";
+            string fileName2 = "../../Upload/images/" + iCashsellID + ".png";
+            if (File.Exists(Server.MapPath(fileName)))
+            {
+                Image1.ImageUrl = fileName;
+                HyperLink1.NavigateUrl = fileName;
+            }
+            else if (File.Exists(Server.MapPath(fileName2)))
+            {
+                Image1.ImageUrl = fileName2;
+                HyperLink1.NavigateUrl = fileName;
+            }
+
+        }

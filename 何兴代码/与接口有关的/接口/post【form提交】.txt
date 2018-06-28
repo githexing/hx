@@ -1,0 +1,154 @@
+using System;
+using System.Text;
+using System.Net;
+using System.IO;
+
+using Newtonsoft.Json.Linq;
+
+namespace Library
+{
+    public class WEBRequest
+    {
+        public static string Request(byte[] postData, string PostUrl)
+        {
+            string responseData = String.Empty;
+            UTF8Encoding encoding = new UTF8Encoding();
+
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(PostUrl);
+            myRequest.Method = "POST";
+            myRequest.ContentType = "application/x-www-form-urlencoded";
+            myRequest.ContentLength = postData.Length;
+
+            Stream newStream = myRequest.GetRequestStream();
+            // Send the data.
+            newStream.Write(postData, 0, postData.Length);
+            newStream.Flush();
+            newStream.Close();
+
+            HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse();
+            if (myResponse.StatusCode == HttpStatusCode.OK)
+            {
+                StreamReader reader = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                responseData = reader.ReadToEnd();
+            }
+            else
+            {
+                //访问失败
+            }
+
+            return responseData;
+
+        }
+
+    }
+}
+
+
+ /// <summary>
+        /// 组装普通文本请求参数。
+        /// </summary>
+        /// <param name="parameters">Key-Value形式请求参数字典</param>
+        /// <returns>URL编码后的请求数据</returns>
+        static string BuildQuery(IDictionary<string, string> parameters, string encode)
+        {
+            StringBuilder postData = new StringBuilder();
+            bool hasParam = false;
+            IEnumerator<KeyValuePair<string, string>> dem = parameters.GetEnumerator();
+            while (dem.MoveNext())
+            {
+                string name = dem.Current.Key;
+                string value = dem.Current.Value;
+                // 忽略参数名或参数值为空的参数
+                if (!string.IsNullOrEmpty(name))//&& !string.IsNullOrEmpty(value)
+                {
+                    if (hasParam)
+                    {
+                        postData.Append("&");
+                    }
+                    postData.Append(name);
+                    postData.Append("=");
+                    if (encode == "gb2312")
+                    {
+                        postData.Append(HttpUtility.UrlEncode(value, Encoding.GetEncoding("gb2312")));
+                    }
+                    else if (encode == "utf8")
+                    {
+                        postData.Append(HttpUtility.UrlEncode(value, Encoding.UTF8));
+                    }
+                    else
+                    {
+                        postData.Append(value);
+                    }
+                    hasParam = true;
+                }
+            }
+            return postData.ToString();
+
+调用 例子：//获取josn值
+
+  public bool Main1(string username, string password, string password_confirm, string second_password, string member_mobile, string client, string level_id, string wenti ,string daan)
+        {
+            string str1 = PageValidate.GetMd5("HongBao").ToLower();
+            string str2 = PageValidate.GetMd5(str1).ToLower();
+            string appkey = str2; //配置您申请的appkey 
+            string URL1 = System.Configuration.ConfigurationManager.AppSettings["URL1"];
+            string url1 = URL1 + "?act=act_register&";
+
+            var parameters1 = new Dictionary<string, string>();
+
+
+            parameters1.Add("key", appkey);//你申请的key
+            parameters1.Add("username", username); //身份证号码
+            parameters1.Add("password", PageValidate.GetMd5(password));
+            parameters1.Add("password_confirm", PageValidate.GetMd5(password_confirm));
+            parameters1.Add("second_password", PageValidate.GetMd5(second_password));
+            parameters1.Add("member_mobile", member_mobile);
+            parameters1.Add("skipms", "1");
+            parameters1.Add("level_id", level_id);
+            parameters1.Add("wenti", wenti);
+            parameters1.Add("daan", daan);
+            //url1 += "?key=9b93f92b6fcb3dee90c34f77757be9ed&cardno=452723199505110010";
+
+            //string postForm = "<form name=\"frm1\" id=\"frm1\" method=\"post\" action=\"" + url1 + "\">";
+
+
+            //postForm += "</form>";
+
+            //postForm += "<script type=\"text/javascript\" language=\"javascript\">setTimeout(\"document.getElementById('frm1').submit();\",100);</script>";
+
+            //Response.Write(postForm);
+
+            //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            //Stream myResponseStream = response.GetResponseStream();
+            //StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));`21
+            //返回内容
+            //string retString = myStreamReader.ReadToEnd();
+
+
+
+            string result1 = WEBRequest.Request(Encoding.UTF8.GetBytes(BuildQuery(parameters1, "utf8")), url1);
+
+            // string result1 = sendPost(url1, parameters1, "post");
+            var jsonReturn = JObject.Parse(result1);
+            JObject jo = JObject.Parse(result1);
+            string errorCode1 = jo["code"].ToString();
+
+            if (errorCode1 == "200")
+            {
+                //string key = jo["key"].ToString();
+                //if (key== appkey)
+                //{
+                return true;
+
+                //} 
+                //return false;
+            }
+            else
+            {
+                //Debug.WriteLine("失败");
+                return false;
+            }
+        }
+
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

@@ -1,0 +1,14 @@
+DataTable dt = (DataTable)Session["SelfCom"];什么意思啊?对SESSION不是很清楚
+Session是保存在服务器的信息。
+这条语句的意识是把一个名叫“SelfCom”的Session强制转换成DataTable类型。
+Session获取出来的值是object类型的。
+
+
+
+
+ DataTable dt = bCaidan.getCaidan(Application["yingyong"].ToString(),Session["daihao"].ToString());
+
+
+Session["dtMenu"] = dt;
+
+ DataTable dt = (DataTable)Session["dtMenu"];

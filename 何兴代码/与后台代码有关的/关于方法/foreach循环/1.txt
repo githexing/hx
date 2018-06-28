@@ -1,0 +1,3 @@
+遍历数组：foreach（type objName in collection/Array）
+
+这段语句会逐一检查数组中的所存储的变量值，并且一一将其取出，其中的type是你所要读取的数组对象将要存储在objName变量的数据类型，而objName是定义了一个type类型的变量名，代表每一次从集合和数组（collection/Array）中取得的元素，collection/Array则是所要存取的数组对象。用这种方法只需写一个foreach就可以遍历出除交错数组以外的所有维数的数组。

@@ -1,0 +1,6 @@
+return result > 0 ? true : false;
+如果》0 true；
+如果<0 false；
+
+
+                                                                <asp:Label Text='<%#decimal.Parse(Eval("Remark").ToString())*Convert.ToDecimal(Eval("BuyNum"))%>' runat="server" Visible='<%#Eval("BUserID").ToString()==iUserID.ToString()?true:false %>' ></asp:Label>

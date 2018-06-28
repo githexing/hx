@@ -1,0 +1,104 @@
+<div>
+        <asp:GridView ID="GridView1" runat="server" AllowPaging="True" 
+            AutoGenerateColumns="False" onpageindexchanging="GridView1_PageIndexChanging" 
+            onselectedindexchanged="GridView1_SelectedIndexChanged" 
+            onsorting="GridView1_Sorting" SkinID="GridViewSkin" 
+            OnRowCancelingEdit="GridView1_RowCancelingEdit"
+            OnRowEditing="GridView1_RowEditing" 
+            OnRowUpdating="GridView1_RowUpdating">
+
+
+<asp:TemplateField HeaderText="参数">
+                                                <EditItemTemplate>
+                                                    <asp:TextBox ID="TextBox_canshu" runat="server" Text='<%# Eval("canshu") %>' Width="300px"></asp:TextBox>
+                                                </EditItemTemplate>
+                                                <ItemTemplate>
+                                                    <asp:Label ID="Label_canshu" runat="server" Text='<%# Eval("canshu") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+
+
+
+
+
+
+
+
+
+
+ /// <summary>
+        /// 行更新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            string pDaihao = GridView1.Rows[e.RowIndex].Cells[0].Text;
+            string pCanshu = ((TextBox)GridView1.Rows[e.RowIndex].Cells[2].FindControl("TextBox_canshu")).Text;
+            xt_result result = new xt_result();
+            result = bcanshu.Update_Canshu(pDaihao, pCanshu);
+            if (result.ReturnInt < 1)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('保存参数失败！')</script>", false);
+                return;
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('保存参数成功！')</script>", false);
+            GridView1.EditIndex = -1;
+            getData("", "");
+        }
+
+
+ /// <summary>
+        /// 行修改
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            GridView1.EditIndex = e.NewEditIndex;
+            getData("", "");
+        }
+        /// <summary>
+        /// 行取消
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            GridView1.EditIndex = -1;
+            getData("", "");
+        }
+
+
+
+
+
+
+
+ /// <summary>
+        /// 更新参数值
+        /// </summary>
+        /// <param name="pDaihao">参数名</param>
+        /// <param name="pCanshu">参数值</param>
+        /// <returns>返回影响行数</returns>
+        public xt_result Update_Canshu(string pDaihao, string pCanshu)
+        {
+            string sql = "update xt_canshu set canshu=@canshu where daihao=@daihao";
+            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@daihao", SqlDbType.VarChar, 50),
+                                   new SqlParameter("@canshu", SqlDbType.VarChar, 50)};
+            param[0].Value = pDaihao;
+            param[1].Value = pCanshu;
+            xt_result sult = new xt_result();
+            sult.Message = "更新成功！";
+            try
+            {
+                sult.ReturnInt = SQLHelper.ExecuteNonQuery(base.User_Login, CommandType.Text, sql, param);
+            }
+            catch (Exception e)
+            {
+                sult.Message = e.Message;
+                sult.Message = sult.Message.Replace("\r\n", "");
+                sult.Message = sult.Message.Replace("'", "");
+            }
+            return sult;
+        }

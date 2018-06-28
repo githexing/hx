@@ -1,0 +1,67 @@
+/// <summary>
+        /// 开通会员
+        /// </summary>
+        /// <param name="iUserID"></param>
+        /// <param name="iIsOpend"></param>
+        /// <returns></returns>
+        public string proc_open(long iUserID, int iIsOpend, int iAdmin ,string LX)
+        {
+            object[] obj = DbHelperSQL.ExecuteSP_Param_Object("proc_open", iUserID, iIsOpend, iAdmin, "", LX);
+            if (obj != null && obj[1] != null)
+            {
+                return obj[1].ToString();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+
+ /// <summary>
+        /// 有返回值,索引为0，如果存储过程中没有return语句，则为影响行数）、按序输出参数；参数名称和参数值一一对应；“有默认值的参数”如果其前面没有“无默认值的参数”，则可不必给参数
+        /// </summary>
+        /// <param name="ProcName"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static object[] ExecuteSP_Param_Object(string ProcName, params object[] ParamValues)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand cmm = new SqlCommand(ProcName, connection);
+            try
+            {
+                connection.Open();
+                cmm.CommandType = CommandType.StoredProcedure;
+                AssignParams(ParamValues, cmm); //分配参数
+
+                cmm.ExecuteNonQuery();
+                int i = 0;
+                foreach (System.Data.SqlClient.SqlParameter param in cmm.Parameters)
+                {
+                    if (param.Direction != ParameterDirection.Input)  //只取非输入参数
+                        i++;
+                }
+                if (i == 0)  //如果没有输出参数
+                    return null;
+
+                object[] objs = new object[i];
+                i = 0;
+                foreach (System.Data.SqlClient.SqlParameter param in cmm.Parameters)
+                {
+                    if (param.Direction != ParameterDirection.Input)
+                        objs[i++] = param.Value; //.获取返回值
+                }
+
+                return objs;
+
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }

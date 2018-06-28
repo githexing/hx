@@ -1,0 +1,19 @@
+   string baodanID = Request["baodanID"];//获取商品ID
+   string[] baodanIDs = baodanID.Split(',');//ID集合
+  foreach (string id in baodanIDs)
+                    {
+                        string num = Request["num_" + id];//数量
+                        if (string.IsNullOrEmpty(num) || num.Trim() == string.Empty)
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('请输入产品数量');", true);//请选择报单产品
+                            return;
+                        }
+                        int n;
+                        if (int.TryParse(num, out n) == false)
+                        {
+                            ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('请输入正确的产品数量格式');", true);//请选择报单产品
+                            return;
+                        }
+
+
+                    }

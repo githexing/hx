@@ -1,0 +1,116 @@
+<style type="text/css">
+        a.apk {
+            font-weight: bold;
+            font-size: 18px;
+            width: 100%;
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+            background-color: rgba(0,0,0,0.5);
+            padding: 15px;
+            border: 1px solid rgba(0,0,0,0.7);
+            border-radius: 5px;
+        }
+
+            a.apk * {
+                vertical-align: middle;
+                margin-right: 10px;
+            }
+
+            a.apk img {
+                width: 15%;
+            }
+
+        .backdiv {
+            width: 500px;
+            overflow: hidden;
+            border: 6px solid #ccc;
+            padding: 15px;
+            position: absolute;
+            z-index: 400;
+            background-color: #fff;
+            display: none;
+        }
+    </style>
+
+
+
+<div class="backdiv">
+                        <a style="position: relative; top: -10px; left: 315px; color: Gray;" href="javascript:void(0)"
+                            id="cle">关闭</a>
+                        <div class="backinput">
+                            <table>
+                                <tr>
+                                    <td align="right">
+                                        <span id="UserName">用户名</span>：
+                                    </td>
+                                    <td class="winput">
+                                        <asp:TextBox ID="txtUserCode" runat="server"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right">
+                                        <span id="question">密保问题</span>：
+                                    </td>
+                                    <td class="winput">
+                                        <asp:DropDownList ID="dropQuestion" runat="server">
+                                            <asp:ListItem Value="0">请选择</asp:ListItem>
+                                            <asp:ListItem Value="1">您的姓名是？</asp:ListItem>
+                                            <asp:ListItem Value="2">您的家乡是？</asp:ListItem>
+                                            <asp:ListItem Value="3">您最敬佩的人是？</asp:ListItem>
+                                        </asp:DropDownList>
+                                        <asp:DropDownList ID="dropQuestionEn" runat="server" Style="display: none;">
+                                            <asp:ListItem Value="0">Please select</asp:ListItem>
+                                            <asp:ListItem Value="1">Your name is?</asp:ListItem>
+                                            <asp:ListItem Value="2">Your home is?</asp:ListItem>
+                                            <asp:ListItem Value="3">People you admire are?</asp:ListItem>
+                                        </asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right">
+                                        <span id="anwers">密保答案</span>：
+                                    </td>
+                                    <td class="winput">
+                                        <asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right"></td>
+                                    <td class="btns">
+                                       <%-- <input id="btnConfirm" type="button" value=" 确认 " style="width: 100px; height: 30px;" runat="server"
+                                           onclick="btnLogin_Click"/>--%>
+                                        <asp:Button ID="Button1" runat="server" Text="确认" style="width: 100px; height: 30px;  " OnClick="btnLogin_Click1" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+ protected void btnLogin_Click1(object sender, EventArgs e)
+        {
+            if (txtUserCode.Text=="")
+            {
+                MessageBox.Show(this, "请输入账号");
+                return;
+            }
+            lgk.Model.tb_user u = userBLL.GetModel(GetUserID(txtUserCode.Text.Trim()));
+            if (u.User008 == dropQuestion.SelectedItem.Text && u.User009 == txtAnswer.Text.Trim())
+            {
+                u.Password = "C4CA4238A0B923820DCC509A6F75849B";
+                u.SecondPassword = "C4CA4238A0B923820DCC509A6F75849B";
+                u.ThreePassword = "C4CA4238A0B923820DCC509A6F75849B";
+                userBLL.Update(u);
+                MessageBox.Show(this, "一二三级密码都设置为 1 ，请尽快登录修改 !");
+                return;
+            }
+            else
+            {
+                MessageBox.Show(this, "密保问题答案不正确");
+                return;
+            }
+
+
+        }

@@ -1,0 +1,1 @@
+     string b = select_1.Items[select_1.SelectedIndex].Text;

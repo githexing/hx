@@ -1,0 +1,1 @@
+   TextBox txtCount = e.Item.FindControl("JS_goods_number_11081797") as TextBox;

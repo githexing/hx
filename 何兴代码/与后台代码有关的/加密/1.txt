@@ -1,0 +1,17 @@
+protected void Button3_Click(object sender, EventArgs e)
+        {
+            string PNun;
+            string pData = TextBox_zhanghao1111.Text;
+            PNun = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(pData, "MD5");
+            Label_xianshi.Text = PNun;
+
+        }
+
+        protected void Button4_Click(object sender, EventArgs e)
+        {
+            string pData = TextBox_xianshi2.Text;
+            int pData1 = int.Parse(pData);
+            int pDaaaaa = (pData1 + 2 + 8 * 4 - 8);
+            Label_xianshi2.Text = pDaaaaa.ToString();
+
+        }

@@ -1,0 +1,145 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using BLL;
+
+namespace WebZm.MainSystem.ziye
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        BLL.zm_cjzm aaa = new BLL.zm_cjzm();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                getData("xuhao", "ASC");
+            }
+        }
+
+        /// <summary>
+        /// 分页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            setGridViewPageIndexChanging(GridView1, e.NewPageIndex, "txtNewPageIndex1");
+
+            getData("", "");
+        }
+        /// <summary>
+        /// 提取数据
+        /// </summary>
+        protected void getData(string pSortExpression, string pSortDirection)
+        {
+
+            DataTable dt = aaa.aaa("%");
+            Session["Chaxun"] = dt.DefaultView;
+            getGridViewData(GridView1, "Chaxun", pSortExpression, pSortDirection);
+
+        }
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            getGridViewData(GridView1, "Chaxun", e.SortExpression, "");
+        }
+
+
+        /// <summary>
+        /// 排序方式
+        /// </summary>
+        /// <param name="pSortExpression"></param>
+        /// <returns></returns>
+        protected string getGridViewSort(string pSortExpression, string pSortDirection)
+        {
+            if (pSortExpression == "" && pSortDirection == "")
+            {
+                //默认排序：分页
+                pSortExpression = Session["SortExpression"].ToString();
+                pSortDirection = Session["SortDirection"].ToString();
+            }
+            else if (pSortExpression != "" && pSortDirection != "")
+            {
+                Session["SortExpression"] = pSortExpression;
+                Session["SortDirection"] = pSortDirection;
+            }
+            else
+            {
+                //反向排序
+                Session["SortExpression"] = pSortExpression;
+                if (Session["SortDirection"].ToString() == "ASC")
+                {
+                    Session["SortDirection"] = "DESC";
+                }
+                else
+                {
+                    Session["SortDirection"] = "ASC";
+                }
+                pSortDirection = Session["SortDirection"].ToString();
+            }
+            string pResult = "";
+            switch (pSortExpression)
+            {
+                case "dongzuoshijian":
+                    pResult = "dongzuoshijian " + pSortDirection + ",xuhao";
+                    break;
+                default:
+                    pResult = pSortExpression + " " + pSortDirection;
+                    break;
+            }
+
+            return pResult;
+        }
+        /// <summary>
+        /// 翻页或排序（Session）
+        /// </summary>
+        /// <param name="gw"></param>
+        /// <param name="pSession"></param>
+        /// <param name="pSortExpression"></param>
+        /// <param name="pSortDirection"></param>
+        public void getGridViewData(GridView gw, string pSession, string pSortExpression, string pSortDirection)
+        {
+            DataView dv = (DataView)Session[pSession];
+            dv.Sort = getGridViewSort(pSortExpression, pSortDirection);
+            gw.DataSource = dv;
+            gw.DataBind();
+        }
+
+        /// <summary>
+        /// GridView分页
+        /// </summary>
+        /// <param name="pGridView"></param>
+        /// <param name="pIndex"></param>
+        /// <param name="pTextBoxPageNumber"></param>
+        public void setGridViewPageIndexChanging(GridView pGridView, int pIndex, string pTextBoxPageNumber)
+        {
+            if (pIndex < 0)
+            {
+                TextBox pageNum = (TextBox)pGridView.BottomPagerRow.FindControl(pTextBoxPageNumber);
+                int Pa = int.Parse(pageNum.Text);
+
+                if (Pa <= 0)
+                {
+                    pGridView.PageIndex = 0;
+                }
+                else
+                {
+                    pGridView.PageIndex = Pa - 1;
+                }
+            }
+            else
+            {
+                pGridView.PageIndex = pIndex;
+            }
+        }
+    }
+}

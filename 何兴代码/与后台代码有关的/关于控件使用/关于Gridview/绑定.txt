@@ -1,0 +1,25 @@
+ Session["Chaxun1"] = dt.DefaultView;
+            getGridViewData(GridView1, "Chaxun1", "kaohao", "ASC");
+
+
+
+
+
+
+全码如下：
+
+
+ /// <summary>
+        /// 翻页或排序（Session）
+        /// </summary>
+        /// <param name="gw"></param>
+        /// <param name="pSession"></param>
+        /// <param name="pSortExpression"></param>
+        /// <param name="pSortDirection"></param>
+        public void getGridViewData(GridView gw, string pSession, string pSortExpression, string pSortDirection)
+        {
+            DataView dv = (DataView)Session[pSession];
+            dv.Sort = getGridViewSort(pSortExpression, pSortDirection);
+            gw.DataSource = dv;
+            gw.DataBind();
+        }

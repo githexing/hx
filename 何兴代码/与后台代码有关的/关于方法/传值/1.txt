@@ -1,0 +1,10 @@
+ 先选择值  string ID = dt.Rows[0]["yonghu"].ToString();
+  跳转网页传用户；； Response.Redirect("./MainSystem/tiaozhuanye1.aspx?id=" + yonghu, true);
+ 得到的值 string ii = Request.QueryString["id"];
+
+  下个页面的传值值          if (!IsPostBack)
+	{
+        string ii = Request.QueryString["id"]; 
+	}
+
+

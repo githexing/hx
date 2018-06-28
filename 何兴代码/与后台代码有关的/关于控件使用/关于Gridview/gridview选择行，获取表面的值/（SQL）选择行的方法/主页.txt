@@ -1,0 +1,17 @@
+  /// <summary>
+        /// 选择行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+            string pXuhao = GridView1.Rows[GridView1.SelectedIndex].Cells[0].Text;
+            DataTable dt = bJianyi.getDataWhere("xuhao",pXuhao);
+            TextBox_neirong.Text = dt.Rows[0]["neirong"].ToString();
+            TextBox_biaoti.Text = dt.Rows[0]["biaoti"].ToString();
+        }
+
+//选取GridView1上边的数据，Rows[GridView1.SelectedIndex].Cells[0].Text;是选GridView1，选择行的第一位；
+ string pBianhao = GridView1.Rows[GridView1.SelectedIndex].Cells[0].Text;
+ string pYuanxiao = GridView1.Rows[GridView1.SelectedIndex].Cells[1].Text;

@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.Script.Serialization;
+using System.Runtime.Serialization.Formatters.Soap;
+using System.Runtime.Serialization.Formatters.Binary;
+
+namespace WebApplication1
+{
+    public partial class WebForm2 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            Console.WriteLine(jss.MaxJsonLength); //默认接受最大的长度是 2097152 这个是接受JSON字符串的最大长度，超长会有什么后果呢？试下
+            jss.MaxJsonLength = 1;
+
+            //Person p = new Person(1, "关羽", 21);
+            //Person p = new Person(1, "关羽", 21);
+            //string json = jss.Serialize(p);  //将对象序列化成Json字符串 //此处报异常使用 JSON JavaScriptSerializer 进行序列化或反序列化时出错。字符串的长度超过了为 maxJsonLength 属性设置的值。
+
+            jss.MaxJsonLength = 2097152;
+            string a = "{\"Id\":1,\"Name\":\"关羽\",\"Age\":21}";
+            //序列化
+            string json = jss.Serialize(a);
+            Console.WriteLine(json); //输出 {"Id":1,"Name":"关羽","Age":21}`这就是Json格式了
+
+            //反序列化Deserialize 
+            Person p2 = jss.Deserialize<Person>("{\"id\":1,\"name\":\"关羽\",\"old\":21}");
+            Console.WriteLine(p2.Id + " " + p2.Name + " " + p2.Age); //输出 1 关羽 21
+             //Deserialize的非泛型写法
+            Person p3 = jss.Deserialize("{\"Id\":1,\"Name\":\"关羽\",\"Age\":21}", typeof(Person)) as Person; //注意这个方法返回的是object类，因此要强制转换成Person类
+            Console.WriteLine(p3.Id + " " + p3.Name + " " + p3.Age); //同样输出 1 关羽 21
+
+            object obj = jss.DeserializeObject("{\"Id\":1,\"Name\":\"关羽\",\"Age\":21}"); //将Json字符转换为Object类型
+                                                                                         //Person p4 = obj as Person; //此行代码转为的p4为null
+            Person p4 = jss.ConvertToType<Person>(obj);  //尼玛，原来这个方法是这样用的，知道DeserializeObject转换会为null所以另外写一个吗
+            
+            Console.WriteLine(p4.Name);  //输出关羽
+                                         //非泛型版本
+            Person p5 = jss.ConvertToType(obj, typeof(Person)) as Person;
+            Console.WriteLine(p5.Name);  //输出关羽
+
+            Console.ReadKey();
+        }
+
+
+        public class Person
+        {
+            public Person()
+            { }
+            //public Person(int id, string name, int age)
+            //{
+            //    this.Id = id;
+            //    this.Name = name;
+            //    this.Age = age;
+            //}
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int Age { get; set; }
+        }
+
+
+    }
+}

@@ -1,0 +1,22 @@
+添加数据 用（Add）
+ public long AddNew(string userName, string pwd, string spwd, string tpwd, long?[] roleIds)
+        {
+            using (MyDbContext dbc = new MyDbContext())
+            {
+                CommonService<RoleEntity> cs = new CommonService<RoleEntity>(dbc);
+                AdminEntity admin = new AdminEntity();
+                admin.UserName = userName;
+                admin.Password = CommonHelper.GetMD5(pwd);
+                admin.SecondPassword = CommonHelper.GetMD5(spwd);
+                admin.ThirdPassword = CommonHelper.GetMD5(tpwd);
+                var roles= cs.GetAll().Where(r => roleIds.Contains(r.ID));
+                foreach(var role in roles)
+                {
+                    admin.Roles.Add(role);
+                } 
+                dbc.Admin.Add(admin);
+                dbc.SaveChanges();
+                return admin.ID;
+            }
+        }
+

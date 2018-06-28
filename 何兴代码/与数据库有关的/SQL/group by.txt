@@ -1,0 +1,33 @@
+select 052count(*) from dm_yueqi a  join temp55 b on a.daihao=b.b 
+select * from dm_yueqi
+select a.a +'.'+ b.mingcheng 名称, count(a)个数 
+from temp55 a  join dm_yueqi b 
+on a.a=b.daihao
+group by a.a,b.mingcheng
+
+select a.b +'.'+ b.mingcheng 名称, count(b)个数 
+from temp55 a  join dm_yueqi b 
+on a.b=b.daihao
+group by a.b,b.mingcheng
+
+select a.c +'.'+ b.mingcheng 名称, count(c)个数 
+from temp55 a  join dm_yueqi b 
+on a.c=b.daihao
+group by a.c,b.mingcheng
+
+select a.d +'.'+ b.mingcheng 名称, count(d)个数 
+from temp55 a  join dm_yueqi b 
+on a.d=b.daihao
+group by a.d,b.mingcheng
+
+select b.a+'.'+a.mingcheng 名称,count(b.a)个数,count(c.b)个数
+from dm_yueqi a left join 
+temp55 b on a.daihao=b.a left join
+temp55 c on a.daihao=c.b
+group by b.a,a.mingcheng,c.b
+
+select count(a)a个数, a,d,e from temp55 group by a,d,e
+
+
+select substring(yueqi1,1,3)as a ,substring(yueqi1,5,3)as b,substring(yueqi1,9,3)as c,substring(yueqi1,13,3) as d,substring(yueqi1,17,3)as e  into temp55 from ys_bmxx
+

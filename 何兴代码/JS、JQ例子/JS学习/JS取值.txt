@@ -1,0 +1,6 @@
+1. person[XX] 或者 person.XX
+
+2.Var a = documeng.getelementByid("xx").innerHTML -->对于HTML
+  Var a = documeng.getelementByid("xx").vlaue  ---》对于input
+赋值 documeng.getelementByid("xx").innerHTML="你好";
+

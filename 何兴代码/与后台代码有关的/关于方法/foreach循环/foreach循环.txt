@@ -1,0 +1,60 @@
+ int j = 0;
+            foreach (DataRow row in dt.Rows)
+            {
+                HtmlGenericControl li = new HtmlGenericControl();
+                HtmlGenericControl span1 = new HtmlGenericControl();
+                HyperLink lh_link1 = new HyperLink();
+                string pBiaoti = "·" + row["biaoti"].ToString();
+                int iLen = 24;
+                if (pBiaoti.Length > iLen)
+                {
+                    pBiaoti = pBiaoti.Substring(0, iLen) + "...";
+                }
+                if (serverUl.ClientID == "ul_01_2")
+                {
+                    pBiaoti = "[" + row["shijian"].ToString() + "]";
+                }
+                lh_link1.ToolTip = row["biaoti"].ToString();
+                lh_link1.Text = pBiaoti;
+                lh_link1.NavigateUrl = row["url"].ToString();
+
+                lh_link1.Target = "_blank";
+                li.TagName = "li";
+                serverUl.Controls.Add(li);
+                span1.TagName = "span";
+                li.Controls.Add(span1);
+
+                span1.Controls.Add(lh_link1);
+                j = j + 1;
+                if (j > pLianjieshu - 1)
+                {
+                    break;
+                }
+            }
+
+
+
+-----------------3
+
+
+
+
+   /// <summary>
+        /// 用户功能表
+        /// </summary>
+        protected void getGongneng()
+        {
+            DataTable dt = bCaidan.getCaidan(Application["yingyong"].ToString(), Session["daihao"].ToString());
+
+            Session["dtCaidan"] = dt;
+            //用户功能控制
+            Hashtable htGongneng = new Hashtable();
+*****//         foreach (DataRow row in dt.Rows)
+            {
+                //保存功能信息
+                string pBianhao = row["bianhao"].ToString().Trim();
+                string pGongneng = row["canshu0"].ToString().Trim() + row["canshu1"].ToString().Trim() + row["canshu2"].ToString().Trim() + row["canshu3"].ToString().Trim() + row["canshu4"].ToString().Trim() + row["canshu5"].ToString().Trim() + row["canshu6"].ToString().Trim() + row["canshu7"].ToString().Trim() + row["canshu8"].ToString().Trim() + row["canshu9"].ToString().Trim();
+                htGongneng.Add(pBianhao, pGongneng);
+            }
+            Session["dtGongneng"] = htGongneng;
+        }

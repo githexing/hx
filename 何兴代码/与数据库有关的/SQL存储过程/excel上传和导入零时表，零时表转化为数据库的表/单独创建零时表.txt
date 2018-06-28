@@ -1,0 +1,165 @@
+USE [luqu10]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_tj_jihua]    Script Date: 02/17/2016 14:46:48 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		刘源
+-- Create date: 2016.01.31
+-- Description:	
+-- =============================================
+ALTER PROCEDURE [dbo].[pro_tj_jihua]
+	@pici varchar(3)
+AS
+BEGIN
+/*生成临时表*/
+	IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'temp_jihua') AND OBJECTPROPERTY(id, N'IsUserTable') = 1) 
+	begin
+		drop table temp_jihua;
+	end
+	 
+ select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+into #temp111  from jh_gaoxiao where yuanxiao='10867' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11773' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11824' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11837' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='12069' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='12104' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='12344' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='12356' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='12364' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='12379' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='12382' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='12392' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11350' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11355' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11546' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11547' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11549' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11608' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13138' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13521' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13522' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13523' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13524' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13526' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13527' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13827' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13828' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13829' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13830' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13831' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13920' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14026' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14067' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14068' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='140127' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14170' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14171' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14211' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14220' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14312' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14313' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14481' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='12356' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='13138' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='11355' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+insert into #temp111
+select pici,yuanxiao,yuanxiaomingcheng, sum(jihuashu) jihuashu,sum(jidongjihuashu)jidongjihuashu,sum(zhixingjihuashu)zhixingjihuashu 
+from jh_gaoxiao where yuanxiao='14512' and pici=@pici GROUP BY pici,yuanxiao,yuanxiaomingcheng
+
+ 
+select * into temp_jihua from #temp111
+select * from temp_jihua
+return 1 
+END

@@ -1,0 +1,19 @@
+ <PagerTemplate>
+                                    <div>
+                                        第<asp:Label ID="lblPageIndex" runat="server" Text="<%#((GridView)Container.Parent.Parent).PageIndex + 1 %>"></asp:Label>
+                                        页 共<asp:Label ID="lblPageCount" runat="server" Text="<%# ((GridView)Container.Parent.Parent).PageCount %>"></asp:Label>
+                                        页
+                                        <asp:LinkButton ID="btnFirst" runat="server" CausesValidation="False" CommandArgument="First"
+                                            CommandName="Page" Text="首页"></asp:LinkButton>
+                                        <asp:LinkButton ID="btnPrev" runat="server" CausesValidation="False" CommandArgument="Prev"
+                                            CommandName="Page" Text="上一页"></asp:LinkButton>
+                                        <asp:LinkButton ID="btnNext" runat="server" CausesValidation="False" CommandArgument="Next"
+                                            CommandName="Page" Text="下一页"></asp:LinkButton>
+                                        <asp:LinkButton ID="btnLast" runat="server" CausesValidation="False" CommandArgument="Last"
+                                            CommandName="Page" Text="尾页"></asp:LinkButton>
+                                        <asp:TextBox ID="txtNewPageIndex1" runat="server" Text="<%# ((GridView)Container.Parent.Parent).PageIndex + 1%>"
+                                            Width="20px"></asp:TextBox>
+                                        <asp:LinkButton ID="btnGo" runat="server" CausesValidation="False" CommandArgument="-1"
+                                            CommandName="Page" Text="GO"></asp:LinkButton>
+                                    </div>
+                                </PagerTemplate>

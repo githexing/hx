@@ -1,0 +1,22 @@
+  protected void Button_tijiao_Click(object sender, EventArgs e)
+        {
+           
+           
+            mJianyi.Zhuangtai = "1";
+            mJianyi.Huifu = TextBox_huifu.Text;
+            mJianyi.Riqi1 = DateTime.Now;
+            mJianyi.Xuhao =int.Parse( Label_xuhao.Text);
+            //string uii = mJianyi.Xuhao.ToString();
+            mJianyi.Yonghu1 = Session["daihao"].ToString();
+            TextBox_huifu.Text = "";
+            if (mJianyi.Huifu != "")
+            {
+                xt_result result = bJianyi.setHuifu(mJianyi);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('" + result.Message + "！')</script>", false);
+                getData("xuhao", "DESC");
+                
+            }
+            else
+            {
+                Response.Write("<script>alert('回复内容不能为空！')</script>");
+            }

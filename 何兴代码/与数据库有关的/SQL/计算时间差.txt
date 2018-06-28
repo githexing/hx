@@ -1,0 +1,1 @@
+select * from ShopOrder where datediff(week,ordTime,getdate()-1)=0

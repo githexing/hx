@@ -1,0 +1,121 @@
+USE [NN18031605]
+GO
+/****** Object:  StoredProcedure [dbo].[proc_Award_Agent]    Script Date: 03/17/2018 11:52:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/* --------------------------------------------- */
+-- Create date: <2015-08-12>
+-- Description:	随机奖
+/* --------------------------------------------- */
+alter PROCEDURE [dbo].[proc_Rand]
+	  @UserID INT --传入这个
+AS
+
+DECLARE  --作废处理
+        @UserCode VARCHAR(50), --开通会员的编号
+		@RegMoney NUMERIC(18,4),--注册金额
+		@AUserID BIGINT,--代理中心所属会员ID
+		@AgentsID INT,--代理中心ID
+		@IsLock INT,--是否锁定（0否，1是）
+		@Rate NUMERIC(18,4),--奖励比例文本
+		@Money NUMERIC(18,4),--奖励金额
+		@Open INT, --报单中心是否开启
+		@IsOut INT, --是否出局（0否，1是）
+		@Remark VARCHAR(200),
+		@RemarkEn VARCHAR(200),
+		@TypeID INT, --奖金类型(1.报单奖, 2.直推奖，3.日分红奖，4.管理奖，5.购物奖)
+		@SettleDate DATETIME --结算时间
+		--作废处理
+
+DECLARE 
+        @Number NUMERIC(18,4),--平分的总数量
+        @Times INT, ---平分次数 
+        @AGV int,--整数平均值
+        @AgvList VARCHAR(200),--平均值的集合
+        @AgvList_1 NUMERIC(18,4)=0,--循环平均值的数
+        @Bili NUMERIC(18,2),--每次随机数的数值
+        @i INT=1,--初始值
+        @o int=1,--循环总值
+        @WSJ NUMERIC(18,2),--伪随机
+        @TranName VARCHAR(200)
+     begin try
+	set @TranName='sp_proc_Rand'
+	begin tran @TranName; -- 开启事物  
+SET @SettleDate = GETDATE()
+ 
+
+--SELECT @Number=CAST([ParamVarchar] AS NUMERIC(18,4)) FROM dbo.[tb_globeParam] WHERE [ParamName]='xx'--总数量
+--SELECT @Times=CAST([ParamVarchar] AS INT) FROM dbo.[tb_globeParam] WHERE [ParamName]='XX'--平分次数
+
+select @Number=8
+select @Times=8
+--浮动平均值的0-100%之间，最后一个特殊处理。
+ set @AGV=FLOOR(@Number/@Times)
+ print '@AGV:'+cast (@AGV as varchar)
+ set @AgvList='';
+ WHILE (@i<@Times)		
+ begin 
+ print '@@i:'+cast (@i as varchar)
+  set  @Bili=cast (RAND() as NUMERIC(18,2)) 
+  set  @WSJ=cast (RAND() as NUMERIC(18,2)) --伪随机
+  -------------------取负值
+   if @WSJ>@Bili
+   set @Bili=@Bili-@WSJ
+  --------------------  
+  set @AgvList_1+=@Bili* @AGV +@AGV
+
+   print '第'+cast (@i as varchar)+'次 , 比例：' +cast (@Bili as varchar) +'总和：' +cast (@AgvList_1 as varchar);
+   set @AgvList+= CAST((@Bili* @AGV + @AGV) as varchar)+','
+	 if(@i=@Times-1)--最后一次判断值等于多少
+	  begin  
+	   print '我进来最后一次了'+cast(@i as varchar);
+		   if (@Number -@AgvList_1<0 )
+		   begin
+			   set @i=1;
+			   set @AgvList_1=0;
+			   set @AgvList='';
+			   continue;
+		   end
+		      print '我通过if语句了' 
+		   
+	  set @AgvList+= CAST((@Number -@AgvList_1) as varchar);
+	  print @AgvList;
+	  end
+  set @i=@i+1; 
+  print '@AgvList:'+@AgvList
+  print'@AgvList:'+CAST((@Number -@AgvList) as varchar);
+   if @i=@Times-2
+   print @AgvList
+ end
+ ---------------------------以上是取随机数，取值 @AgvList 截取,
+ 
+ 
+ 
+ 
+ 
+ 
+commit tran @TranName; -- 提交事物
+end try
+begin catch
+	rollback tran @TranName; -- 回滚事物
+	insert into SysLog(Log3,LogType,LogMsg,LogCode)
+           values('匹配出错了',1010,ERROR_MESSAGE()+'proc_Rand','proc_Rand');
+           return -1;
+end catch 
+  return 2;
+
+--获取代理中心ID，及所属代理中心会员ID
+--SELECT @UserCode = UserCode,@AgentsID=ISNULL(AgentsID,0),@RegMoney = RegMoney FROM tb_user WHERE UserID = @UserID
+--SELECT @AUserID = UserID FROM tb_agent WHERE [ID] = @AgentsID
+
+--SELECT @IsLock = IsLock, @IsOut = IsOut FROM tb_user WHERE UserID = @AUserID--获取代理中心所属会员信息
+
+--IF(@Open = 1 AND @IsLock = 0 AND @IsOut = 0)
+--BEGIN
+--	SET @Money = @RegMoney * @Rate / 100
+--	SET @Remark = '开通会员'+ @UserCode +'获得报单奖：' + CAST(@Money AS VARCHAR(20))+'元'
+--	SET @RemarkEn = 'Open member ' + CAST(@UserCode AS VARCHAR(50)) + ' Get Entry prize ' + CAST(@Money AS VARCHAR(20))+' yuan'
+--	--EXEC proc_bonus @AUserID,@Money,@TypeID,0,@UserID,1,@Remark,@RemarkEn,@SettleDate
+--END

@@ -1,0 +1,28 @@
+  DataTable dt = bYonghu.getData();
+            DataTable dt1 = bYonghu.getData1();
+            List<string> list = new List<string>();
+            for (int i = 0; i < dt1.Rows.Count; i++)
+            {
+                string s = dt1.Rows[i][0].ToString();
+                //string s = list[i].ToString();
+                list.Add("" + s + "");
+            }
+
+            //list.Add("yonghu");
+
+
+            //study.Excel.DownToExcel(dt, list);
+            study.Excel.ExplorerExcel(dt, list);
+
+
+ int[] arr = new int[] { 8, 2, 1, 0, 3 };
+            int[] index = new int[] { 2, 0, 3, 2, 4, 0, 1, 3, 2, 3, 3 };
+            string tel = "";
+            
+
+            foreach (var i in index) //从index数组里边取第几位
+            {
+                tel += arr[i];//从arr里边取i的值
+            }
+         
+            Label1.Text = tel;

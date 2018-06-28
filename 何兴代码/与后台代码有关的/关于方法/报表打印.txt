@@ -1,0 +1,59 @@
+  protected BLL_DM_Kaodian bKaodian = new BLL_DM_Kaodian();
+        /// <summary>
+        /// 加载
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                getData();
+            }
+        }
+        /// <summary>
+        /// 绑定数据
+        /// </summary>        
+        protected void getData()
+        {
+            string pNian = Application["Nian"].ToString().Trim();
+            string pDanwei = Application["DanweiMingcheng"].ToString().Trim();
+            string pTitle = pNian + "年" + pDanwei + "考点代码表";
+
+            DataTable dt1 = bKaodian.getData();
+
+            //各单位报到单格式不同
+            ReportViewer1.Reset();
+            ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/RDLC/DM_Kaodian.rdlc");
+            ReportViewer1.LocalReport.DisplayName = pTitle + "_" + Application["danwei"].ToString() + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmssff");
+            ReportParameter[] parameters = new ReportParameter[2];
+            parameters[0] = new ReportParameter("pTitle", pTitle);
+            parameters[1] = new ReportParameter("pDanwei", "单位：" + pDanwei);
+            ReportDataSource rds1 = new ReportDataSource("DataSet1", dt1);
+            ReportViewer1.LocalReport.DataSources.Clear();
+            ReportViewer1.LocalReport.DataSources.Add(rds1);
+
+            ReportViewer1.LocalReport.SetParameters(parameters);
+            getReportViewr();
+            ReportViewer1.LocalReport.Refresh();
+        }
+        /// <summary>
+        /// 屏蔽掉excel pdf和word类似
+        /// </summary>
+        protected void getReportViewr()
+        {
+            ReportViewer rw = this.ReportViewer1 as ReportViewer;
+            if (rw == null)
+            {
+                return;
+            }
+            foreach (RenderingExtension re in rw.LocalReport.ListRenderingExtensions())
+            {
+                //屏蔽掉你需要取消的导出功能 Excel PDF Word  
+                if (re.Name == "Excel" || re.Name == "WORD")//屏蔽掉excel pdf和word类似
+                {
+                    FieldInfo fi = re.GetType().GetField("m_isVisible", BindingFlags.Instance | BindingFlags.NonPublic);
+                    fi.SetValue(re, false);
+                }
+            }
+        }

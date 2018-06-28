@@ -1,0 +1,55 @@
+<script type="text/javascript">
+        function setCookie1(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + "; " + expires;
+        }
+
+        function clearCookie1(name) {
+            setCookie1(name, "", -1);
+        }
+
+        function change() {
+            clearCookie1("zhchoose");
+            setCookie("zhchoose", 1, 7);
+            var drop = document.getElementById("<%=dropLanguage.ClientID%>");
+            var dValue = drop.value;//当前选项
+            var dq = getCookie("zhchoose");//当前cookie
+            
+            if (dValue == 2) {
+                setCookie("Culture", "en-us", 7); 
+            }
+            else {
+                setCookie("Culture", "zh-cn", 7);
+            }
+            //if ((dq != 2 && dValue == 2) || (dq == 2 && dValue != 2)) {
+            //    window.location.href='Login.aspx';
+            //}
+
+            setCookie("zhchoose", dValue, 7);
+
+            getLanguage();
+            window.location.href = 'Login.aspx';
+        }
+        window.onload = function () {
+            
+            var dq = getCookie("zhchoose");
+            if (dq == null || dq == "") {
+                setCookie("zhchoose", 1, 7);
+            }
+            var drop = document.getElementById("<%=dropLanguage.ClientID%>");
+            if (dq == 0) {
+                drop.value = 0;
+            }
+            else {
+                if (dq > 0) {
+                    drop.value = dq;
+                }
+                else {
+                    drop.value = 1;
+                }
+            }
+
+        }
+    </script>

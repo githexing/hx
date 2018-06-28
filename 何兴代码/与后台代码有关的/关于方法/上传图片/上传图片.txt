@@ -1,0 +1,110 @@
+ -----------------------------------------------------------------------------------------------
+-------前台
+ <h4 class="header-title m-t-0 m-b-30">凭证截图</h4>
+ 
+                       <div class="row form-horizontal">
+                            <div class="form-group col-sm-6" runat="server" id="divimg">
+                                <label class="col-sm-3 control-label">上传凭证</label>
+                                <div class="col-sm-9 form-control-static">
+                                    <asp:FileUpload ID="FileUpload1" runat="server" />
+                                    <asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="上 传"></asp:Button>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="col-sm-3 control-label">凭证截图</label>
+                                <div class="col-sm-9 form-control-static">
+                                    <asp:HyperLink ID="HyperLink1" Target="_blank" runat="server">
+                                        <asp:Image ID="Image1" runat="server" />
+                                    </asp:HyperLink>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group m-b-0 text-center">
+                                    <asp:Button ID="btnCheck" runat="server" Text="提交" class="btn btn-custom waves-effect waves-light" OnClick="btnCheck_Click" />
+                                </div>
+                            </div>
+                        </div>
+
+
+--------------------------------------------------------------------------------------------------
+---后台
+ protected void btnUpload_Click(object sender, EventArgs e)
+        {
+            if (iCashsellID <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('无订单信息!');", true);
+                return;
+            }
+            if (!FileUpload1.HasFile)
+            {
+                ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('请选择上传图片!');", true);
+                return;
+            }
+            string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
+            if (Extension == ".jpg" || Extension == ".png")
+            {
+                string upload = UpLoadFile("");
+                ViewState["urlname1"] = upload;
+               
+                this.Image1.ImageUrl = "../../Upload/images/" + upload;
+                ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('图片上传成功!');", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('请上传jpg或png格式的图片');", true);
+            }
+        }
+        private string UpLoadFile(string pName)
+        {
+            string _fileName = "";
+            string _name = "";
+            if (FileUpload1.HasFile)
+            {
+                if (Directory.Exists(Server.MapPath("~/Upload/images")) == false)//如果不存在就创建file文件夹
+                {
+                    Directory.CreateDirectory(Server.MapPath("~/Upload/images"));
+                }
+                _fileName = (Server.MapPath("../../Upload/images/"));
+                if (pName == "")
+                {
+                    //tb_TradeOrder.GetModel
+                    lgk.Model.tb_TradeOrder temp = tb_TradeOrder.GetModel(iCashsellID); 
+                    if (temp != null)
+                    {
+                        _name = temp.ID + FileUpload1.FileName.Substring(FileUpload1.FileName.LastIndexOf('.'));
+                    }
+                }
+                else
+                {
+                    _name = pName;
+                }
+
+                _fileName += _name;
+                FileUpload1.SaveAs(_fileName);
+            }
+            return _name;
+        }
+         
+        protected void btnCheck_Click(object sender, EventArgs e)
+        {
+           
+                lgk.Model.tb_TradeOrder cashorderInfo = tb_TradeOrder.GetModel(iCashsellID);
+
+                string fileName = "../../Upload/images/" + cashorderInfo.ID.ToString()  + ".jpg";
+                string fileName2 = "../../Upload/images/" + cashorderInfo.ID.ToString() + ".png";
+                if (!File.Exists(Server.MapPath(fileName)) && !File.Exists(Server.MapPath(fileName2)))
+                {
+                    ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('请上传付款凭证图片');", true);
+                    return;
+                }
+            cashorderInfo.States = 1;
+
+
+            tb_TradeOrder.Update(cashorderInfo);
+
+                ScriptManager.RegisterStartupScript(this.Page, typeof(Page), "info", "alert('" + GetLanguage("Successful") + "');window.location.href='TakeMoney_Goumai.aspx';", true);
+            
+        }

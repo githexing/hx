@@ -1,0 +1,10 @@
+前台：  
+     @Html.DropDownList("Select_Code", new SelectList(ViewBag.hard_value, "Value", "Text"), new { @class = "btn btn-success dropdown-toggle form-control" })
+
+后台：
+       ViewBag.hard_value = new List<SelectListItem>() {
+                new SelectListItem(){Value="0",Text="--请选择--"},
+                new SelectListItem(){Value="1",Text="会员编号"},
+                new SelectListItem(){Value="2",Text="推荐人编号"},
+            };
+

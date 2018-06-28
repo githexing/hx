@@ -1,0 +1,2 @@
+ &nbsp;<asp:HyperLink ID="HyperLink1" runat="server" 
+                                                    NavigateUrl="~/xls/mingce_temp.xls">下载考生名册样表</asp:HyperLink>

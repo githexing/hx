@@ -1,0 +1,55 @@
+ /// <summary>
+        /// 代码表
+        /// </summary>
+        protected void getDaima()
+        {
+            DataTable dt = bDaima.getDaima("dm_sheng");
+            setDropDownList(DropDownList_sheng, dt, "mingcheng1", "daihao", "--请选择省份--", "00");
+            dt = bZhuanye.getLeibie();
+            setDropDownList(DropDownList_leibie, dt, "mingcheng1", "daihao", "", "");
+        }
+
+
+
+  /// <summary>
+        /// 设置DropDownList
+        /// </summary>
+        /// <param name="pDropDownList">DropDownList</param>
+        /// <param name="dt">数据源</param>
+        /// <param name="pText">文本</param>
+        /// <param name="pValue">值</param>
+        /// <param name="pNewItemText">新增项文本</param>
+        /// <param name="pNewItemValue">新增项值</param>
+        public void setDropDownList(DropDownList pDropDownList, DataTable dt, string pText, string pValue, string pNewItemText, string pNewItemValue)
+        {
+            pDropDownList.DataSource = dt;
+            pDropDownList.DataTextField = pText;
+            pDropDownList.DataValueField = pValue;
+            pDropDownList.DataBind();
+            if (pNewItemText != "")
+            {
+                pDropDownList.Items.Insert(0, new ListItem(pNewItemText, pNewItemValue));
+            }
+        }
+
+
+ /// <summary>
+        /// 设置RadioButtonList
+        /// </summary>
+        /// <param name="pRadioButtonList">RadioButtonList</param>
+        /// <param name="dt">数据源</param>
+        /// <param name="pText">文本</param>
+        /// <param name="pValue">值</param>
+        /// <param name="pNewItemText">新增项文本</param>
+        /// <param name="pNewItemValue">新增项值</param>
+        public void setRadioButtonList(RadioButtonList pRadioButtonList, DataTable dt, string pText, string pValue, string pNewItemText, string pNewItemValue)
+        {
+            pRadioButtonList.DataSource = dt;
+            pRadioButtonList.DataTextField = pText;
+            pRadioButtonList.DataValueField = pValue;
+            pRadioButtonList.DataBind();
+            if (pNewItemText != "")
+            {
+                pRadioButtonList.Items.Insert(0, new ListItem(pNewItemText, pNewItemValue));
+            }
+        }

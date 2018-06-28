@@ -1,0 +1,19 @@
+/// <summary>
+        /// 开通会员
+        /// </summary>
+        /// <param name="iUserID"></param>
+        /// <param name="iIsOpend"></param>
+        /// <returns></returns>
+        public string proc_open(long iUserID, int iIsOpend, int iAdmin ,string LX)
+        {
+            object[] obj = DbHelperSQL.ExecuteSP_Param_Object("proc_open", iUserID, iIsOpend, iAdmin, "", LX);
+            if (obj != null && obj[1] != null)
+            {
+                return obj[1].ToString();
+            }
+            else
+            {
+                return null;
+            }
+        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                        

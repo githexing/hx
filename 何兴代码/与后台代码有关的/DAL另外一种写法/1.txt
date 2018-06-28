@@ -1,0 +1,53 @@
+---DAL  
+
+/// <summary>
+        /// 删除开考专业
+        /// </summary>
+        /// <param name="mKaikao"></param>
+        /// <returns></returns>
+        public xt_result DeleteData(ys_kaikao mKaikao)
+        {
+            string sql = "delete from ys_kaikao where sheng=@sheng and daihao=@daihao;";
+            SqlParameter[] param = new SqlParameter[] { 
+                                                        new SqlParameter("@sheng", SqlDbType.VarChar),
+                                                        new SqlParameter("@daihao", SqlDbType.VarChar)};
+            param[0].Value = mKaikao.Sheng;
+            param[1].Value = mKaikao.Daihao;
+            xt_result result = new xt_result();
+            result.Message = "考试类别 " + mKaikao.Daihao + " 删除成功";
+            try
+            {
+                result.ReturnInt = SQLHelper.ExecuteNonQuery(base.User_Login, sql, param);
+                if (result.ReturnInt < 1)
+                {
+                    result.Message = "考试类别 删除失败";
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = e.Message;
+                result.Message = result.Message.Replace("\r\n", "\\n");
+                result.Message = result.Message.Replace("'", "");
+            }
+            return result;  
+        }
+
+---BLL
+
+/// <summary>
+        /// 删除开考专业
+        /// </summary>
+        /// <param name="mKaikao"></param>
+        /// <returns></returns>
+        public xt_result DeleteData(ys_kaikao mKaikao)
+        {
+            return dKaikao.DeleteData(mKaikao);
+        }
+
+---主代码页
+
+
+   xt_result result = bKaikao.DeleteData(mKaikao);
+
+
+  ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('" + result.Message + "！')</script>", false);

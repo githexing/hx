@@ -1,0 +1,126 @@
+绑定分页方法（例子）：
+前台：
+------------------------------------------
+<div class="nextpage">
+    @Html.Raw(Model.Page)
+</div>
+------------------------------------------
+后台：
+------------------------------------
+   Pagination pager = new Pagination();
+            pager.PageIndex = pageIndex;
+            pager.PageSize = pageSize;
+            pager.TotalCount = result.TotalCount;
+
+            if (result.TotalCount <= pageSize)
+            {
+                model.Page = "";
+            }
+            else
+            {
+                model.Page = pager.GetPagerHtml();
+            }
+--------------------------------------
+查询方法：
+  MemberSearch.MemberList = User.OrderByDescending(p => p.ID).ToList().Skip((PageIndex-1)* PageSize).Take(PageSize).ToList().Select(p => ToDTO(p)).ToArray();
+ 
+----------------------------------------
+  例子： /// <summary>
+        /// 后台查询i=0就是查询未开通会员
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="usercode"></param>
+        /// <param name="Level"></param>
+        /// <param name="Strat"></param>
+        /// <param name="End"></param>
+        /// <param name="PageIndex"></param>
+        /// <param name="PageSize"></param>
+        /// <param name="i">i=0就是查询未开通会员</param>
+        /// <returns></returns>
+        public MemberSearchResult GetMemberList(string Id, string usercode, string Level, DateTime? Strat, DateTime? End, int PageIndex, int PageSize, int i)
+        {
+            using (MyDbContext dbc = new MyDbContext())
+            {
+                //MemberDTO[] result = new MemberDTO();
+               
+                CommonService<UserEntity> cs = new CommonService<UserEntity>(dbc);
+                var User = cs.GetAll();
+                if (i==0)
+                {
+                    User = User.Where(a => a.IsOpend < 2);
+                }
+                else
+                {
+                    User = User.Where(a => a.IsOpend == 2);
+                }
+
+                MemberSearchResult MemberSearch = new MemberSearchResult();
+                long level = Convert.ToInt64(Level);
+                if (Id != "0")
+                {
+                    if (usercode != "")
+                    { 
+                        if (Id == "1")
+                        {
+                            User = User.Where(p => p.UserCode.Contains(usercode));
+                        }
+                        else if (Id == "2")
+                        {
+                            User = User.Where(p => p.RecommendCode.Contains(usercode));
+                        }
+                    }
+                }
+                if (Level != "0" && Level != "")
+                {
+                    User = User.Where(p => p.LevelID == level);
+                }
+                if (Strat != null)
+                {
+                    User = User.Where(p => p.CreateTime >= Strat);
+                }
+                if (End != null)
+                {
+                    User = User.Where(p => p.CreateTime <= End);
+                }
+                MemberSearch.TotalCount = User.LongCount();
+                MemberSearch.MemberList = User.OrderByDescending(p => p.ID).ToList().Skip((PageIndex-1)* PageSize).Take(PageSize).ToList().Select(p => ToDTO(p)).ToArray();
+                return MemberSearch;
+            }
+        }
+        public MemberListDTO ToDTO(UserEntity User)
+        {
+            LevelService Level = new LevelService();
+            MemberListDTO MemberList = new MemberListDTO();
+            MemberList.ID= User.ID;
+            MemberList.UserCode = User.UserCode;
+            MemberList.LevelID = User.LevelID;
+            MemberList.RecommendID = User.RecommendID;
+            MemberList.RecommendCode = User.RecommendCode;
+            MemberList.ParentID = User.ParentID;
+            MemberList.IsOpend = User.IsOpend;
+            MemberList.TrueName = User.TrueName;
+            MemberList.PhoneNum = User.PhoneNum;
+            MemberList.CreateTime = User .CreateTime;
+            MemberList.IsLock= User.IsLock;
+            MemberList.OpenTime = User.OpenTime;
+            MemberList.LevelName = ""; 
+            if (Level.GetLevelName(MemberList.LevelID)!=null)
+            {
+                MemberList.LevelName = Level.GetLevelName(MemberList.LevelID).LevelName;
+            }
+
+            MemberList.BankAccount = User.BankAccount;
+            MemberList.BankAccountUser = User.BankAccountUser;
+            MemberList.BankName = User.BankName;
+            MemberList.BankBranch = User.BankBranch;
+            MemberList.BankInProvince = User.BankInProvince;
+            MemberList.Location = User.Location;
+            MemberList.RegMoney = User.RegMoney;
+            MemberList.ParentCode = User.ParentCode;
+            MemberList.IdenCode = User.IdenCode;
+            MemberList.Password= User.Password;
+            MemberList.ThreePassword = User.ThreePassword;
+            MemberList.SecondPassword = User.SecondPassword;
+            return MemberList;
+        } 
+----------------------------------------

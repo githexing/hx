@@ -1,0 +1,36 @@
+ /// <summary>
+        /// 按条件提取数据
+        /// </summary>
+        /// <param name="pWhere"></param>
+        /// <param name="pData"></param>
+        /// <returns></returns>
+        public DataTable getDataWhere(string pWhere,string pData)
+        {
+            string sql = "select a.*,a.biaoti biaoti1,a.zhuangtai+'.'+b.mingcheng zhuangtai1,c.daihao+'.'+c.mingcheng yonghu11 "+
+                            "from xt_jianyi a left join "+
+                            "dm_shifou b on a.zhuangtai=b.daihao left join "+
+                            "xt_yonghu c on a.yonghu1=c.daihao  ";
+            switch (pWhere)
+            {
+                case "yingyong":
+                    sql = sql + " where a.yingyong=@data ";
+                    break;
+                case "yonghu":
+                    sql = sql + " where a.yonghu=@data ";
+                    break;
+                case "zhuangtai":
+                    sql = sql + " where a.zhuangtai=@data ";
+                    break;
+                case "xuhao":
+                    sql = sql + " where a.xuhao=@data ";
+                    break;
+                default:
+                    sql = sql + " where a.xuhao=@data ";
+                    break;
+            }
+            sql = sql + " order by a.xuhao desc;";
+            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@data", SqlDbType.VarChar) };
+            param[0].Value = pData;
+            DataTable dt = SQLHelper.ExecuteDt(base.User_Login, sql, param);
+            return dt;
+        }

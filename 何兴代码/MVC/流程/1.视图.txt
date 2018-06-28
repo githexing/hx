@@ -1,0 +1,19 @@
+------------------------
+视图头顶这个对应Model
+------------------------
+
+@model BrnMall.Web.Models.JoinModel
+@{
+    Layout = null;
+}
+------------------------
+视图的值都是从控制器来的，控制器赋值Model，然后返回到views
+------------------------
+
+
+
+-----------------------------------
+  @Html.DropDownListFor(x => x.StoreRid, Model.StoreRankList)
+这个是一个DropDownList 
+ x => x.StoreRid 表示model中的x.StoreRid 
+Model.StoreRankList 表示值 list

@@ -1,0 +1,24 @@
+RadioButtonList1 赋值 1 0 然后插入事件 
+
+
+---
+
+
+ protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (RadioButtonList1.SelectedValue == "1")
+            {
+                for (int i = 0; i < this.GridView1.Rows.Count; i++)
+            {
+                ((CheckBox)GridView1.Rows[i].FindControl("CheckBox1")).Checked =true;
+            }
+                if ( RadioButtonList1.SelectedValue == "0")
+                {
+                    for (int i = 0; i < this.GridView1.Rows.Count; i++)
+            {
+                ((CheckBox)GridView1.Rows[i].FindControl("CheckBox1")).Checked = false;
+            }
+                }
+               
+            }
+        }

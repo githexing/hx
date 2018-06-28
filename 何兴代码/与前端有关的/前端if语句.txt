@@ -1,0 +1,9 @@
+ <td align="center">
+                                                         <%if (Language == "zh-cn") %>
+                                                        <%{ %>
+                                                        <%#Eval("beizhu")%><%-- ÏêÇé--%>
+                                                        <%}
+                                                            else
+                                                            { %>
+                                                        <%#Eval("beizhu1")%><%-- ÏêÇé--%>
+                                                        <%} %></td>

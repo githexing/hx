@@ -1,0 +1,4 @@
+1. 前台：  <%=UserCore%> 
+ 后台 public string UserCore { get; private set; }
+
+  <%#Eval("beizhu")%>-------》这个是赋值到控件用法

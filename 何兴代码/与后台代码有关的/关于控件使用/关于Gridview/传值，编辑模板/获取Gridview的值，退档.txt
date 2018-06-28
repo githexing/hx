@@ -1,0 +1,78 @@
+/// <summary>
+        /// 退档
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void LinkButton_tuidang_Click(object sender, EventArgs e)
+        {
+            LinkButton pLinkButton = (LinkButton)sender;
+            string pXuhao = pLinkButton.CommandArgument;
+            setZhuanye(pXuhao, "", true);
+        }
+
+ /// <summary>
+        /// 拟录专业
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void LinkButton_zhuanye1_Click(object sender, EventArgs e)
+        {
+            LinkButton pLinkButton = (LinkButton)sender;
+            string pZhuanye = pLinkButton.Text.Substring(0, 3);
+            string pXuhao = pLinkButton.CommandArgument;
+            setZhuanye(pXuhao, pZhuanye, true);
+        }
+        /// <summary>
+        /// 拟录专业
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void LinkButton_zhuanye2_Click(object sender, EventArgs e)
+        {
+            LinkButton pLinkButton = (LinkButton)sender;
+            string pZhuanye = pLinkButton.Text.Substring(0, 3);
+            string pXuhao = pLinkButton.CommandArgument;
+            setZhuanye(pXuhao, pZhuanye, true);
+        }
+
+
+
+
+
+
+
+  /// <summary>
+        /// 拟录专业
+        /// </summary>
+        /// <param name="pXuhao"></param>
+        /// <param name="pZhuanye"></param>
+        protected void setZhuanye(string pXuhao, string pZhuanye, bool pRefresh)
+        {
+            lq_toudang mToudang = new lq_toudang();
+            if (pZhuanye == "" && DropDownList_tuidang.SelectedIndex == 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert(' 请选择退档原因 ！')</script>", false);
+                return;
+            }
+            mToudang.Toudangdan = DropDownList_toudangan.SelectedValue;
+            mToudang.Xuhao = pXuhao;
+            mToudang.Zhuanye = pZhuanye;
+            mToudang.Tuidang = DropDownList_tuidang.SelectedValue;
+            mToudang.Zhuangtai = "4";
+            if (pZhuanye == "")
+            {
+                mToudang.Zhuangtai = "3";
+            }
+            mToudang.Yonghu = Session["daihao"].ToString();
+            xt_result result = bToudang.setZhuanye(mToudang);
+
+            if (result.ReturnInt < 1)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert(' " + result.Message + " ！')</script>", false);
+                return;
+            }
+            if (pRefresh)
+            {
+                getData(HiddenField_filter.Value, "mingci", "ASC");
+            }
+        }

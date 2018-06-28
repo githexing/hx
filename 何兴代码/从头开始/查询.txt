@@ -1,0 +1,7 @@
+ SqlConnection conn = new SqlConnection(con);
+            conn.Open();
+            string sql = string.Format("select * from dm_yueqi");
+            SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            conn.Close();

@@ -1,0 +1,32 @@
+ <asp:LinkButton ID="LinkButton0" class="easyui-linkbutton"  iconcls="icon-edit"  runat="server"  Visible='<%#Eval("zhuangtai").ToString()=="0"?true:false %>'    CommandName="wf" CommandArgument='<%#Eval("UserID") %>'>未发</asp:LinkButton>
+            
+ <asp:Label ID="lable1" runat="server"  Visible='<%#Eval("zhuangtai").ToString()=="1"?true:false %>'>已发</asp:Label>
+
+
+//如何接受前台 的 CommandName="wf" 值传到后台
+  protected void address_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            int ID = Convert.ToInt32(e.CommandArgument);
+            if (ID == getLoginID())
+            {
+                MessageBox.Show(this, "无法操作");
+                return;
+            }
+            if (e.CommandName.Equals("yf"))//删除
+            {
+
+            }
+
+            else if (e.CommandName.Equals("wf"))
+            {
+                SqlConnection conn2 = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["SocutDataLink"]);
+                conn2.Open();
+                string sql2 = "update tb_jiru set zhuangtai='1' where UserID=" + ID + "";
+                SqlCommand cmd = new SqlCommand(sql2, conn2);
+                int reInt = cmd.ExecuteNonQuery();
+                conn2.Close();
+                BindAdmin();
+                //Response.Redirect("DeliveryAddress2.aspx?id=" + ID);
+            }
+        }
+             

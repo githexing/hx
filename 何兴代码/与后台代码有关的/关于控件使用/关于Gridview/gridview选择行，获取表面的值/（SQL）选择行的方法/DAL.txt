@@ -1,0 +1,27 @@
+ /// <summary>
+        /// 按条件提取数据
+        /// </summary>
+        /// <param name="pWhere"></param>
+        /// <param name="pData"></param>
+        /// <returns></returns>
+        public DataTable getDataWhere(string pWhere,string pData)
+        {
+            string sql = "select *,biaoti biaoti1 from xt_jianyi ";
+            switch (pWhere)
+            {
+                case "yonghu":
+                    sql = sql + " where yonghu=@data ";
+                    break;
+                case "xuhao":
+                    sql = sql + " where xuhao=@data ";
+                    break;
+                default:
+                    sql = sql + " where xuhao=@data ";
+                    break;
+            }
+            sql = sql + " order by xuhao;";
+            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@data", SqlDbType.VarChar) };
+            param[0].Value = pData;
+            DataTable dt = SQLHelper.ExecuteDt(base.User_Login, sql, param);
+            return dt;
+        }

@@ -1,0 +1,16 @@
+ SqlConnection conn = new SqlConnection(sconn);
+        conn.Open();
+        string sql = "insert into context(xingming,xingbie,gongzuoriqi,gongzi)values('" + name + "'," + sex + ",'" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + gongzi + "')";
+        SqlCommand cmd = new SqlCommand(sql, conn);
+        int reInt = cmd.ExecuteNonQuery();
+        conn.Close();
+        if (reInt > 0)
+        {
+            Response.Write("<script>alert('添加成功!')</script>");
+            iniv();
+        }
+        else
+            Response.Write("<script>alert('添加失败!')</script>"); 
+
+        static string sconn = System.Configuration.ConfigurationManager.AppSettings["SocutDataLink"];//这个是名字
+                                                                                                                                                                                                                                                                                                                               

@@ -1,0 +1,7 @@
+select * from zm_cjzm where xuhao not in(
+select LEFT(xuhao,14) from aaa)
+
+
+COUNT(*) 是可以统计数量的       
+  not in 是查询不在哪一个数据范围的的记录。
+大表查小表

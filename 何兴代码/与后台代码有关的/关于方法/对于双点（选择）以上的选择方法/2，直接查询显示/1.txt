@@ -1,0 +1,25 @@
+ /// <summary>
+        /// 提取数据
+        /// </summary>
+        protected void getData(string pSortExpression, string pSortDirection)
+        {
+            string pWhere = RadioButtonList_yonghu.SelectedValue;
+            string pData = "";
+            switch (pWhere)
+            {
+                case "yingyong":
+                    pData = Application["yingyong"].ToString();
+                    break;
+                case "yonghu":
+                    pData = Session["daihao"].ToString();
+                    break;
+                default:
+                    pData = Session["daihao"].ToString();
+                    break;
+
+            }
+            DataTable dt = bJianyi.getDataWhere(pWhere, pData);
+            Session["Chaxun"] = dt.DefaultView;
+            getGridViewData(GridView1, "Chaxun", pSortExpression, pSortDirection);
+
+        }

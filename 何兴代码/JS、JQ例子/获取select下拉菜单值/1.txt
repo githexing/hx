@@ -1,0 +1,68 @@
+ <asp:HiddenField ID="HiddenField1" runat="server" />
+            <asp:HiddenField ID="hid" runat="server" />
+   
+     <script type="text/javascript"> 
+         function asd() {
+             var ele = $("#ctl00_ContentPlaceHolder1_select_2").find("option:selected").text();
+             //var ele=window.document.getElementById ("select_2").innerText;
+             var aaa = $("#ctl00_ContentPlaceHolder1_select_2").find("option:selected").val();
+              document.getElementById("<%=HiddenField1.ClientID%>").value=aaa;//隐藏域   
+           document.getElementById("<%=hid.ClientID%>").value=ele;//隐藏域   
+         }
+
+         $(function () {
+             $("#ctl00_ContentPlaceHolder1_select_1").change(function () { 
+                 var checkText = $("#ctl00_ContentPlaceHolder1_select_1").find("option:selected").val();
+               
+                 $.ajax({ 
+                     type: "POST",
+                     contentType: "application/json; charset=utf-8",
+                     dataType: "json",
+                     url: "Tixian.aspx/GetJson",
+                     data: "{'RID':'" + checkText + "'}",
+                     success: function (data) {
+                         var result = eval("(" + data.d + ")"); //这句话是将json语句对象化 
+                         switch (result.ID) {
+                             case "1":
+                                 var html = '<option value="0"><%=GetLanguage("PleaseSselect") %></option>';
+                                 html += '<option value="1"><%=GetLanguage("tixian") %></option>';
+                                 $("#ctl00_ContentPlaceHolder1_select_2").html(html);
+                                 break;
+                             case "2":
+                                 var html = '<option value="0"><%=GetLanguage("PleaseSselect") %></option>';
+                                 html += '<option value="1"><%=GetLanguage("tixian") %></option>'; 
+                                 $("#ctl00_ContentPlaceHolder1_select_2").html(html);
+                                 break;
+
+                             case "3":
+                                 var html = '<option value="0"><%=GetLanguage("PleaseSselect") %></option>';
+                                 html += '<option value="1"><%=GetLanguage("tixian") %></option>';
+                                 html += '<option value="2"><%=GetLanguage("benjinqianbao") %></option>';
+                                 $("#ctl00_ContentPlaceHolder1_select_2").html(html);
+                                 break;
+                         
+                             default:
+                                 var html = '<option value="0"><%=GetLanguage("PleaseSselect") %></option>';
+                                 $("#ctl00_ContentPlaceHolder1_select_2").html(html);
+                                 break;
+                         }
+                       
+                     },
+                     error: function (err) {
+                         alert("err:" + err);
+                     }
+                 });
+             });
+         });
+    </script>
+
+
+
+ <td class="con_edit_td2">
+                           
+                            <select id="select_1" runat="server" name="select_1">
+                            </select><asp:Label ID="Label7" runat="server" Text="-->>"></asp:Label>
+                                                       &nbsp;<select id="select_2" runat="server">
+                                
+                            </select>
+                        </td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  

@@ -1,0 +1,6 @@
+C:\Users\hexing\Desktop\何兴测试\动态导航\hexing\DBUtility\bin\Release\DBUtility.dll
+C:\Users\hexing\Desktop\何兴测试\动态导航\hexing\DBUtility\obj\Release\DBUtility.dll
+C:\Users\hexing\Desktop\何兴测试\动态导航\hexing\DBUtility\obj\Release\MSSQLUtility.csprojResolveAssemblyReference.cache
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\DBUtility\bin\Release\DBUtility.dll
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\DBUtility\obj\Release\MSSQLUtility.csprojResolveAssemblyReference.cache
+D:\CC\11\最新记载\何兴测试\动态导航\hexing\DBUtility\obj\Release\DBUtility.dll

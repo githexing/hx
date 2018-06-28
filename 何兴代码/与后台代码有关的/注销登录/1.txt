@@ -1,0 +1,14 @@
+ <asp:LinkButton ID="LinkButton1" runat="server" onclick="LinkButton1_Click" CausesValidation="False" CommandName="Select"
+                                Text="注销登录" OnClientClick="return confirm('确定要离开本系统吗？');" >注销登录</asp:LinkButton>
+
+
+---
+
+
+  protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            Session.Abandon();
+            Session.RemoveAll();
+            Response.Redirect("~/Index.aspx", true);
+
+        }

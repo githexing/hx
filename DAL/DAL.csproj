@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{68017F64-C636-42B0-BB6A-A0557A4C1B29}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevComponents.DotNetBar2, Version=12.0.0.1, Culture=neutral, PublicKeyToken=c39c3242a43eee2b, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="DAL_Caidan.cs" />
+    <Compile Include="DAL_CS_Caozuo.cs" />
+    <Compile Include="DAL_Gongneng.cs" />
+    <Compile Include="DAL_Procedure.cs" />
+    <Compile Include="DAL_XT_Error.cs" />
+    <Compile Include="DAL_XT_Tongji.cs" />
+    <Compile Include="DAL_Yonghu.cs" />
+    <Compile Include="DAL_ZM_Chaxun.cs" />
+    <Compile Include="DAL_ZM_Cjzm.cs" />
+    <Compile Include="DAL_ZM_Xinxi.cs" />
+    <Compile Include="DAL_ZM_Zuce.cs" />
+    <Compile Include="hx_cjzm.cs" />
+    <Compile Include="hx_yonghu.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="zm_cjzm.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appcommon\AppCommon.csproj">
+      <Project>{DFC5C545-7B64-47A7-BB37-A89AD86E8365}</Project>
+      <Name>AppCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBUserConfig\DBUserConfig.csproj">
+      <Project>{BF52E8E0-262C-4E47-8A6B-F522F1A5F330}</Project>
+      <Name>DBUserConfig %28Utility\DBUserConfig%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBUtility\MSSQLUtility.csproj">
+      <Project>{7A85EAD2-E5F8-4213-A04C-2CE6EC570625}</Project>
+      <Name>MSSQLUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\model\Model.csproj">
+      <Project>{91E39C95-72CD-438E-B819-86BB7C5420B4}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

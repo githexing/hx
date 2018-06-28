@@ -1,0 +1,3 @@
+决定“打开”还是“保存”了。
+
+如Response.AppendHeader(Content-Disposition,attachment;filename=MyExcel.xls);

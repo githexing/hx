@@ -1,0 +1,15 @@
+ <asp:regularexpressionvalidator id="RegularExpressionValidator2" runat="server" ValidationExpression="^\d+(\.\d+)?$" 
+ControlToValidate="Text3" ErrorMessage="请输入数字"> </asp:regularexpressionvalidator>
+
+
+ <asp:regularexpressionvalidator id="RegularExpressionValidator1" runat="server" ValidationExpression="^[0-9]*$" 
+ControlToValidate="Text2" ErrorMessage="请输入数字"> </asp:regularexpressionvalidator>
+
+onkeyup="this.value=this.value.replace(/[^\w\/]/ig,'');" />//只能输入数字 大小写字母
+
+onkeyup="value=value.replace(/[^\d]/g,'')"纯数字
+
+onkeyup="value=value.replace(/[^a-z0-9.]/g,'');"支付宝
+
+onkeyup="value=value.replace(/[^a-z0-9]/g,'');"  微信号
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

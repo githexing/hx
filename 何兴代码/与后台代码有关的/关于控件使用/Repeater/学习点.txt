@@ -1,0 +1,23 @@
+在控件中可以这么使用：
+ Enabled='<%#Eval("ID").ToString()==getLoginID().ToString()?false:true
+例子：
+              <asp:LinkButton ID="LinkButton0" class="easyui-linkbutton"  iconcls="icon-edit"  runat="server"  Enabled='<%#Eval("ID").ToString()==getLoginID().ToString()?false:true %>'   CommandName="modify" CommandArgument='<%#Eval("ID") %>'>编辑</asp:LinkButton>
+
+点击按钮 后台用于接受的 e.CommandName.Equals("modify") 
+能接受到的东西是  CommandArgument='<%#Eval("ID") %>' ==> ID
+
+例如：
+ protected void address_ItemCommand(object source, RepeaterCommandEventArgs e)
+        { 
+             if (e.CommandName.Equals("modify"))
+            {
+                SqlConnection conn2 = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["SocutDataLink"]);
+                conn2.Open();
+                string sql2 = "update tb_jiru set zhuangtai='1' where ID=" + ID + "";
+                SqlCommand cmd = new SqlCommand(sql2, conn2);
+                int reInt = cmd.ExecuteNonQuery();
+                conn2.Close();
+                BindAdmin();
+                //Response.Redirect("DeliveryAddress2.aspx?id=" + ID);
+            }
+        }

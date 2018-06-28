@@ -1,0 +1,61 @@
+  <script type="text/javascript"> 
+
+         $(function () {
+             $("#ctl00_ContentPlaceHolder1_select_1").change(function () { 
+                 var checkText = $("#ctl00_ContentPlaceHolder1_select_1").find("option:selected").val();
+               
+                 $.ajax({ 
+                     type: "POST",
+                     contentType: "application/json; charset=utf-8",
+                     dataType: "json",
+                     url: "Tixian.aspx/GetJson",
+                     data: "{'RID':'" + checkText + "'}",
+                     success: function (data) {
+                         var result = eval("(" + data.d + ")"); //这句话是将json语句对象化 
+                         switch (result.ID) {
+                             case "1":
+                                 var html = '<option value="0">请选择</option>';
+                                 html += '<option value="1">提现</option>';
+                                 $("#ctl00_ContentPlaceHolder1_select_2").html(html);
+                                 break;
+                             case "2":
+                                 var html = '<option value="0">请选择</option>';
+                                 html += '<option value="1">提现</option>'; 
+                                 $("#ctl00_ContentPlaceHolder1_select_2").html(html);
+                                 break;
+
+                             case "3":
+                                 var html = '<option value="0">请选择</option>';
+                                 html += '<option value="1">提现</option>';
+                                 html += '<option value="2">本金钱包</option>';
+                                 $("#ctl00_ContentPlaceHolder1_select_2").html(html);
+                                 break;
+                         
+                             default:
+                                 var html = '<option value="0">请选择</option>';
+                                 $("#ctl00_ContentPlaceHolder1_select_2").html(html);
+                                 break;
+                         }
+                       
+                     },
+                     error: function (err) {
+                         alert("err:" + err);
+                     }
+                 });
+             });
+         });
+    </script>
+
+ [WebMethod]
+        public static string GetJson(string RID)
+        {
+            //string str = RID;
+            //return str;
+
+            return "{'ID':'" + RID + "'}";
+
+
+        }
+
+
+     string b = select_1.Items[select_1.SelectedIndex].Text; 获取文本                                                                                                                                                                                                                                                                                                                                                                                                                                                                            

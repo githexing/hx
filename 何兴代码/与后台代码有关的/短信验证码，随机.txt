@@ -1,0 +1,21 @@
+  Random random = new Random();
+                List<int> num = new List<int>();
+                int max = 0;
+                for (int i = 0; i < 6 + max; i++)
+                {
+                    int o = random.Next(6);
+                    int sa = num.IndexOf(o);
+                    if (sa <= -1)
+                    {
+                        int a = int.Parse(o.ToString());
+                        num.Add(a);
+                    }
+                    else
+                    {
+                        max = max + 1;
+                    }
+                }
+                string yanzhenma = num[0].ToString() + num[1].ToString() + num[2].ToString() + num[3].ToString() + num[4].ToString() + num[5].ToString();
+
+                Session["duanxin"] = yanzhenma + getLoginID().ToString();
+                Session.Timeout = 5;

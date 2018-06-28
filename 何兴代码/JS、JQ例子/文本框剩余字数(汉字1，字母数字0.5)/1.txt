@@ -1,0 +1,45 @@
+ 
+<div>
+                            <script>
+
+                                var maxstrlen = 100;
+                                function Q(s) { return document.getElementById(s); }
+                                function checkWord(c) {
+                                    len = maxstrlen;
+                                    var str = c.value;
+                                    myLen = getStrleng(str);
+                                    var wck = Q("wordCheck");
+                                    if (myLen > len * 2) {
+                                        c.value = str.substring(0, i + 1);
+                                    }
+                                    else {
+                                        wck.innerHTML = Math.floor((len * 2 - myLen) / 2);
+                                    }
+                                }
+                                function getStrleng(str) {
+                                    myLen = 0;
+                                    i = 0;
+                                    for (; (i < str.length) && (myLen <= maxstrlen * 2); i++) {
+                                        if (str.charCodeAt(i) > 0 && str.charCodeAt(i) < 128)
+                                            myLen++;
+                                        else
+                                            myLen += 2;
+                                    }
+                                    return myLen;
+                                }
+                            </script>
+</div>
+---------------------------------------------------------------------------
+在文本框的CS：
+onkeyup="javascript:checkWord(this);" onmousedown="javascript:checkWord(this);" name="content" Style="overflow-y: scroll"
+
+例如：
+<asp:TextBox ID="TextBox_neirong" runat="server" Height="100px" MaxLength="100" TextMode="MultiLine"
+                                            Width="500px" Font-Names="宋体" onkeyup="javascript:checkWord(this);" onmousedown="javascript:checkWord(this);"
+                                            name="content" Style="overflow-y: scroll"></asp:TextBox>
+
+----------------------------------------------------------------------------
+在文本框的下方：
+
+ 还可以输入<span style="font-family: Georgia; font-size: 26px;" id="wordCheck">100</span>个字符
+

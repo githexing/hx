@@ -1,0 +1,40 @@
+USE [yishu10]
+GO
+/****** Object:  StoredProcedure [dbo].[pro_daoru_kaikaozhuanye_02]    Script Date: 11/25/2015 16:05:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+-- =============================================
+-- Author:		何兴
+-- Create date: 2015.10.12
+-- Description:	导入开考专业
+-- =============================================
+ALTER PROCEDURE [dbo].[pro_daoru_kaikaozhuanye_02]
+  @yonghu varchar(20),@biaozhi varchar(1) 
+AS
+BEGIN
+	/*开始事务*/
+    BEGIN TRANSACTION;
+	/*成绩库*/
+	delete from ys_kaikao;	
+	insert into ys_kaikao	
+		select sheng,daihao from temp6;
+	--insert into ys_chengji	
+	--	select ksh,'02' cjxdm,sx,'' bz from temp2;	
+	--insert into ys_chengji	
+	--	select ksh,'03' cjxdm,wy,'' bz from temp2;	
+	--insert into ys_chengji	
+	--	select ksh,'04' cjxdm,zh,'' bz from temp2;	
+	--insert into ys_chengji	
+	--	select ksh,'09' cjxdm,tdcj,'' bz from temp2;	
+	--insert into ys_chengji	
+	--	select ksh,'98' cjxdm,cj,'' bz from temp2;	
+	--insert into ys_chengji	
+	--	select ksh,'99' cjxdm,tzcj,'' bz from temp2;	
+	/*提交事务*/
+    COMMIT TRANSACTION;
+    return 1;
+END

@@ -1,0 +1,65 @@
+using System.Threading;
+using System.Text;
+
+
+namespace WebApplication1
+{
+
+    public class Global : System.Web.HttpApplication
+    {
+
+        protected BLL_XT_Tongji Tongji = new BLL_XT_Tongji();
+        protected xt_result result = new xt_result();
+        protected hx_yonghu Yonghu = new hx_yonghu();
+
+        string LogPath;
+        Thread thread;
+        void WriteLog()
+        {
+            while (true)
+            {
+                DateTime time= DateTime.Now;
+               int Day= time.Day;
+                //string D=time.DayOfWeek.ToString();
+                int h=time.Hour;
+                int m = time.Minute;
+                
+                if (Day==7&&h==14&&m==59)
+                {
+                    StreamWriter sw = new StreamWriter(LogPath, true, Encoding.UTF8);
+                    sw.WriteLine(thread.Name + ":" + DateTime.Now.ToString());
+                    sw.Close();
+                    string yonghu = "a";
+                    string dianhua = "b";
+                    int dt = Yonghu.upData(yonghu, dianhua);
+                    Thread.CurrentThread.Join(1000 * 60);//阻止1小时
+                }
+                else
+                {
+                    StreamWriter sw = new StreamWriter(LogPath, true, Encoding.UTF8);
+                    sw.WriteLine(thread.Name + ":" + DateTime.Now.ToString());
+                    sw.Close();
+                    Thread.CurrentThread.Join(1000 * 60);//阻止10分钟
+                }
+               
+            }
+        }
+
+        void Application_Start(object sender, EventArgs e)
+        {
+            // 在应用程序启动时运行的代码
+            //应用系统代号
+            //getMenu();
+            Application["CurrentUserCount"] = 0;
+            LogPath = HttpContext.Current.Server.MapPath("log.txt");
+            //在应用程序启动时运行的代码
+            thread = new Thread(new ThreadStart(WriteLog));
+            thread.Name = "写登录日志线程";
+            thread.Start();
+            //DateTime time = DateTime.Now;
+            //System.Timers.Timer t = new System.Timers.Timer(6000);//实例化Timer类，设置间隔时间为10000毫秒；
+            //t.Elapsed += new System.Timers.ElapsedEventHandler(theout);//到达时间的时候执行事件；
+            //t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
+            //t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
+
+        }

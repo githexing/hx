@@ -1,0 +1,74 @@
+ <asp:LinkButton ID="LinkButton_shenhe" runat="server" CommandArgument='<%# Eval("shenfenzheng") %>'
+
+
+ <ItemTemplate>
+                  <img alt="" src='<%# Eval("url") %>' width="60" />
+                                </ItemTemplate>
+---
+编辑列--TemplateField-- 编辑模板
+-- 可以放入工具栏的东西 或者例如上面绑定字段
+
+  Label lbSfzh = (Label)row.FindControl("Label_sfzh");
+或者
+ 
+Label lbl1 = (Label)e.Row.FindControl("Label1");//这里要是ItemTemplate中的id,而不是EditItemTemplate的id
+string ss = lbl1.Text; 
+//lable获取值：
+            Label pXuhao1 = (Label)GridView1.Rows[GridView1.SelectedIndex].FindControl("Label_xuhao"); 
+            string pXuhao = pXuhao1.Text;// GridView1.Rows[GridView1.SelectedIndex].Cells[0].Text; 
+
+
+ 获取GridView的TemplateField模版中某列值
+
+
+
+在GridView控件没有加入模版的时候,可以很容易得到某行,某列的值.
+如:
+   e.Row.Cells[3].Text  //就是要获得当前选定行的第四个单元中的内容.我这里是把这行代码放到了OnRowDataBound事件处理程序中的.
+但要是对这列加入了TemplateField,如下:
+  <asp:TemplateField HeaderText="商品名称">
+                <EditItemTemplate>
+                    <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("ModelName") %>'
+                        Width="85px"></asp:TextBox>
+                </EditItemTemplate>
+                <ItemTemplate>
+                    <asp:Label ID="Label1" runat="server" Text='<%# Bind("ModelName") %>'></asp:Label>
+                </ItemTemplate>
+                <ItemStyle HorizontalAlign="Center" Width="95px" />
+   </asp:TemplateField>
+在这个时候,要是再按照前面的方法获取值,就会获得空值.此时就要用到FindControl了应按下列方法获得值:
+ 
+Label lbl1 = (Label)e.Row.FindControl("Label1");//这里要是ItemTemplate中的id,而不是EditItemTemplate的id
+string ss = lbl1.Text; 
+通过这样就可以正确的得到想要的值.
+
+  /// <summary>
+        /// 审核当前页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Button_ye_Click(object sender, EventArgs e)
+        {
+            string pShenhe = DropDownList_shenhe.SelectedValue;
+            string pShenhe1 = DropDownList_shenhe.SelectedItem.Text;
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                CheckBox myCheck = (CheckBox)row.FindControl("CheckBox1");
+                if (myCheck == null)
+                {
+                    continue;
+                }
+                if (myCheck.Checked == true)
+                {
+                    Label lbSfzh = (Label)row.FindControl("Label_sfzh");
+                    xt_result result = bBmxx.setShenhe(lbSfzh.Text, pShenhe);
+                    if (result.ReturnInt > 0)
+                    {
+                        Label lbShenhe = (Label)row.FindControl("Label_shenhe"); 
+                        lbShenhe.Text = pShenhe1;
+                    }
+                }
+            }
+            //getData("shenfenzheng", "ASC");
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "msg", "<script>alert('当前页审核完毕！')</script>", false);
+        }

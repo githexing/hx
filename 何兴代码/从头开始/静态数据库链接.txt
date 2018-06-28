@@ -1,0 +1,5 @@
+ static string sconn = System.Configuration.ConfigurationManager.AppSettings["SocutDataLink"];
+
+ ¿®∫≈¿Ô±ﬂµƒ « keyname
+
+                                                         

@@ -1,0 +1,2 @@
+update dm_chengji set  dm_chengji.mingcheng=temp_chengji.mingcheng 
+ from dm_chengji inner join  temp_chengji on dm_chengji.daihao=temp_chengji.daihao

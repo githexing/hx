@@ -1,0 +1,53 @@
+using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using Library;
+using IPSVERIFYLib;
+using Web.user.shop;
+using System.Xml;
+using System.Data.SqlClient;
+
+
+
+
+
+ string paymentResult = Request["paymentResult"];
+        //调试日志
+        LogHelper.SaveLog("s2s: " + paymentResult, "ipsreturn");
+
+        XmlDocument xml = new XmlDocument();//初始化一个xml实例
+        xml.LoadXml(paymentResult);
+        string ReferenceID = xml.SelectSingleNode("//ReferenceID").InnerText;
+        string RspCode = xml.SelectSingleNode("//RspCode").InnerText;// 头RspCode为000000则表明接口返回成功
+        string RspMsg = xml.SelectSingleNode("//RspMsg").InnerText;
+        string ReqDate = xml.SelectSingleNode("//ReqDate").InnerText;
+        string RspDate = xml.SelectSingleNode("//RspDate").InnerText;
+        string signature = xml.SelectSingleNode("//Signature").InnerText;
+
+        string billno = xml.SelectSingleNode("//MerBillNo").InnerText;
+        string currency_type = xml.SelectSingleNode("//CurrencyType").InnerText;
+        string amount = xml.SelectSingleNode("//Amount").InnerText;
+        string mydate = xml.SelectSingleNode("//Date").InnerText;
+        string succ = xml.SelectSingleNode("//Status").InnerText;
+        string Msg = xml.SelectSingleNode("//Msg").InnerText;
+        string attach = xml.SelectSingleNode("//Attach").InnerText;
+        string ipsbillno = xml.SelectSingleNode("//IpsBillNo").InnerText;//IPS订单号  
+        string IpsTradeNo = xml.SelectSingleNode("//IpsTradeNo").InnerText;//IPS交易流水 号
+        string retEncodeType = xml.SelectSingleNode("//RetEncodeType").InnerText;
+        string bankbillno = xml.SelectSingleNode("//BankBillNo").InnerText; //银行订单号
+        string ResultType = xml.SelectSingleNode("//ResultType").InnerText; // C.A.T方式必填
+        string IpsBillTime = xml.SelectSingleNode("//IpsBillTime").InnerText; // C.A.T方式必填
+
+        int begin = paymentResult.IndexOf("<body>");
+        int end = paymentResult.IndexOf("</body>");
+        string body = paymentResult.Substring(begin, end - begin + 7);
+
+
+                                                                                                                                                                                                                                           

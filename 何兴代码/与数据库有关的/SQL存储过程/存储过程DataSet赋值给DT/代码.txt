@@ -1,0 +1,3 @@
+  DataSet ds = bProcedure.ImportBidui(pXuexiao, Session["daihao"].ToString());
+
+            DataTable dt = ds.Tables[0];

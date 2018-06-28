@@ -1,0 +1,34 @@
+一直每三秒弹出 "hello" ：
+setInterval(function(){alert("Hello")},3000);
+只执行一次
+setTimeout(function(){alert("Hello")},3000);
+
+
+<p id="demo"></p>
+<script>
+var myVar=setInterval(function(){myTimer()},1000);
+function myTimer(){
+	var d=new Date();
+	var t=d.toLocaleTimeString();
+	document.getElementById("demo").innerHTML=t;
+}
+</script>
+
+toLocaleTimeString(); 转化时间成字符串
+
+取消一直执行：
+	clearInterval(myVar);
+
+<p>页面上显示时钟：</p>
+<p id="demo"></p>
+<button onclick="myStopFunction()">停止时钟</button>
+<script>
+var myVar=setInterval(function(){myTimer()},1000);
+function myTimer(){
+	var d=new Date();
+	var t=d.toLocaleTimeString();
+	document.getElementById("demo").innerHTML=t;
+}
+function myStopFunction(){
+	clearInterval(myVar);
+}

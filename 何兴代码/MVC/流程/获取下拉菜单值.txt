@@ -1,0 +1,15 @@
+   <select id="provinceId" name="provinceId">
+                <option selected="selected" value="-1">«Î—°‘Ò</option>
+                </select>
+                <select id="cityId" name="cityId">
+                <option selected="selected" value="-1">«Î—°‘Ò</option>
+                </select>
+                <select id="regionId" name="regionId">
+                <option selected="selected" value="-1">«Î—°‘Ò</option>
+                </select>
+----------------------------------------------------------------------
+
+var provinceId = $(userInfoForm.elements["provinceId"]).find("option:selected").val();
+    var cityId = $(userInfoForm.elements["cityId"]).find("option:selected").val();
+    var regionId = $(userInfoForm.elements["regionId"]).find("option:selected").val();
+    var address = userInfoForm.elements["address"].value;

@@ -1,0 +1,28 @@
+ }
+        /// <summary>
+        /// …Û∫Àµ±«∞“≥
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Button_ye_Click(object sender, EventArgs e)
+        {
+            string pShenhe = DropDownList_shenhe.SelectedValue;
+            string pShenhe1 = DropDownList_shenhe.SelectedItem.Text;
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                CheckBox myCheck = (CheckBox)row.FindControl("CheckBox1");
+                if (myCheck == null)
+                {
+                    continue;
+                }
+                if (myCheck.Checked == true)
+                {
+                    Label lbSfzh = (Label)row.FindControl("Label_sfzh");
+                    xt_result result = bBmxx.setShenhe(lbSfzh.Text, pShenhe);
+                    if (result.ReturnInt > 0)
+                    {
+                        Label lbShenhe = (Label)row.FindControl("Label_shenhe");
+                        lbShenhe.Text = pShenhe1;
+                    }
+                }
+            }

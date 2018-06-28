@@ -1,0 +1,50 @@
+   set @q=0 --第几位开始计算长度，例如0
+								   set @cishu=0;--第几位开始计算
+						 
+								   while @cishu<@RecommendGenera-1 --有多少节不算本人，所以-1
+								   begin
+								   
+												 select @w= charindex ('-'+@RecommendPath+@q)--从0开始计算这个字符串第几位开始有- @w是从1开始算的
+												set @ziduan=substring(@RecommendPath+@q+@w-@q) --字段，第几位开始，长度为2，但是不取2只要1位 
+										       --print @w --截取的长度
+											   -- print @UserID 
+											   -- print @UserCode
+												--print @RecommendPath
+												--print @ziduan 
+												set @daishu=@RecommendGenera-1-@cishu 
+												print  @ziduan;
+												 print  @daishu;
+
+
+
+  ----------------------------------------------------------------
+ declare @Length int=1,--第几位开始计算长度
+         @start  int=0,
+         @o int=0,--循环值
+         @Times INT =8,
+         @AgvList varchar(200)='0.81,0.50,0.25,1.54,1.58,1.82,0.84,0.6600,',
+         @NUM varchar(50)--取到的数字
+         while @o<@Times
+			 begin
+	         select @start= charindex (',',@AgvList,@Length)
+	         SET @NUM=substring(@AgvList,@Length,@start-@Length)--这个是拿出来的值（字符串，从这里开始截取，取这么多）
+	         PRINT @start
+	         PRINT @NUM
+	        set  @Length=@start+1
+	      
+	        set @o+=1
+			 end
+			 
+			 
+	 @Length = 1
+	 @start  = 5
+	 
+	 @Length = 5+1
+	 @start  = 10
+	 
+	 @Length = 10+5+1
+	 @start  = 10
+
+
+
+

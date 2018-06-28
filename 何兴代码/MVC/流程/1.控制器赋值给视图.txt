@@ -1,0 +1,26 @@
+/// <summary>
+        /// 用户信息
+        /// </summary>
+        public ActionResult UserInfo()
+        {
+            UserInfoModel model = new UserInfoModel();
+
+            model.UserInfo = Users.GetUserById(WorkContext.Uid);
+            model.UserRankInfo = WorkContext.UserRankInfo;
+
+            RegionInfo regionInfo = Regions.GetRegionById(model.UserInfo.RegionId);
+            if (regionInfo != null)
+            {
+                ViewData["provinceId"] = regionInfo.ProvinceId;
+                ViewData["cityId"] = regionInfo.CityId;
+                ViewData["countyId"] = regionInfo.RegionId;
+            }
+            else
+            {
+                ViewData["provinceId"] = -1;
+                ViewData["cityId"] = -1;
+                ViewData["countyId"] = -1;
+            }
+
+            return View(model);
+        }

@@ -1,0 +1,16 @@
+/// <summary>
+        /// 提取数据
+        /// </summary>
+        protected void getData(string pSortExpression, string pSortDirection)
+        {
+            string pWhere = RadioButtonList_Pwhere.SelectedValue;
+            string pData = TextBox_chaxun.Text.Trim();
+
+            TextBox_chaxun.Text = "";
+
+            DataTable dt = bBmxx.getDataDetail(pWhere, pData);
+
+            Session["Chaxun"] = dt.DefaultView;
+            getGridViewData(GridView1, "Chaxun", pSortExpression, pSortDirection);
+
+        }

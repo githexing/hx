@@ -1,0 +1,14 @@
+DateTime dtWeekSt;
+            DateTime dtWeekEd;
+            //当前日期
+            DateTime time = DateTime.Now ;
+            DateTime time1 = DateTime.Now.Date;
+            //今天是星期几
+            int iNowOfWeek = (int)time.DayOfWeek;
+            if (iNowOfWeek == 0)
+            {
+                //按中国的习惯，星期天是最后一天
+                iNowOfWeek = 7;
+            }
+            dtWeekSt = time.AddDays(1 - iNowOfWeek);//星期1的日期
+            dtWeekEd = time.AddDays(7 - iNowOfWeek);

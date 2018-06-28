@@ -1,0 +1,5 @@
+POST 接收要
+                string UserCode = context.Request["UserCode"].ToString();//用户编号
+                string RegMoney1 = context.Request["RegMoney"].ToString();//支付金额
+                string OrderCode = context.Request["OrderCode"].ToString();//订单号
+                string Type1 = context.Request["Type"].ToString();//币种流水

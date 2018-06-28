@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+
+namespace Model
+{
+    public class xt_jianyi
+    {
+        public xt_jianyi() { }
+        private int _xuhao;
+        private string _yingyong;
+        private string _yonghu;
+        private string _mingcheng;
+        private string _neirong;
+        private DateTime _riqi;
+        private string _huifu;
+        private string _yonghu1;
+        private DateTime _riqi1;
+
+        public int Xuhao
+        {
+            get { return _xuhao; }
+            set { _xuhao = value; }
+        }
+        public string Yingyong
+        {
+            get { return _yingyong; }
+            set { _yingyong = value; }
+        }
+        public string Yonghu
+        {
+            get { return _yonghu; }
+            set { _yonghu = value; }
+        }
+        public string Mingcheng
+        {
+            get { return _mingcheng; }
+            set { _mingcheng = value; }
+        }
+        public string Neirong
+        {
+            get { return _neirong; }
+            set { _neirong = value; }
+        }
+        public DateTime Riqi
+        {
+            get { return _riqi; }
+            set { _riqi = value; }
+        }
+        public string Huifu
+        {
+            get { return _huifu; }
+            set { _huifu = value; }
+        }
+        public string Yonghu1
+        {
+            get { return _yonghu1; }
+            set { _yonghu1 = value; }
+        }
+        public DateTime Riqi1
+        {
+            get { return _riqi1; }
+            set { _riqi1 = value; }
+        }
+    }
+}
